@@ -1,0 +1,8 @@
+io:format("Consulting .erlang in ~p~n",[element(2,file:get_cwd())]).
+%% Edit to the directory where you store your code
+% c:cd("E:/Dev/Erlang/sandbox").
+% io:format("\nNow in:~p~n", [element(2,file:get_cwd())]).
+code:load_abs("/Users/carlosedp/Onedrive/Configs/erlang/reloader").
+code:load_abs("/Users/carlosedp/Onedrive/Configs/erlang/user_default").
+code:add_pathz("/Users/carlosedp/Onedrive/Configs/erlang/recon/ebin").
+code:add_pathz("/Users/carlosedp/Onedrive/Configs/erlang/eper/ebin").

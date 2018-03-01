@@ -1,0 +1,73 @@
+[user]
+	name = CarlosEDP
+	email = me@carlosedp.com
+
+[github]
+	user = carlosedp
+	token = 25e87ba20baee941e5b10d78b4ec11cd
+
+[color]
+    status = auto
+    diff = auto
+    branch = auto
+    ui = auto
+    grep = auto
+    interactive = auto
+[branch]
+	autosetupmerge = always
+	autosetuprebase = always
+
+[merge]
+    summary = true
+	tool = p4merge
+
+[alias]
+    st = status --ignore-submodules=dirty
+    df = diff --ignore-submodules=dirty
+    co = checkout
+    ci = commit
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+[core]
+    legacyheaders = false
+    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    excludesfile = ~/.gitignore
+	autocrlf = input
+    pager = less -S
+	editor = vim
+
+[apply]
+    whitespace = fix
+
+[rerere]
+    enabled = true
+    autoupdate = true
+
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+
+[submodule "*"]
+	ignore = dirty
+[mergetool "diffmerge"]
+	cmd = diffmerge --merge\n--result=$MERGED $LOCAL $BASE $REMOTE
+	trustExitCode = true
+[mergetool]
+	keepBackup = false
+	prompt = false
+[mergetool "p4merge"]
+	path = /Users/carlosedp/Dev/tools/p4merge
+[push]
+	default = matching
+[filter "media"]
+	required = true
+	clean = git media clean %f
+	smudge = git media smudge %f
+[filter "hawser"]
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true
