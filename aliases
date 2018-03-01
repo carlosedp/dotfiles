@@ -1,6 +1,6 @@
 # Aliases
 
-alias ls='ls -hF -G' # classify files in colour
+alias ls='ls -hF -G --color' # classify files in colour
 alias ll='ls -ltr'   # long list
 alias la='ls -lA'    # all but . and ..
 alias l='ls -CF'
@@ -60,8 +60,18 @@ kdesc() {
 export -f kdesc
 
 kns() {
-    NAMESPACE=$1
-    alias kctl='kubectl --namespace $NAMESPACE $*'
+    INPUT=$1
+    if [ -z $1 ]; then
+      echo $NAMESPACE
+      return
+    fi
+    if [ $1 == "all" ]; then
+      export NAMESPACE="--all-namespaces"
+    else
+      export NAMESPACE="--namespace=$1"
+    fi
+
+    alias kctl='kubectl $NAMESPACE $*'
 }
 export -f kns
 

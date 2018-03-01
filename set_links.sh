@@ -1,8 +1,8 @@
 echo "Setting dotfiles on ~/"
-cd ~/
+echo `pwd`
 
-for FILE in aliases bashrc erlang gitconfig gitignore inputrc screenrc ssh
+for FILE in aliases bashrc erlang gitconfig gitignore inputrc screenrc ssh vimrc conf
 do
-    ln -sf ./$FILE ~/.$FILE
+    ln -sf `pwd`/$FILE ~/.$FILE
 done
 # chsh -s /bin/zsh
