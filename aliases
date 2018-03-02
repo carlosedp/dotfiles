@@ -7,82 +7,16 @@ alias l='ls -CF'
 alias top='top -c'
 alias screen='screen -RR'
 
-## Kubernetes
-
-source <(kubectl completion bash)
-
-klog() {
-    POD=$1
-    INPUT_INDEX=$2
-    INDEX="${INPUT_INDEX:-1}"
-    PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
-    PODNAME=`echo ${PODS} |awk '{print $2}'`
-    echo "Pod: ${PODNAME}"
-    echo
-    NS=`echo ${PODS} |awk '{print $1}'`
-    kubectl logs -f --namespace=${NS} ${PODNAME}
-}
-
-wpod() {
-    NS=$@
-    NAMESPACE=${NS:-"--all-namespaces"}
-    if [ "$NAMESPACE" != "--all-namespaces" ]
-      then
-      NAMESPACE="-n ${NS}"
-    fi
-
-    watch -n 1 kubectl get pods $NAMESPACE -o wide
-}
-
-kexec() {
-    POD=$1
-    INPUT_INDEX=$2
-    INDEX="${INPUT_INDEX:-1}"
-    PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
-    PODNAME=`echo ${PODS} |awk '{print $2}'`
-    echo "Pod: ${PODNAME}"
-    echo
-    NS=`echo ${PODS} |awk '{print $1}'`
-    kubectl exec -it --namespace=${NS} ${PODNAME} /bin/sh
-}
-
-kdesc() {
-    POD=$1
-    INPUT_INDEX=$2
-    INDEX="${INPUT_INDEX:-1}"
-    PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
-    PODNAME=`echo ${PODS} |awk '{print $2}'`
-    echo "Pod: ${PODNAME}"
-    echo
-    NS=`echo ${PODS} |awk '{print $1}'`
-    kubectl describe pod --namespace=${NS} ${PODNAME}
-}
-export -f kdesc
-
-kns() {
-    INPUT=$1
-    if [ -z $1 ]; then
-      echo $NAMESPACE
-      return
-    fi
-    if [ $1 == "all" ]; then
-      export NAMESPACE="--all-namespaces"
-    else
-      export NAMESPACE="--namespace=$1"
-    fi
-
-    alias kctl='kubectl $NAMESPACE $*'
-}
-export -f kns
-
-alias ksvc='kubectl get services -o wide --all-namespaces'
-alias kpod='kubectl get pods -o wide --all-namespaces'
-alias kedp='kubectl get endpoints -o wide --all-namespaces'
-
-
 # Exports
 
 ## Go
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
+
+# Sources
+
+if kubectl > /dev/null 2>&1; then # GNU `ls`
+  source ~/.dotfiles/kubernetes
+fi
+

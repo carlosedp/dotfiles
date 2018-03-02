@@ -1,0 +1,80 @@
+## Kubernetes
+
+source <(kubectl completion bash)
+
+klog() {
+    POD=$1
+    INPUT_INDEX=$2
+    INDEX="${INPUT_INDEX:-1}"
+    PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
+    PODNAME=`echo ${PODS} |awk '{print $2}'`
+    echo "Pod: ${PODNAME}"
+    echo
+    NS=`echo ${PODS} |awk '{print $1}'`
+    kubectl logs -f --namespace=${NS} ${PODNAME}
+}
+
+wpod() {
+    NS=$@
+    NAMESPACE=${NS:-"--all-namespaces"}
+    if [ "$NAMESPACE" != "--all-namespaces" ]
+      then
+      NAMESPACE="-n ${NS}"
+    fi
+
+    watch -n 1 kubectl get pods $NAMESPACE -o wide
+}
+
+kexec() {
+    POD=$1
+    INPUT_INDEX=$2
+    INDEX="${INPUT_INDEX:-1}"
+    PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
+    PODNAME=`echo ${PODS} |awk '{print $2}'`
+    echo "Pod: ${PODNAME}"
+    echo
+    NS=`echo ${PODS} |awk '{print $1}'`
+    kubectl exec -it --namespace=${NS} ${PODNAME} /bin/sh
+}
+
+kdesc() {
+    POD=$1
+    INPUT_INDEX=$2
+    INDEX="${INPUT_INDEX:-1}"
+    PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
+    PODNAME=`echo ${PODS} |awk '{print $2}'`
+    echo "Pod: ${PODNAME}"
+    echo
+    NS=`echo ${PODS} |awk '{print $1}'`
+    kubectl describe pod --namespace=${NS} ${PODNAME}
+}
+export -f kdesc
+
+# Load kubectc and kubens completion
+source ~/.dotfiles/kubectx/completion/kubectx.bash
+source ~/.dotfiles/kubectx/completion/kubens.bash
+
+# Load kubernetes command prompt
+export KUBE_PS1_SYMBOL_ENABLE=false
+export KUBE_PS1_SEPARATOR=''
+source ~/.dotfiles/kube-ps1/kube-ps1.sh
+PS1="[\u@\h \W \$(kube_ps1)]\$ "
+
+alias ksvc='kubectl get services -o wide --all-namespaces'
+alias kpod='kubectl get pods -o wide --all-namespaces'
+alias kedp='kubectl get endpoints -o wide --all-namespaces'
+alias kns='~/.dotfiles/kubectx/kubens'
+alias kctx='~/.dotfiles/kubectx/kubectx'
+
+alias k=kubectl
+alias kd='kubectl delete'
+alias kc='kubectl create'
+alias kg='kubectl get all'
+alias kp='kubectl get pods'
+alias ks='kubectl get services'
+alias ke='kubectl get endpoints'
+
+alias wp='kubectl get pods --watch'
+
+
+
