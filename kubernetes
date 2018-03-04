@@ -70,11 +70,11 @@ alias k=kubectl
 alias kd='kubectl delete'
 alias kc='kubectl create'
 alias kg='kubectl get all'
-alias kp='kubectl get pods'
+alias kp='kubectl get pods -o wide'
 alias ks='kubectl get services'
 alias ke='kubectl get endpoints'
 
-alias wp='kubectl get pods --watch'
+alias wp='watch -n 1 kubectl get pods -o wide'
 
 
 

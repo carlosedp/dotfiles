@@ -1,5 +1,12 @@
 # Aliases
 
+# Easier navigation: .., ..., ...., ....., ~ and -
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+# Ls aliases
 alias ls='ls -hF -G --color' # classify files in colour
 alias ll='ls -ltr'   # long list
 alias la='ls -lA'    # all but . and ..
@@ -14,7 +21,7 @@ export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
-# Sources
+# Other Sources
 
 if kubectl > /dev/null 2>&1; then # GNU `ls`
   source ~/.dotfiles/kubernetes
