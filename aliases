@@ -14,16 +14,12 @@ alias l='ls -CF'
 alias top='top -c'
 alias screen='screen -RR'
 
+alias query_manifest='docker container run --rm mplatform/mquery $1'
+
 # Exports
 
 ## Go
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
-
-# Other Sources
-
-if kubectl > /dev/null 2>&1; then # GNU `ls`
-  source ~/.dotfiles/kubernetes
-fi
 

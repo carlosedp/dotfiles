@@ -4,14 +4,30 @@ source <(kubectl completion bash)
 
 klog() {
     POD=$1
-    INPUT_INDEX=$2
+    shift
+    while [[ $# -gt 0 ]]
+    do
+    key="$1"
+    case $key in
+      -i|--index)
+      INPUT_INDEX="$2"
+      shift # past argument
+      shift # past value
+      ;;
+      *)
+      CONTAINER_NAME="$1"
+      shift
+      ;;
+    esac
+    done
     INDEX="${INPUT_INDEX:-1}"
+    echo $INDEX
     PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
     PODNAME=`echo ${PODS} |awk '{print $2}'`
     echo "Pod: ${PODNAME}"
     echo
     NS=`echo ${PODS} |awk '{print $1}'`
-    kubectl logs -f --namespace=${NS} ${PODNAME}
+    kubectl logs -f --namespace=${NS} ${PODNAME} ${CONTAINER_NAME}
 }
 
 wpod() {
@@ -59,6 +75,9 @@ export KUBE_PS1_SYMBOL_ENABLE=false
 export KUBE_PS1_SEPARATOR=''
 source ~/.dotfiles/kube-ps1/kube-ps1.sh
 PS1="[\u@\h \W \$(kube_ps1)]\$ "
+#PS1="\[\033[01;32m\]\u@\h\[\033[00m\] \W $(kube_ps1)]\$ "
+
+PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \$(kube_ps1) \$\[\033[00m\] "
 
 alias ksvc='kubectl get services -o wide --all-namespaces'
 alias kpod='kubectl get pods -o wide --all-namespaces'
