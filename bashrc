@@ -121,3 +121,8 @@ if kubectl > /dev/null 2>&1; then
   source ~/.dotfiles/kubernetes
 fi
 
+# Load go PATH
+source ~/.dotfiles/go
+
+# Load additional PATH
+source ~/.dotfiles/path

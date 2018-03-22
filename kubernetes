@@ -21,7 +21,6 @@ klog() {
     esac
     done
     INDEX="${INPUT_INDEX:-1}"
-    echo $INDEX
     PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
     PODNAME=`echo ${PODS} |awk '{print $2}'`
     echo "Pod: ${PODNAME}"

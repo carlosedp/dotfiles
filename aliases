@@ -6,20 +6,23 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
+# Detect which `ls` flavor is in use
+if ls --color > /dev/null 2>&1; then # GNU `ls`
+  colorflag="--color"
+else # OS X `ls`
+  colorflag="-G"
+fi
+
 # Ls aliases
-alias ls='ls -hF -G --color' # classify files in colour
+alias ls='ls -hF ${colorflag}' # classify files in colour
 alias ll='ls -ltr'   # long list
 alias la='ls -lA'    # all but . and ..
 alias l='ls -CF'
+
 alias top='top -c'
 alias screen='screen -RR'
 
-alias query_manifest='docker container run --rm mplatform/mquery $1'
+alias grep='grep --color=auto '
 
-# Exports
-
-## Go
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
+alias sudo='sudo '
 
