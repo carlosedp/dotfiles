@@ -4,6 +4,7 @@ source <(kubectl completion bash)
 
 klog() {
     POD=$1
+    CONTAINER_NAME=""
     shift
     while [[ $# -gt 0 ]]
     do
