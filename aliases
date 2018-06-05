@@ -26,3 +26,4 @@ alias grep='grep --color=auto '
 
 alias sudo='sudo '
 
+alias gitchanges='find . -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo \"Repo: \"{} && cd {} && git status -s && echo)" \;'
