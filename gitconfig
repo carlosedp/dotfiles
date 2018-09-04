@@ -72,4 +72,4 @@
 	smudge = git lfs smudge %f
 	required = true
 [credential]
-	helper = cache --timeout=7200
+	helper = osxkeychain

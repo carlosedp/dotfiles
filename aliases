@@ -19,6 +19,40 @@ alias ll='ls -ltr'   # long list
 alias la='ls -lA'    # all but . and ..
 alias l='ls -CF'
 
+# Interactive operation...
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+
+# Default to human readable figures
+alias df='df -h'
+alias du='du -h'
+
+# Misc :)
+alias less='less -r'                          # raw control characters
+alias whence='type -a'                        # where, of a sort
+alias grep='grep --color'                     # show differences in colour
+
+# Some shortcuts for different directory listings
+alias ls='ls -hF -G'          # classify files in colour
+alias ll='ls -ltr'            # long list
+alias la='ls -lA'             # all but . and ..
+alias l='ls -CF'              #
+
+alias screen='screen -R'
+
+# Quicklook file
+alias ql='qlmanage -p "$@" >& /dev/null'
+
+alias sniffapp="lsof -i 4tcp"
+#------------------------------------------////
+# Only for Mac OSX
+#------------------------------------------////
+alias brewupd='brew update && brew list | xargs brew install'
+
 alias top='top -c'
 alias screen='screen -RR'
 
