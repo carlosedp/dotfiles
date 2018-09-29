@@ -52,7 +52,8 @@ brew install \
     ack \
     markdown \
     zsh \
-    node \
+    sshuttle \
+    htop
 
 
 # Cleanup old installs
@@ -73,28 +74,24 @@ echo "Install oh-my-zsh"
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 
 # Configure Sublimetext
-echo "Configuring Sublimetext..."
-mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Packages
-wget https://packagecontrol.io/Package%20Control.sublime-package ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages
-ln -sf ~/Dropbox/Configs/sublime/User ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
-sudo cp subl /usr/local/bin
-sleep 2
+#echo "Configuring Sublimetext..."
+#mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Packages
+#wget https://packagecontrol.io/Package%20Control.sublime-package ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages
+#ln -sf ~/Dropbox/Configs/sublime/User ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
+#sudo cp subl /usr/local/bin
+#sleep 2
 
 # Configure Unison
-echo "Configuring Unison..."
-mkdir -p /Users/carlosedp/Library/Application\ Support/Unison
-ln -sf  ~/Dropbox/Configs/unison/*.prf* /Users/carlosedp/Library/Application\ Support/Unison
-sleep 2
+#echo "Configuring Unison..."
+#mkdir -p /Users/carlosedp/Library/Application\ Support/Unison
+#ln -sf  ~/Dropbox/Configs/unison/*.prf* /Users/carlosedp/Library/Application\ Support/Unison
+#sleep 2
 
 # Setup dotfiles
 sh $DOTFILES/set_links.sh
 
 # Setup OsX defaults
 sh $DOTFILES/osx_prefs.sh
-
-# Create symlinks
-ln -sf ~/Dropbox/Dev ~/dev
-mkdir ~/projects
 
 # Install Python Env
 if [ $PYTHON -eq 1 ];

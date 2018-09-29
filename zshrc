@@ -25,7 +25,7 @@ zstyle -e :urlglobber url-other-schema '[[ $__remote_commands[(i)$words[1]] -le 
 
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx colored-man colorize pip python brew extract zsh-syntax-highlighting vi-mode)
+plugins=(git osx colored-man colorize pip python brew extract zsh-syntax-highlighting vi-mode history-substring-search)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -100,6 +100,10 @@ export MANPATH="/usr/local/man:$MANPATH"
 if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
+
+# Key binds
+bindkey "^[[A" history-substring-search-up
+bindkey "^[[B" history-substring-search-down
 
 # Kubernetes
 if kubectl > /dev/null 2>&1; then
