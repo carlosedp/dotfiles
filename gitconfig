@@ -18,8 +18,8 @@
 	autosetuprebase = always
 
 [merge]
-    summary = true
-	tool = p4merge
+  summary = true
+	tool = kdiff3
 
 [alias]
     st = status --ignore-submodules=dirty
@@ -55,8 +55,6 @@
 [mergetool]
 	keepBackup = false
 	prompt = false
-[mergetool "p4merge"]
-	path = /Users/carlosedp/Dev/tools/p4merge
 [push]
 	default = matching
 [filter "media"]
@@ -73,3 +71,11 @@
 	required = true
 [credential]
 	helper = osxkeychain
+[mergetool "kdiff3"]
+	path = kdiff3
+	trustExitCode = false
+[diff]
+	guitool = kdiff3
+[difftool "kdiff3"]
+	path = kdiff3
+	trustExitCode = false
