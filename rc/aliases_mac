@@ -7,7 +7,7 @@ alias sniffapp="lsof -i 4tcp"
 #------------------------------------------////
 alias ping='prettyping'
 alias cat='bat'
-alias brewupd='brew update && brew list | xargs brew install'
+alias brewupd='brew update && brew upgrade && brew cask upgrade'
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
