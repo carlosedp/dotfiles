@@ -1,3 +1,6 @@
+:set term=xterm-256color
+:filetype plugin indent on
+:syntax on
 :set backspace=2
 :set nocompatible
 :set expandtab
