@@ -1,11 +1,9 @@
 echo "Setting dotfiles on ~/"
 echo `pwd`
 
-for FILE in aliases bashrc erlang gitconfig gitignore inputrc screenrc vimrc config profile zshrc
+for FILE in `pwd`/rc/*
 do
-    ln -sf `pwd`/$FILE ~/.$FILE
+    ln -sf $FILE ~/.$(basename $FILE)
 done
 
 ln -sf ~/Google\ Drive/Configs/ssh ~/.ssh
-
-chsh -s /bin/zsh

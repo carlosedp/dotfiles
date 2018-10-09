@@ -53,8 +53,14 @@ brew install \
     markdown \
     zsh \
     sshuttle \
-    htop
+    htop \
+    zsh-completions \
+    jq \
+    bat \
+    prettyping \
 
+
+chsh -s /bin/zsh
 
 # Cleanup old installs
 brew cleanup

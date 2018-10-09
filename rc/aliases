@@ -42,16 +42,7 @@ alias ll='ls -ltr'            # long list
 alias la='ls -lA'             # all but . and ..
 alias l='ls -CF'              #
 
-alias screen='screen -R'
-
-# Quicklook file
-alias ql='qlmanage -p "$@" >& /dev/null'
-
-alias sniffapp="lsof -i 4tcp"
-#------------------------------------------////
-# Only for Mac OSX
-#------------------------------------------////
-alias brewupd='brew update && brew list | xargs brew install'
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 alias top='top -c'
 alias screen='screen -RR'
