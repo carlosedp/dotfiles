@@ -21,7 +21,7 @@ zstyle -e :urlglobber url-other-schema '[[ $__remote_commands[(i)$words[1]] -le 
 
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx colored-man colorize pip python brew extract zsh-syntax-highlighting vi-mode history-substring-search autojump sudo vscode)
+plugins=(git osx colored-man colorize pip python brew extract zsh-syntax-highlighting vi-mode history-substring-search autojump sudo vscode zsh-iterm-touchbar)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -47,9 +47,9 @@ COMPLETION_WAITING_DOTS="true"
 # ${smiley}  %{$reset_color%}'
 
 # Set iTerm2 prompt on Touch Bar
-IT2PROMPT='$(~/.iterm2/it2setkeylabel set status "$(test -d .git && (echo "Git::$(basename `git rev-parse --show-toplevel`):$(git rev-parse --abbrev-ref HEAD)") || (echo -n "Not a repo"))")'
+#IT2PROMPT='$(~/.iterm2/it2setkeylabel set status "$(test -d .git && (echo "Git::$(basename `git rev-parse --show-toplevel`):$(git rev-parse --abbrev-ref HEAD)") || (echo -n "Not a repo"))")'
 
-PROMPT=$IT2PROMPT$PROMPT
+#PROMPT=$IT2PROMPT$PROMPT
 
 # zmv
 autoload -U zmv
