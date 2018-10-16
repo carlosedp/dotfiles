@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Configure which dev tools should be installed. Set var to "1" to enable
-PYTHON=0
-NODEJS=0
-RUBY=0
-ERL=0
-
 DOTFILES=~/.dotfiles
 
 # Ask admin pwd
@@ -59,7 +53,6 @@ brew install \
     bat \
     prettyping \
 
-
 chsh -s /bin/zsh
 
 # Cleanup old installs
@@ -76,74 +69,17 @@ sudo cp com.noatime.plist /Library/LaunchDaemons/com.noatime.plist
 sudo chown root:wheel /Library/LaunchDaemons/com.noatime.plist
 sudo chmod 644 /Library/LaunchDaemons/com.noatime.plist
 
+echo "Get dotfiles"
+git clone https://github.com/carlosedp/dotfiles.git $DOTFILES
+
 echo "Install oh-my-zsh"
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 
-# Configure Sublimetext
-#echo "Configuring Sublimetext..."
-#mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Packages
-#wget https://packagecontrol.io/Package%20Control.sublime-package ~/Library/Application\ Support/Sublime\ Text\ 3/Installed\ Packages
-#ln -sf ~/Dropbox/Configs/sublime/User ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
-#sudo cp subl /usr/local/bin
-#sleep 2
-
-# Configure Unison
-#echo "Configuring Unison..."
-#mkdir -p /Users/carlosedp/Library/Application\ Support/Unison
-#ln -sf  ~/Dropbox/Configs/unison/*.prf* /Users/carlosedp/Library/Application\ Support/Unison
-#sleep 2
+echo "Install zsh plugins"
+git clone https://github.com/carlosedp/zsh-iterm-touchbar.git ~/.oh-my-zsh/custom/plugins/zsh-iterm-touchbar
 
 # Setup dotfiles
 sh $DOTFILES/set_links.sh
 
 # Setup OsX defaults
 sh $DOTFILES/osx_prefs.sh
-
-# Install Python Env
-if [ $PYTHON -eq 1 ];
-then
-    echo "Install python.org package"
-    mkdir .pythontemp
-    mkdir -p $HOME/sandbox/virtualenvs
-    cd .pythontemp
-    curl -O http://python-distribute.org/distribute_setup.py
-    sudo python distribute_setup.py
-    sudo easy_install pip
-    sudo pip install virtualenv
-    sudo pip install virtualenvwrapper
-    echo "Create new virtual envs using 'mkvirtualenv [NAME]'"
-    echo "Add 'export WORKON_HOME=$HOME/sandbox/virtualenvs' to .bashrc"
-    echo "Add 'source /Library/Frameworks/Python.framework/Versions/2.7/bin/virtualenvwrapper_bashrc' to .bashrc"
-    cd ..
-    rm -rf .pythontemp
-fi
-
-# Install Node.js Env
-if [ $NODEJS -eq 1 ];
-then
-    git clone git://github.com/creationix/nvm.git ~/.nvm
-    . ~/.nvm/nvm.sh
-    nvm install stable
-    nvm alias default stable
-    nvm use stable
-    npm install -g supervisor jsctags
-fi
-
-# Install Ruby Env
-if [ $RUBY -eq 1 ];
-then
-    bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
-    source ~/.rvm/scripts/rvm
-    rvm install 1.9.3
-    rvm --default use 1.9.3
-    rvm use 1.9.3
-    # Install web dev apps
-    #echo "Installing compass for sass"
-    #sudo gem update --system
-    #gem install rb-fsevent
-    #gem install compass
-fi
-
-
-
-
