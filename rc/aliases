@@ -36,12 +36,6 @@ alias less='less -r'                          # raw control characters
 alias whence='type -a'                        # where, of a sort
 alias grep='grep --color'                     # show differences in colour
 
-# Some shortcuts for different directory listings
-alias ls='ls -hF -G'          # classify files in colour
-alias ll='ls -ltr'            # long list
-alias la='ls -lA'             # all but . and ..
-alias l='ls -CF'              #
-
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 alias top='top -c'
