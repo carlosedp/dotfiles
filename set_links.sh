@@ -6,4 +6,4 @@ do
     ln -sf $FILE ~/.$(basename $FILE)
 done
 
-ln -sf ~/Google\ Drive/Configs/ssh ~/.ssh
+ln -sf ~/Google\ Drive/SSH_Keys ~/.ssh
