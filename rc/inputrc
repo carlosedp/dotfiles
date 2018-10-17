@@ -20,3 +20,15 @@ set completion-query-items 200
 
 # Show extra file information when completing, like `ls -F` does
 set visible-stats on
+
+# Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# Use Alt/Meta + Delete to delete the preceding word
+"\e[3;3~": kill-word
+
+## enable Alt-arrows
+"\e[1;5D": backward-word ### Alt left
+"\e[1;5C": forward-word ### Alt right

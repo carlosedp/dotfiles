@@ -1,40 +1,79 @@
 [user]
-	name = CarlosEDP
-	email = me@carlosedp.com
+  name = CarlosEDP
+  email = me@carlosedp.com
 
 [github]
-	user = carlosedp
-	token = 25e87ba20baee941e5b10d78b4ec11cd
+  user = carlosedp
+  token = 25e87ba20baee941e5b10d78b4ec11cd
 
 [color]
-    status = auto
-    diff = auto
-    branch = auto
     ui = auto
     grep = auto
     interactive = auto
+[color "status"]
+
+  added = yellow
+  changed = green
+  untracked = cyan
+[color "branch"]
+
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "diff"]
+
+  meta = yellow bold
+  frag = magenta bold # line info
+  old = red # deletions
+  new = green # additions
+
 [branch]
-	autosetupmerge = always
-	autosetuprebase = always
+  autosetupmerge = always
+  autosetuprebase = always
 
 [merge]
   summary = true
-	tool = kdiff3
+  tool = kdiff3
 
 [alias]
-    st = status --ignore-submodules=dirty
-    df = diff --ignore-submodules=dirty
-    co = checkout
-    ci = commit
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  # View abbreviated SHA, description, and history graph of the latest 20 commits
+  l = log --pretty=oneline -n 20 --graph --abbrev-commit
+
+  # Show the diff between the latest commit and the current state
+  d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+  # `git di $number` shows the diff between the state `$number` revisions ago and the current state
+  di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+
+  # Checkout a pull request from origin (of a github repository)
+  pr = !"pr() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; pr"
+
+  # Clone a repository including all submodules
+  c = clone --recursive
+
+  # Commit all changes
+  ca = !git add -A && git commit -av
+
+  # Amend the currently staged files to the latest commit
+  amend = commit --amend --reuse-message=HEAD
+
+  lg = log --color --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an (%G?)>%Creset' --abbrev-commit
+
+  s = status -s  
+  st = status --ignore-submodules=dirty
+  df = diff --ignore-submodules=dirty
+  co = checkout
+  ci = commit
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
 [core]
-    legacyheaders = false
-    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
-    excludesfile = ~/.gitignore
-	autocrlf = input
-    pager = less -S
-	editor = vim
+  legacyheaders = false
+  whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+  excludesfile = ~/.gitignore
+  autocrlf = input
+  pager = less -S
+  editor = vim
 
 [apply]
     whitespace = fix
@@ -44,38 +83,53 @@
     autoupdate = true
 
 [branch "master"]
-	remote = origin
-	merge = refs/heads/master
+  remote = origin
+  merge = refs/heads/master
 
 [submodule "*"]
-	ignore = dirty
+  ignore = dirty
+
 [mergetool "diffmerge"]
-	cmd = diffmerge --merge\n--result=$MERGED $LOCAL $BASE $REMOTE
-	trustExitCode = true
+  cmd = diffmerge --merge\n--result=$MERGED $LOCAL $BASE $REMOTE
+  trustExitCode = true
+
 [mergetool]
-	keepBackup = false
-	prompt = false
+  keepBackup = false
+  prompt = false
+
 [push]
-	default = matching
+  default = matching
+
 [filter "media"]
-	required = true
-	clean = git media clean %f
-	smudge = git media smudge %f
+  required = true
+  clean = git media clean %f
+  smudge = git media smudge %f
+
 [filter "hawser"]
-	clean = git hawser clean %f
-	smudge = git hawser smudge %f
-	required = true
+  clean = git hawser clean %f
+  smudge = git hawser smudge %f
+  required = true
+
 [filter "lfs"]
-	clean = git lfs clean %f
-	smudge = git lfs smudge %f
-	required = true
+  clean = git lfs clean %f
+  smudge = git lfs smudge %f
+  required = true
+
 [credential]
-	helper = osxkeychain
+  helper = osxkeychain
+
 [mergetool "kdiff3"]
-	path = kdiff3
-	trustExitCode = false
+  path = kdiff3
+  trustExitCode = false
+
 [diff]
-	guitool = kdiff3
+  guitool = kdiff3
+  renames = copies
+
 [difftool "kdiff3"]
-	path = kdiff3
-	trustExitCode = false
+  path = kdiff3
+  trustExitCode = false
+
+[help]
+  # Automatically correct and execute mistyped commands
+  autocorrect = 1

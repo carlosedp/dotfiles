@@ -1,0 +1,13 @@
+.#*
+\#*
+*~
+/*.plt
+/.rebar/
+/.eunit/
+/ebin/
+/priv/bin/eper
+/doc/*.html
+/doc/*.css
+/doc/*.png
+/doc/edoc-info
+*beam

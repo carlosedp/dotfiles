@@ -17,6 +17,7 @@ fi
 alias ls='ls -hF ${colorflag}' # classify files in colour
 alias ll='ls -ltr'   # long list
 alias la='ls -lA'    # all but . and ..
+alias lsd="ls -lhF ${colorflag} | grep --color=never '^d'"
 alias l='ls -CF'
 
 # Interactive operation...
@@ -34,7 +35,9 @@ alias du='du -h'
 # Misc :)
 alias less='less -r'                          # raw control characters
 alias whence='type -a'                        # where, of a sort
-alias grep='grep --color'                     # show differences in colour
+
+# Flush Directory Service cache
+alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
 
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
@@ -46,3 +49,4 @@ alias grep='grep --color=auto '
 alias sudo='sudo '
 
 alias gitchanges='find . -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo \"Repo: \"{} && cd {} && git status -s && echo)" \;'
+alias gs='git s'
