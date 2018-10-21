@@ -1,4 +1,4 @@
-#!/bin/bash
+
 
 DOTFILES=~/.dotfiles
 
@@ -42,7 +42,6 @@ echo "==================================="
 brew install \
     git \
     wget \
-    ctags \
     ack \
     markdown \
     zsh \
@@ -52,6 +51,8 @@ brew install \
     jq \
     bat \
     prettyping \
+    autojump \
+    tree
 
 chsh -s /bin/zsh
 
