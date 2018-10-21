@@ -56,7 +56,7 @@
   ca = !git add -A && git commit -av
 
   # Commit and push all
-  cp = !git add -A && git commit -av && git push
+  cap = !git add -A && git commit -av && git push
 
   # Amend the currently staged files to the latest commit
   amend = commit --amend --reuse-message=HEAD
