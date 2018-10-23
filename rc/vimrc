@@ -1,5 +1,5 @@
 :set term=xterm-256color
-:filetype plugin indent on
+":filetype plugin indent on
 :syntax on
 :set cursorline
 :set backspace=2
