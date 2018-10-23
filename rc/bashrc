@@ -125,4 +125,4 @@ source ~/.dotfiles/go
 source ~/.dotfiles/path
 
 # Load additional exports
-source ~/.dotfiles/exports
+source ~/.exports
