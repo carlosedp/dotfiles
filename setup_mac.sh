@@ -76,11 +76,35 @@ git clone https://github.com/carlosedp/dotfiles.git $DOTFILES
 echo "Install oh-my-zsh"
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 
-echo "Install zsh plugins"
-git clone https://github.com/carlosedp/zsh-iterm-touchbar.git ~/.oh-my-zsh/custom/plugins/zsh-iterm-touchbar
-
 # Setup dotfiles
 sh $DOTFILES/set_links.sh
 
 # Setup OsX defaults
 sh $DOTFILES/osx_prefs.sh
+
+# Brew and additional commands
+brew cask
+brew tap buo/cask-upgrade
+brew install mas
+brew tap beeftornado/rmtree
+
+# Zsh plugins
+git clone https://github.com/carlosedp/zsh-iterm-touchbar.git "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar"
+git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+# Editor and Terminal
+brew cask install iterm2
+brew cask install visual-studio-code
+brew tap homebrew/cask-fonts
+brew cask install font-fira-code
+brew cask instal kdiff3
+brew cask install open-in-code
+
+# Markdown extensions
+brew cask install qlmarkdown
+brew cask install qlcolorcode
+
+# Quicklook extensions
+brew cask install quicklook-json
+brew cask install qlstephen
