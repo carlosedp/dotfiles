@@ -66,9 +66,9 @@ sleep 3
 #sudo gem install lunchy
 
 # Mount / drive with noatime
-sudo cp com.noatime.plist /Library/LaunchDaemons/com.noatime.plist
-sudo chown root:wheel /Library/LaunchDaemons/com.noatime.plist
-sudo chmod 644 /Library/LaunchDaemons/com.noatime.plist
+#sudo cp com.noatime.plist /Library/LaunchDaemons/com.noatime.plist
+#sudo chown root:wheel /Library/LaunchDaemons/com.noatime.plist
+#sudo chmod 644 /Library/LaunchDaemons/com.noatime.plist
 
 echo "Get dotfiles"
 git clone https://github.com/carlosedp/dotfiles.git $DOTFILES
@@ -108,3 +108,6 @@ brew cask install qlcolorcode
 # Quicklook extensions
 brew cask install quicklook-json
 brew cask install qlstephen
+
+# Add TouchID authentication to Sudo
+echo -e "auth       sufficient     pam_tid.so\n$(cat /etc/pam.d/sudo)" |sudo tee /etc/pam.d/sudo
