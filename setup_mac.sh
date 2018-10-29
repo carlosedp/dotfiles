@@ -110,4 +110,7 @@ brew cask install quicklook-json
 brew cask install qlstephen
 
 # Add TouchID authentication to Sudo
-echo -e "auth       sufficient     pam_tid.so\n$(cat /etc/pam.d/sudo)" |sudo tee /etc/pam.d/sudo
+if [[ ! `grep "pam_tid.so" /etc/pam.d/sudo` ]];
+then
+echo -e "auth       sufficient     pam_tid.so\n$(cat /etc/pam.d/sudo)" |sudo tee /etc/pam.d/sudo;
+fi
