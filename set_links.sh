@@ -31,15 +31,17 @@ done
 # Link SSH keys
 ln -sf "$sync_folder/SSH_Keys" ~/.ssh
 
-# Link settings from ~/Library/Containers
-for X in $container_settings
-do
-  create_link "$sync_folder/Configs/$X" "$HOME/Library/Containers/$X"
-done
+if [ $(uname) == "Darwin" ]; then
+  # Link settings from ~/Library/Containers
+  for X in $container_settings
+  do
+    create_link "$sync_folder/Configs/$X" "$HOME/Library/Containers/$X"
+  done
 
-# Link settings from ~/Library/Application Support
-for X in $application_support_settings
-do
-  create_link "$sync_folder/Configs/$X" "$HOME/Library/Application Support/$X"
-done
+  # Link settings from ~/Library/Application Support
+  for X in $application_support_settings
+  do
+    create_link "$sync_folder/Configs/$X" "$HOME/Library/Application Support/$X"
+  done
+fi
 
