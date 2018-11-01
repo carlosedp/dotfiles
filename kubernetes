@@ -1,7 +1,5 @@
 ## Kubernetes
 
-source <(kubectl completion bash)
-
 klog() {
     POD=$1
     CONTAINER_NAME=""
@@ -64,20 +62,27 @@ kdesc() {
     NS=`echo ${PODS} |awk '{print $1}'`
     kubectl describe pod --namespace=${NS} ${PODNAME}
 }
-export -f kdesc
+#export -f kdesc
 
 # Load kubectc and kubens completion
-source ~/.dotfiles/kubectx/completion/kubectx.bash
-source ~/.dotfiles/kubectx/completion/kubens.bash
+if [[ `echo $0` == '-bash' ]]; then
+  source <(kubectl completion bash)
+  source ~/.dotfiles/kubectx/completion/kubectx.bash
+  source ~/.dotfiles/kubectx/completion/kubens.bash
+elif [[ `echo $0` == '-zsh' ]]; then
+  source <(kubectl completion zsh)
+  source ~/.dotfiles/kubectx/completion/kubectx.zsh
+  source ~/.dotfiles/kubectx/completion/kubens.zsh
+fi
 
 # Load kubernetes command prompt
-export KUBE_PS1_SYMBOL_ENABLE=false
-export KUBE_PS1_SEPARATOR=''
-source ~/.dotfiles/kube-ps1/kube-ps1.sh
-PS1="[\u@\h \W \$(kube_ps1)]\$ "
-#PS1="\[\033[01;32m\]\u@\h\[\033[00m\] \W $(kube_ps1)]\$ "
+#export KUBE_PS1_SYMBOL_ENABLE=false
+#export KUBE_PS1_SEPARATOR=''
+#source ~/.dotfiles/kube-ps1/kube-ps1.sh
+#PS1="[\u@\h \W \$(kube_ps1)]\$ "
+##PS1="\[\033[01;32m\]\u@\h\[\033[00m\] \W $(kube_ps1)]\$ "
 
-PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \$(kube_ps1) \$\[\033[00m\] "
+#PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \$(kube_ps1) \$\[\033[00m\] "
 
 alias ksvc='kubectl get services -o wide --all-namespaces'
 alias kpod='kubectl get pods -o wide --all-namespaces'
