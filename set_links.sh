@@ -6,7 +6,7 @@ echo `pwd`
 # Settings
 sync_folder="$HOME/Google\ Drive"
 container_settings='com.termius.mac'
-application_support_settings='iTerm2 Franz'
+application_support_settings='iTerm2'
 
 
 create_link() {
@@ -43,5 +43,10 @@ if [ $(uname) == "Darwin" ]; then
   do
     create_link "$sync_folder/Configs/$X" "$HOME/Library/Application Support/$X"
   done
-fi
 
+  # Link preferences from ~/Library/Preferences
+  for X in $sync_folder/Preferences/*
+  do
+    echo create_link "$X" "$HOME/Library/Preferences/$(basename $X)"
+  done
+fi

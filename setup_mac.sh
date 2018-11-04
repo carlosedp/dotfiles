@@ -30,9 +30,8 @@ if [[ ! `which brew` ]]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 else
     echo "Homebrew is installed, will update"
+    brew update
 fi
-echo "Update homebrew packages"
-brew update
 sleep 3
 
 echo "Install the rest of important brews"
@@ -91,6 +90,7 @@ brew tap beeftornado/rmtree
 # Zsh plugins
 git clone https://github.com/carlosedp/zsh-iterm-touchbar.git "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar"
 git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
+ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 # Editor and Terminal
