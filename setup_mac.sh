@@ -51,7 +51,8 @@ brew install \
     bat \
     prettyping \
     autojump \
-    tree
+    tree \
+    hub
 
 chsh -s /bin/zsh
 

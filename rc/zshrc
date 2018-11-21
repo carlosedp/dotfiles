@@ -109,22 +109,28 @@ if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
 
-# Load Mac aliases
+# Load Mac aliases and integrations
 if [ `uname -s` = 'Darwin' ]; then
-    . ~/.aliases_mac
+    source ~/.aliases_mac
+    source ~/.iterm2_shell_integration.zsh
 fi
 
 # Key binds
 bindkey "^[[A" history-substring-search-up
 bindkey "^[[B" history-substring-search-down
 
-# Kubernetes
-if kubectl > /dev/null 2>&1; then
-  source ~/.dotfiles/kubernetes
-fi
-
 # Load go PATH
 source ~/.dotfiles/go
 
 # Load additional PATH
 source ~/.dotfiles/path
+
+# Kubernetes
+if [ -x "$(command -v kubectl)" ] > /dev/null 2>&1; then
+  source ~/.dotfiles/kubernetes
+fi
+
+# Load hub (https://github.com/github/hub)
+if [ -x "$(command -v hub)" ]; then
+  eval "$(hub alias -s)"
+fi
