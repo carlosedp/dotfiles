@@ -1,18 +1,7 @@
 # Additional Mac Apps
 
-brew cask
-brew tap buo/cask-upgrade
-
 brew install mas
 mas signin
-
-brew tap beeftornado/rmtree
-
-# Zsh plugins
-git clone https://github.com/carlosedp/zsh-iterm-touchbar.git "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar"
-git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-
 
 brew cask install google-chrome
 brew cask install google-backup-and-sync
@@ -30,18 +19,8 @@ brew cask install middleclick
 brew cask install nightowl
 brew cask install touchswitcher
 brew cask install vanilla
-brew cask install open-in-code
 brew cask install go2shell
 
-# Markdown extensions
-brew cask install qlmarkdown
-brew cask install qlcolorcode
-
-# Quicklook extensions
-brew cask install quicklook-json
-brew cask install qlstephen
-
-brew cask install iterm2
 brew cask install forklift
 brew cask install appcleaner
 brew cask install spectacle
@@ -57,12 +36,6 @@ brew cask install grandperspective
 brew cask install virtualbox
 brew cask install franz
 brew install asciinema
-
-# Editor
-brew cask install visual-studio-code
-brew tap homebrew/cask-fonts
-brew cask install font-fira-code
-brew cask instal kdiff3
 
 # Amphetamine
 mas install 937984704

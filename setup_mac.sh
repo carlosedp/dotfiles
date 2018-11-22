@@ -85,7 +85,6 @@ sh $DOTFILES/osx_prefs.sh
 # Brew and additional commands
 brew cask
 brew tap buo/cask-upgrade
-brew install mas
 brew tap beeftornado/rmtree
 
 # Zsh plugins

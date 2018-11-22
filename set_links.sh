@@ -5,7 +5,11 @@ echo `pwd`
 
 # Settings
 sync_folder="$HOME/Google\ Drive"
+
+# List of settings to be syncd between computers. Separated by spaces.
+# Settings from $HOME/Library/Containers
 container_settings='com.termius.mac'
+# Settings from $HOME/Library/Application Support
 application_support_settings='iTerm2'
 
 
