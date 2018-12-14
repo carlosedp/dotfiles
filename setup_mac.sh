@@ -52,7 +52,8 @@ brew install \
     prettyping \
     autojump \
     tree \
-    hub
+    hub \
+    youtube-dl
 
 chsh -s /bin/zsh
 
@@ -86,6 +87,10 @@ sh $DOTFILES/osx_prefs.sh
 brew cask
 brew tap buo/cask-upgrade
 brew tap beeftornado/rmtree
+
+# Kubernetes Kail (log tail)
+brew tap boz/repo
+brew install boz/repo/kail
 
 # Zsh plugins
 git clone https://github.com/carlosedp/zsh-iterm-touchbar.git "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar"

@@ -6,7 +6,7 @@ alias sniffapp="lsof -i 4tcp"
 # Only for Mac OSX
 #------------------------------------------////
 alias ping='prettyping'
-alias cat='bat'
+alias cat='bat -p'
 alias brewupd='brew update && brew upgrade && brew cask upgrade'
 
 # Recursively delete `.DS_Store` files
