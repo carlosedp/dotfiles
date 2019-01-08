@@ -92,6 +92,10 @@ brew tap beeftornado/rmtree
 brew tap boz/repo
 brew install boz/repo/kail
 
+# Dive, container image inspection tool
+brew tap wagoodman/dive
+brew install dive
+
 # Zsh plugins
 git clone https://github.com/carlosedp/zsh-iterm-touchbar.git "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar"
 git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
@@ -105,6 +109,10 @@ brew tap homebrew/cask-fonts
 brew cask install font-fira-code
 brew cask instal kdiff3
 brew cask install open-in-code
+
+# Ansible and sshpass
+brew install ansible
+brew install hudochenkov/sshpass/sshpass
 
 # Markdown extensions
 brew cask install qlmarkdown

@@ -53,11 +53,11 @@
   c = clone --recursive
 
   # Commit all changes
-  ca = !git add -A && git commit -av
+  ac = !git add -A && git commit -av
 
   # Commit and push all
   #cap = !git add -A && git commit -av && git push
-  cap = "!f() { git add -A; if [ ! -z \"$1\" ]; then git commit -av -m \"$1\"; else git commit -av; fi; git push; }; f"
+  acp = "!f() { git add -A; if [ ! -z \"$1\" ]; then git commit -av -m \"$1\"; else git commit -av; fi; git push; }; f"
 
   # Amend the currently staged files to the latest commit
   amend = commit --amend --reuse-message=HEAD

@@ -1,5 +1,5 @@
 # Quicklook file
-alias ql='qlmanage -p "$@" >& /dev/null'
+alias ql='qlmanage -p "$@" >& /dev/null &'
 
 alias sniffapp="lsof -i 4tcp"
 #------------------------------------------////
@@ -16,3 +16,5 @@ alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 # Also, clear Apple’s System Logs to improve shell startup speed
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
 
+# Decode base64 string from the clipboard
+alias clipdecode="pbpaste|base64 --decode"

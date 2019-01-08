@@ -12,7 +12,6 @@ container_settings='com.termius.mac'
 # Settings from $HOME/Library/Application Support
 application_support_settings='iTerm2'
 
-
 create_link() {
   origin=$1
   dest=$2
@@ -49,8 +48,8 @@ if [ $(uname) == "Darwin" ]; then
   done
 
   # Link preferences from ~/Library/Preferences
-  for X in $sync_folder/Preferences/*
-  do
-    echo create_link "$X" "$HOME/Library/Preferences/$(basename $X)"
-  done
+  #for X in $sync_folder/Preferences/*
+  #do
+  #  echo create_link "$X" "$HOME/Library/Preferences/$(basename $X)"
+  #done
 fi

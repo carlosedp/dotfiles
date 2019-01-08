@@ -1,0 +1,7 @@
+log:
+  enabled: false
+  path: ./dive.log
+  level: info
+filetree:
+  # The default directory-collapse state
+  collapse-dir: true
