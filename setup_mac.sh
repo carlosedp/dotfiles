@@ -1,6 +1,6 @@
+#!/bin/bash
 
-
-DOTFILES=~/.dotfiles
+DOTFILES=$HOME/.dotfiles
 
 # Ask admin pwd
 sudo -v
@@ -18,10 +18,10 @@ if [[ ! `which gcc` ]]; then
     echo "Xcode/Dev Tools not installed. Install and rerun this script."
     return 1
 else
-    echo "Dev Tools detected, installation will proceed in 4 seconds"
+    echo "Dev Tools detected, installation will proceed in 2 seconds"
 fi
 echo ""
-sleep 4
+sleep 2
 
 # Test if homebrew is installed
 echo "Testing if you have Homebrew already installed"
@@ -37,16 +37,14 @@ sleep 3
 echo "Install the rest of important brews"
 echo "==================================="
 # Install basic apps (git, wget, etc)
-
+HOMEBREW_NO_AUTO_UPDATE=1
 brew install \
     git \
     wget \
     ack \
     markdown \
-    zsh \
     sshuttle \
     htop \
-    zsh-completions \
     jq \
     bat \
     prettyping \
@@ -55,9 +53,9 @@ brew install \
     hub \
     youtube-dl
 
-chsh -s /bin/zsh
-
 # Cleanup old installs
+brew update
+brew upgrade
 brew cleanup
 echo ""
 echo "done ... Installing extra brews"
@@ -72,23 +70,41 @@ sleep 3
 #sudo chmod 644 /Library/LaunchDaemons/com.noatime.plist
 
 echo "Get dotfiles"
-git clone https://github.com/carlosedp/dotfiles.git $DOTFILES
+if [[ ! -d "$DOTFILES" ]]; then
+    git clone https://github.com/carlosedp/dotfiles.git $DOTFILES
+else
+    echo "You already have the dotfiles, updating..."
+    pushd $DOTFILES; git pull; popd
+fi
 
 echo "Install oh-my-zsh"
-curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+    curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+else
+    echo "You already have the oh-my-zsh, updating..."
+    pushd $HOME/.oh-my-zsh; git pull; popd
+fi
 
 # Setup dotfiles
-sh $DOTFILES/set_links.sh
+bash -c $DOTFILES/set_links.sh
 
 # Setup OsX defaults
-sh $DOTFILES/osx_prefs.sh
+bash -c $DOTFILES/osx_prefs.sh
 
 # Brew and additional commands
-brew cask
 brew tap buo/cask-upgrade
 brew tap beeftornado/rmtree
 
-# Kubernetes Kail (log tail)
+# Macbook pro key repeats fix
+brew cask install unshaky
+
+# My taps
+brew tap carlosedp/tap
+brew install sshoot
+
+# Docker and Kubernetes packages
+brew install kubernetes-cli docker-completion
+#Kail (log tail)
 brew tap boz/repo
 brew install boz/repo/kail
 
@@ -97,12 +113,29 @@ brew tap wagoodman/dive
 brew install dive
 
 # Zsh plugins
-git clone https://github.com/carlosedp/zsh-iterm-touchbar.git "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar"
-git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
-ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
+echo "Installing spaceship prompt..."
+if [[ ! -d "$ZSH_CUSTOM/themes/spaceship-prompt" ]]; then
+    git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
+    ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+else
+    echo "You already have spaceship, updating..."
+    pushd $ZSH_CUSTOM/themes/spaceship-prompt; git pull; popd
+fi
+echo "Installing zsh-iterm-touchbar plugin..."
+if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar" ]]; then
+    git clone https://github.com/carlosedp/zsh-iterm-touchbar.git "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar"
+else
+    echo "You already have zsh-iterm-touchbar, updating..."
+    pushd $ZSH_CUSTOM/plugins/zsh-iterm-touchbar; git pull; popd
+fi
+echo "Installing additional zsh plugins"
+brew install zsh-autosuggestions
+brew install zsh-syntax-highlighting
+brew install zsh-completions
 
 # Editor and Terminal
+echo "Installing iTerm2, VSCode and fonts/utilities"
 brew cask install iterm2
 brew cask install visual-studio-code
 brew tap homebrew/cask-fonts
@@ -123,7 +156,8 @@ brew cask install quicklook-json
 brew cask install qlstephen
 
 # Add TouchID authentication to Sudo
-if [[ ! `grep "pam_tid.so" /etc/pam.d/sudo` ]];
-then
-echo -e "auth       sufficient     pam_tid.so\n$(cat /etc/pam.d/sudo)" |sudo tee /etc/pam.d/sudo;
+if [[ ! `grep "pam_tid.so" /etc/pam.d/sudo` ]]; then
+    echo -e "auth       sufficient     pam_tid.so\n$(cat /etc/pam.d/sudo)" |sudo tee /etc/pam.d/sudo;
 fi
+
+echo "Setup finished!"

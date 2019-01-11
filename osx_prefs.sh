@@ -150,9 +150,6 @@ rm ~/Library/Application\ Support/Dock/*.db
 # Show the ~/Library folder
 chflags nohidden ~/Library
 
-#Disable local Time Machine backups"
-hash tmutil &> /dev/null && sudo tmutil disablelocal
-
 ###############################################################################
 # Finder                                                                      #
 ###############################################################################

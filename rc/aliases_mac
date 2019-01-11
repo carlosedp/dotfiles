@@ -8,6 +8,7 @@ alias sniffapp="lsof -i 4tcp"
 alias ping='prettyping'
 alias cat='bat -p'
 alias brewupd='brew update && brew upgrade && brew cask upgrade'
+alias zshupd='$HOME/.dotfiles/setup_zsh.sh'
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"

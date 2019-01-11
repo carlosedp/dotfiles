@@ -1,10 +1,12 @@
 # Additional Mac Apps
-
 brew install mas
 mas signin
 
 brew cask install google-chrome
 brew cask install google-backup-and-sync
+
+# Docker
+brew cask install docker
 
 # Spotify
 brew cask install spotify
@@ -57,3 +59,6 @@ mas install 414030210
 
 # Pixelmator
 mas install 407963104
+
+# Obsidian
+mas install 1191757556

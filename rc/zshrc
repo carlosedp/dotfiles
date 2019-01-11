@@ -115,9 +115,19 @@ if [ `uname -s` = 'Darwin' ]; then
     source ~/.iterm2_shell_integration.zsh
 fi
 
+# Enable zsh plugins
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fpath=(/usr/local/share/zsh-completions $fpath)
+
 # Key binds
-bindkey "^[[A" history-substring-search-up
-bindkey "^[[B" history-substring-search-down
+#bindkey "^[[A" history-substring-search-up
+#bindkey "^[[B" history-substring-search-down
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^[[A" history-beginning-search-backward-end
+bindkey "^[[B" history-beginning-search-forward-end
 
 # Load go PATH
 source ~/.dotfiles/go

@@ -1,7 +1,6 @@
 #!/bin/bash
 
-echo "Setting dotfiles on ~/"
-echo `pwd`
+echo "Setting dotfiles on user home dir: $HOME"
 
 # Settings
 sync_folder="$HOME/Google\ Drive"
@@ -18,7 +17,7 @@ create_link() {
   echo Linking origin file \"$origin\" to destination \"$dest\"
 
   if [[ -f "$dest" || -d "$dest" ]] && [ ! -L "$dest" ]; then
-      echo "Destination already exists. Renaming to $dest-old"
+      echo "Destination ($dest) already exists. Renaming to $dest-old"
       mv "$dest" "$dest-old"
   fi
   ln -sf "$origin" "$dest"
@@ -26,13 +25,13 @@ create_link() {
 
 
 # Link .rc files
-for FILE in `pwd`/rc/*
+for FILE in $HOME/.dotfiles/rc/*
 do
   create_link $FILE ~/.$(basename $FILE)
 done
 
 # Link SSH keys
-ln -sf "$sync_folder/SSH_Keys" ~/.ssh
+ln -sf "$sync_folder/SSH_Keys" $HOME/.ssh
 
 if [ $(uname) == "Darwin" ]; then
   # Link settings from ~/Library/Containers

@@ -50,3 +50,5 @@ alias sudo='sudo '
 
 alias gitchanges='find . -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo \"Repo: \"{} && cd {} && git status -s && echo)" \;'
 alias gs='git s'
+
+alias ansible-syntax='ansible-playbook --syntax-check'
