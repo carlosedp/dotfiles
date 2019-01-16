@@ -24,7 +24,7 @@ COMPLETION_WAITING_DOTS="true"
 
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx colored-man colorize pip python brew extract zsh-syntax-highlighting zsh-autosuggestions history-substring-search autojump sudo vscode zsh-iterm-touchbar)
+plugins=(git osx colored-man colorize pip python brew extract history-substring-search autojump sudo vscode zsh-iterm-touchbar)
 
 source $ZSH/oh-my-zsh.sh
 

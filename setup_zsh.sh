@@ -1,9 +1,15 @@
 #!/bin/bash
 
+echo "Starting Zsh setup"
+echo ""
 DOTFILES=$HOME/.dotfiles
 
+echo "Checking if Homebrew is installed"
+echo ""
 if [[ $(command -v brew) == "" ]]; then
-    echo "Homebrew not installed, exiting..."
+    echo "Homebrew not installed, installing..."
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    echo ""
     exit 1
 fi
 
@@ -11,7 +17,7 @@ if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
     echo "Zsh not installed, installing..."
     sudo -v
     brew install zsh
-    sudo chsh -s /bin/zsh $USER
+    sudo chsh -s /usr/local/bin/zsh $USER
 fi
 
 echo "Get dotfiles"
@@ -21,6 +27,9 @@ else
     echo "You already have the dotfiles, updating..."
     pushd $DOTFILES; git pull; popd
 fi
+
+# Setup dotfiles
+bash -c $DOTFILES/setup_links.sh
 
 echo "Install oh-my-zsh"
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
