@@ -48,13 +48,11 @@ alias grep='grep --color=auto '
 
 alias sudo='sudo '
 
-alias gitchanges='find . -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo \"--------------------------------------------------------\nRepo: \"{} && cd {} && git status &
+alias gitchanges='find . -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo \"--------------- \n Repo: \"{} && cd {} && git status -s && echo)" \;'
 
 alias gs='git s'
 
 alias ansible-syntax='ansible-playbook --syntax-check'
 alias diskstat='sudo iostat -d -x -m -c -t 2'
 
-
-alias elasticindex='watch -n 5 "curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/nodes?v&s=name\"; echo \"\n\"; curl -s \"http:
-//elasticsearch.internal.carlosedp.com/_cat/indices?v&s=index:desc\"|head -30"'
+alias elasticindex='watch -n 5 "curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/nodes?v&s=name\"; echo \"\n\"; curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/indices?v&s=index:desc\"|head -30"'
