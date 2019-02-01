@@ -91,9 +91,10 @@ brew install sshoot
 
 # Docker and Kubernetes packages
 brew install kubernetes-cli docker-completion
-#Kail (log tail)
-brew tap boz/repo
-brew install boz/repo/kail
+
+# Kubernetes Logging
+brew install stern
+brew install peco
 
 # Dive, container image inspection tool
 brew tap wagoodman/dive

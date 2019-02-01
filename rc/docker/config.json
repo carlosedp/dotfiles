@@ -1,6 +1,10 @@
 {
   "credSstore" : "osxkeychain",
-  "credsStore" : "osxkeychain",
+  "HttpHeaders" : {
+    "User-Agent" : "Docker-Client/18.09.0 (darwin)"
+  },
+  "experimental" : "enabled",
+  "stackOrchestrator" : "swarm",
   "auths" : {
     "registry.redhat.io" : {
 
@@ -12,10 +16,6 @@
 
     }
   },
-  "experimental" : "enabled",
-  "stackOrchestrator" : "swarm",
-  "HttpHeaders" : {
-    "User-Agent" : "Docker-Client/18.09.0 (darwin)"
-  }
+  "credsStore" : "osxkeychain"
 }
 
