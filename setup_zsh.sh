@@ -57,6 +57,7 @@ fi
 
 # Zsh plugins
 ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
+
 echo "Installing spaceship prompt..."
 if [[ ! -d "$ZSH_CUSTOM/themes/spaceship-prompt" ]]; then
     git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
@@ -65,12 +66,21 @@ else
     echo "You already have spaceship, updating..."
     pushd $ZSH_CUSTOM/themes/spaceship-prompt; git pull; popd
 fi
+
 echo "Installing zsh-iterm-touchbar plugin..."
 if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar" ]]; then
     git clone https://github.com/carlosedp/zsh-iterm-touchbar.git "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar"
 else
     echo "You already have zsh-iterm-touchbar, updating..."
     pushd $ZSH_CUSTOM/plugins/zsh-iterm-touchbar; git pull; popd
+fi
+
+echo "Installing autoupdate-oh-my-zsh-plugins..."
+if [[ ! -d "$ZSH_CUSTOM/plugins/autoupdate" ]]; then
+    git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins "$ZSH_CUSTOM/plugins/autoupdate"
+else
+    echo "You already have autoupdate-oh-my-zsh-plugins, updating..."
+    pushd $ZSH_CUSTOM/plugins/autoupdate; git pull; popd
 fi
 
 echo "Installing additional zsh plugins"
