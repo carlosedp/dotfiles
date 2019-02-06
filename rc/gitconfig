@@ -64,12 +64,14 @@
 
   lg = log --color --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an (%G?)>%Creset' --abbrev-commit
 
-  s = status -s  
+  s = status -s
   st = status --ignore-submodules=dirty
   df = diff --ignore-submodules=dirty
   co = checkout
   ci = commit
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+  upstream = !"u() { git fetch upstream; git checkout master; git merge upstream/master; }; u"
 
 [core]
   legacyheaders = false

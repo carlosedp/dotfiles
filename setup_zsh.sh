@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# Create links for dotfiles
+create_link() {
+  origin=$1
+  dest=$2
+  echo Linking origin file \"$origin\" to destination \"$dest\"
+
+  if [[ -f "$dest" || -d "$dest" ]] && [ ! -L "$dest" ]; then
+      echo "Destination ($dest) already exists. Renaming to $dest-old"
+      mv "$dest" "$dest-old"
+  fi
+  ln -sf "$origin" "$dest"
+}
+
 echo "Starting Zsh setup"
 echo ""
 DOTFILES=$HOME/.dotfiles
@@ -28,8 +41,11 @@ else
     pushd $DOTFILES; git pull; popd
 fi
 
-# Setup dotfiles
-bash -c $DOTFILES/setup_links.sh
+# Link .rc files
+for FILE in $HOME/.dotfiles/rc/*
+do
+  create_link $FILE ~/.$(basename $FILE)
+done
 
 echo "Install oh-my-zsh"
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then

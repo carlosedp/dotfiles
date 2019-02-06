@@ -39,6 +39,7 @@ echo ""
 HOMEBREW_NO_AUTO_UPDATE=1
 brew install \
     git \
+    hub \
     wget \
     ack \
     markdown \
@@ -49,7 +50,6 @@ brew install \
     prettyping \
     autojump \
     tree \
-    hub \
     youtube-dl
 
 # Cleanup old installs
@@ -90,7 +90,9 @@ brew tap carlosedp/tap
 brew install sshoot
 
 # Docker and Kubernetes packages
-brew install kubernetes-cli docker-completion
+brew install kubernetes-cli \
+             docker-completion \
+             kubectx
 
 # Kubernetes Logging
 brew install stern
@@ -129,7 +131,5 @@ fi
 
 # Add user to passwordless sudo
 #sudo sed -i "%admin    ALL = (ALL) NOPASSWD:ALL"
-
-
 
 echo "Setup finished!"
