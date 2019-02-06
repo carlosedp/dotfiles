@@ -35,37 +35,8 @@ source $ZSH/oh-my-zsh.sh
 # Combined left and right prompt configuration.
 # local smiley="%(?,%{$fg[green]%`}☺%{$reset_color%},%{$fg[red]%}☹%{$reset_color%})"
 
-# Make vim the default editor
-export EDITOR="vim"
-
-# Don’t clear the screen after quitting a manual page
-export MANPAGER="less -X"
-
-# Highlight section titles in manual pages
-export LESS_TERMCAP_md="$ORANGE"
-
-# PROMPT='
-# %{$fg[green]%}%~%{$reset_color%}
-# ${smiley}  %{$reset_color%}'
-
-# Set iTerm2 prompt on Touch Bar
-#IT2PROMPT='$(~/.iterm2/it2setkeylabel set status "$(test -d .git && (echo "Git::$(basename `git rev-parse --show-toplevel`):$(git rev-parse --abbrev-ref HEAD)") || (echo -n "Not a repo"))")'
-
-#PROMPT=$IT2PROMPT$PROMPT
-
 # zmv
 autoload -U zmv
-
-
-sniff()
-{
-    if [[ $1 == '' ]]; then
-        local INTERF="en0"
-    else
-        local INTERF=$1
-    fi
-    sudo ngrep -d $INTERF -t '^(GET|POST) ' 'tcp and port 80'
-}
 
 # Disable Spaceship prompt sections
 SPACESHIP_PROMPT_ORDER=(
@@ -106,17 +77,6 @@ SPACESHIP_PROMPT_ORDER=(
 # Enable autojump
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
-# Load aliases
-if [ -f ~/.aliases ]; then
-    . ~/.aliases
-fi
-
-# Load Mac aliases and integrations
-if [ `uname -s` = 'Darwin' ]; then
-    source ~/.aliases_mac
-    source ~/.iterm2_shell_integration.zsh
-fi
-
 # Enable zsh plugins
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -129,22 +89,8 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^[[A" history-beginning-search-backward-end
 bindkey "^[[B" history-beginning-search-forward-end
 
-# Load go PATH
-source ~/.dotfiles/go
+# Load additional shell rc
+source ~/.dotfiles/shellrc
 
-# Load additional PATH
-source ~/.dotfiles/path
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# Kubernetes
-if [ -x "$(command -v kubectl)" ] > /dev/null 2>&1; then
-  source ~/.dotfiles/kubernetes
-fi
-
-# Load hub (https://github.com/github/hub)
-if [ -x "$(command -v hub)" ]; then
-  eval "$(hub alias -s)"
-fi
-
-if [ -x "$(command -v stern)" ] > /dev/null 2>&1; then
-  source <(stern --completion=zsh)
-fi

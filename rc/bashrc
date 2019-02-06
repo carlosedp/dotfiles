@@ -93,27 +93,5 @@ if ! shopt -oq posix; then
 fi
 complete -cf sudo
 
-
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.aliases ]; then
-    . ~/.aliases
-fi
-
-# Kubernetes
-if kubectl > /dev/null 2>&1; then
-  source ~/.dotfiles/kubernetes
-fi
-
-# Load go PATH
-source ~/.dotfiles/go
-
-# Load additional PATH
-source ~/.dotfiles/path
-
-# Load additional exports
-source ~/.exports
+# Load additional shell rc
+source ~/.dotfiles/shellrc

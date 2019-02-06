@@ -23,8 +23,16 @@ create_link() {
   ln -sf "$origin" "$dest"
 }
 
+# Link .rc files
+for FILE in $HOME/.dotfiles/rc/*
+do
+  create_link $FILE ~/.$(basename $FILE)
+done
+
 # Link SSH keys
-ln -sf "$sync_folder/SSH_Keys" $HOME/.ssh
+if [[ ! -d "$sync_folder/SSH_Keys" ]]; then
+    ln -sf "$sync_folder/SSH_Keys" $HOME/.ssh
+fi
 
 if [ $(uname) == "Darwin" ]; then
   # Link settings from ~/Library/Containers
