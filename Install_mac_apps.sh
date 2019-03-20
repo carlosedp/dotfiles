@@ -8,6 +8,10 @@ brew cask install google-backup-and-sync
 # Docker
 brew cask install docker
 
+# Footloose (https://github.com/weaveworks/footloose/)
+brew tap weaveworks/tap
+brew install weaveworks/tap/footloose
+
 # Spotify
 brew cask install spotify
 
