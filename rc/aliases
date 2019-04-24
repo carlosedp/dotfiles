@@ -59,3 +59,4 @@ alias elasticindex='watch -n 5 "curl -s \"http://elasticsearch.internal.carlosed
 
 alias kt='stern --all-namespaces'
 alias dis='docker images --format "{{.Size}}\t{{.Repository}}:{{.Tag}}\t{{.ID}}" | sort -h'
+alias fl='footloose'

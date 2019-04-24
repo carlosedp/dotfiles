@@ -26,7 +26,7 @@ unsetopt nomatch
 COMPLETION_WAITING_DOTS="true"
 
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git osx colored-man colorize pip python brew extract history-substring-search autojump sudo vscode zsh-iterm-touchbar autoupdate)
+plugins=(git osx colorize pip python brew extract history-substring-search autojump sudo vscode zsh-iterm-touchbar autoupdate docker)
 
 source $ZSH/oh-my-zsh.sh
 

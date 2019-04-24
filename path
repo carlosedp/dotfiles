@@ -1,1 +1,2 @@
 export PATH=$PATH:~/.dotfiles/bin
+export PATH="/usr/local/sbin:$PATH"

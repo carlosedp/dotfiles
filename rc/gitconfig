@@ -71,7 +71,7 @@
   ci = commit
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
-  upstream = !"u() { git fetch upstream; git checkout master; git rebase upstream/master; }; u"
+  upstream = !"u() { git checkout master; git pull --rebase upstream master; }; u"
 
 [core]
   legacyheaders = false

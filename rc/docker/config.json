@@ -1,21 +1,13 @@
 {
-  "auths" : {
-    "registry.redhat.io" : {
-
-    },
-    "https://registry.redhat.io" : {
-
-    },
-    "https://index.docker.io/v1/" : {
-
-    }
-  },
-  "HttpHeaders" : {
-    "User-Agent" : "Docker-Client/18.09.2 (darwin)"
-  },
-  "credsStore" : "osxkeychain",
-  "credSstore" : "osxkeychain",
-  "stackOrchestrator" : "swarm",
-  "experimental" : "enabled"
+	"auths": {
+		"https://index.docker.io/v1/": {},
+		"https://registry.redhat.io": {},
+		"registry.redhat.io": {}
+	},
+	"HttpHeaders": {
+		"User-Agent": "Docker-Client/18.09.2 (darwin)"
+	},
+	"credsStore": "osxkeychain",
+	"experimental": "enabled",
+	"stackOrchestrator": "swarm"
 }
-

@@ -50,7 +50,8 @@ brew install \
     prettyping \
     autojump \
     tree \
-    youtube-dl
+    youtube-dl \
+    gawk
 
 # Cleanup old installs
 brew update

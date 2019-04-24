@@ -70,6 +70,15 @@ elif [[ `echo $0` == '-zsh' ]]; then
   source <(kubectl completion zsh)
 fi
 
+
+if [ -x "$(command -v oc)" ] > /dev/null 2>&1; then
+  if [[ `echo $0` == '-bash' ]]; then
+    source <(oc completion bash)
+  elif [[ `echo $0` == '-zsh' ]]; then
+    source <(oc completion zsh)
+  fi
+fi
+
 alias ksvc='kubectl get services -o wide --all-namespaces'
 alias kpod='kubectl get pods -o wide --all-namespaces'
 alias kedp='kubectl get endpoints -o wide --all-namespaces'
