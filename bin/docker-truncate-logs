@@ -1,0 +1,23 @@
+#!/bin/bash -e
+
+CONTAINER=$1
+
+sudo -v
+
+if [[ -z $CONTAINER ]]; then
+    echo "No container specified"
+    exit 1
+    fi
+
+    if [[ "$(docker ps -aq -f name=^/${CONTAINER}$ 2> /dev/null)" == "" ]]; then
+
+        CONTAINER="$(docker-compose ps $CONTAINER 2> /dev/null | awk 'END {print $1}')"
+
+        if [[ -z $CONTAINER ]]; then
+            echo "Container \"$1\" does not exist, exiting."
+            exit 1
+            fi
+            fi
+
+            log=$(docker inspect -f '{{.LogPath}}' $CONTAINER 2> /dev/null)
+            sudo truncate -s 0 $log
