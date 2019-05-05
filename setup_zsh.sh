@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#-Functions---------------------------------------------------------------------
 # Create links for dotfiles
 create_link() {
   origin=$1
@@ -12,6 +13,7 @@ create_link() {
   fi
   ln -sf "$origin" "$dest"
 }
+#-------------------------------------------------------------------------------
 
 echo "Starting Zsh setup"
 echo ""

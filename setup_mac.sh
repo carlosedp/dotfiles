@@ -51,7 +51,8 @@ brew install \
     autojump \
     tree \
     youtube-dl \
-    gawk
+    gawk \
+    xz
 
 # Cleanup old installs
 brew update
@@ -90,10 +91,17 @@ brew cask install unshaky
 brew tap carlosedp/tap
 brew install sshoot
 
+# Docker
+brew cask install docker
+
 # Docker and Kubernetes packages
 brew install kubernetes-cli \
              docker-completion \
              kubectx
+
+# Footloose (https://github.com/weaveworks/footloose/)
+brew tap weaveworks/tap
+brew install weaveworks/tap/footloose
 
 # Kubernetes Logging
 brew install stern
@@ -124,6 +132,10 @@ brew cask install qlcolorcode
 # Quicklook extensions
 brew cask install quicklook-json
 brew cask install qlstephen
+
+# Install Programming languages
+brew install python
+brew install go
 
 # Add TouchID authentication to Sudo
 if [[ ! `grep "pam_tid.so" /etc/pam.d/sudo` ]]; then

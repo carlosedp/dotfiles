@@ -38,18 +38,16 @@ if [ $(uname) == "Darwin" ]; then
   # Link settings from ~/Library/Containers
   for X in $container_settings
   do
-    create_link "$sync_folder/Configs/$X" "$HOME/Library/Containers/$X"
+    if [[ ! -d "$sync_folder/Configs/$X" ]]; then
+        create_link "$sync_folder/Configs/$X" "$HOME/Library/Containers/$X"
+    fi
   done
 
   # Link settings from ~/Library/Application Support
   for X in $application_support_settings
   do
-    create_link "$sync_folder/Configs/$X" "$HOME/Library/Application Support/$X"
+    if [[ ! -d "$sync_folder/Configs/$X" ]]; then
+        create_link "$sync_folder/Configs/$X" "$HOME/Library/Application Support/$X"
+    fi
   done
-
-  # Link preferences from ~/Library/Preferences
-  #for X in $sync_folder/Preferences/*
-  #do
-  #  echo create_link "$X" "$HOME/Library/Preferences/$(basename $X)"
-  #done
 fi
