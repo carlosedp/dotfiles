@@ -20,19 +20,27 @@ echo ""
 DOTFILES=$HOME/.dotfiles
 pushd $HOME
 
-echo "Checking if Homebrew is installed"
-echo ""
-if [[ $(command -v brew) == "" ]]; then
-    echo "Homebrew not installed, installing..."
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# Install if on Mac
+if [ `uname -s` = 'Darwin' ]; then
+    echo "Checking if Homebrew is installed"
     echo ""
-    exit 1
+    if [[ $(command -v brew) == "" ]]; then
+        echo "Homebrew not installed, installing..."
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        echo ""
+        exit 1
+    fi
+
+    if [ -x "$(command tmux -V)" ] 2> /dev/null 2>&1; then
+        echo "Tmux not installed, installing..."
+        sudo -v
+        brew install tmux
+    fi
 fi
 
 if [ -x "$(command tmux -V)" ] 2> /dev/null 2>&1; then
-    echo "Tmux not installed, installing..."
-    sudo -v
-    brew install tmux
+    echo "Tmux not installed, install with your package manager"
+    exit 1
 fi
 
 echo "Get dotfiles"
