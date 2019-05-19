@@ -95,3 +95,7 @@ complete -cf sudo
 
 # Load additional shell rc
 source ~/.dotfiles/shellrc
+
+
+export PATH="/work/riscv-go/misc/riscv:/work/riscv-go/bin:$PATH"
+
