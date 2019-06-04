@@ -19,20 +19,32 @@ echo "Starting Zsh setup"
 echo ""
 DOTFILES=$HOME/.dotfiles
 
-echo "Checking if Homebrew is installed"
-echo ""
-if [[ $(command -v brew) == "" ]]; then
-    echo "Homebrew not installed, installing..."
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+if [ $(uname) == "Darwin" ]; then
+    echo "Checking if Homebrew is installed"
     echo ""
-    exit 1
-fi
+    if [[ $(command -v brew) == "" ]]; then
+        echo "Homebrew not installed, installing..."
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        echo ""
+        exit 1
+    fi
 
-if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
-    echo "Zsh not installed, installing..."
-    sudo -v
-    brew install zsh
-    sudo chsh -s /usr/local/bin/zsh $USER
+    if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
+        echo "Zsh not installed, installing..."
+        sudo -v
+        brew install zsh
+        sudo chsh -s /usr/local/bin/zsh $USER
+    fi
+else
+    if [ $(cat /etc/os-release | grep -i "ID=debian") ]; then
+        sudo apt update
+        sudo apt install -y zsh
+        ZSH=`which zsh`
+        sudo chsh -s $ZSH $USER
+    fi
+    if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
+        echo "Fedora"
+    fi
 fi
 
 echo "Get dotfiles"
@@ -85,10 +97,26 @@ else
     pushd $ZSH_CUSTOM/plugins/autoupdate; git pull; popd
 fi
 
-echo "Installing additional zsh plugins"
-HOMEBREW_NO_AUTO_UPDATE=1
-brew install zsh-autosuggestions
-brew install zsh-syntax-highlighting
-brew install zsh-completions
-brew update
-brew upgrade
+echo "Installing zsh-autosuggestions..."
+if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+else
+    echo "You already have zsh-autosuggestions, updating..."
+    pushd $ZSH_CUSTOM/plugins/zsh-autosuggestions; git pull; popd
+fi
+
+echo "Installing zsh-syntax-highlighting..."
+if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+else
+    echo "You already have zsh-syntax-highlighting, updating..."
+    pushd $ZSH_CUSTOM/plugins/zsh-syntax-highlighting; git pull; popd
+fi
+
+echo "Installing zsh-completions..."
+if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-completions" ]]; then
+    git clone https://github.com/zsh-users/zsh-completions "$ZSH_CUSTOM/plugins/zsh-completions"
+else
+    echo "You already have zsh-completions, updating..."
+    pushd $ZSH_CUSTOM/plugins/zsh-completions; git pull; popd
+fi

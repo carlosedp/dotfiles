@@ -78,9 +78,9 @@ SPACESHIP_PROMPT_ORDER=(
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 # Enable zsh plugins
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fpath=(/usr/local/share/zsh-completions $fpath)
+source $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions/
+source $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/
+fpath=($HOME/.oh-my-zsh/custom/plugins/zsh-completions/ $fpath)
 
 # Key binds
 autoload -U history-search-end
