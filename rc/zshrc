@@ -14,15 +14,10 @@ autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 zstyle -e :urlglobber url-other-schema '[[ $__remote_commands[(i)$words[1]] -le ${#__remote_commands} ]] && reply=("*") || reply=(http https ftp)'
 
-# Disable zsh globbing (using wildcards in commands) 
+# Disable zsh globbing (using wildcards in commands)
 unsetopt nomatch
 
-# Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-#ENABLE_CORRECTION="true"
-
-# Uncomment following line if you want red dots to be displayed while waiting for completion
+# Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -31,9 +26,6 @@ plugins=(git osx colorize python brew extract history-substring-search autojump 
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-
-# Combined left and right prompt configuration.
-# local smiley="%(?,%{$fg[green]%`}☺%{$reset_color%},%{$fg[red]%}☹%{$reset_color%})"
 
 # zmv
 autoload -U zmv

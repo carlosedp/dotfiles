@@ -15,6 +15,12 @@ create_link() {
 }
 #-------------------------------------------------------------------------------
 
+# Check pre-reqs
+if [[ $(command -v git) == "" ]] || [[ $(command -v curl) == "" ]]; then
+    echo "Curl or git not installed..."
+    exit 1
+fi
+
 echo "Starting Zsh setup"
 echo ""
 DOTFILES=$HOME/.dotfiles
@@ -26,9 +32,9 @@ if [ $(uname) == "Darwin" ]; then
         echo "Homebrew not installed, installing..."
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         echo ""
-        exit 1
     fi
 
+     # Install Zsh on Mac
     if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
         echo "Zsh not installed, installing..."
         sudo -v
@@ -36,14 +42,17 @@ if [ $(uname) == "Darwin" ]; then
         sudo chsh -s /usr/local/bin/zsh $USER
     fi
 else
-    if [ $(cat /etc/os-release | grep -i "ID=debian") ]; then
+    # Install Zsh on Linux
+    if [ $(cat /etc/os-release | grep -i "ID=debian") ] || [ $(cat /etc/os-release | grep -i "ID=ubuntu") ]; then
         sudo apt update
         sudo apt install -y zsh
         ZSH=`which zsh`
         sudo chsh -s $ZSH $USER
     fi
     if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
-        echo "Fedora"
+        dnf install -y zsh
+        ZSH=`which zsh`
+        sudo chsh -s $ZSH $USER
     fi
 fi
 
