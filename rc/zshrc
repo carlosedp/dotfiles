@@ -70,8 +70,8 @@ SPACESHIP_PROMPT_ORDER=(
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 # Enable zsh plugins
-source $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions/
-source $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/
+source $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fpath=($HOME/.oh-my-zsh/custom/plugins/zsh-completions/ $fpath)
 
 # Key binds
