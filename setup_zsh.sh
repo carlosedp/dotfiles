@@ -25,6 +25,8 @@ echo "Starting Zsh setup"
 echo ""
 DOTFILES=$HOME/.dotfiles
 
+sudo -v
+
 if [ $(uname) == "Darwin" ]; then
     echo "Checking if Homebrew is installed"
     echo ""
@@ -37,7 +39,6 @@ if [ $(uname) == "Darwin" ]; then
      # Install Zsh on Mac
     if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
         echo "Zsh not installed, installing..."
-        sudo -v
         brew install zsh
         sudo chsh -s /usr/local/bin/zsh $USER
     fi
@@ -50,9 +51,9 @@ else
         sudo chsh -s $ZSH $USER
     fi
     if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
-        dnf install -y zsh
+        sudo dnf install -y zsh
         ZSH=`which zsh`
-        sudo chsh -s $ZSH $USER
+        sudo usermod --shell $ZSH $USER
     fi
 fi
 
