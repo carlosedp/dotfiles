@@ -1,20 +1,5 @@
 #!/bin/bash
 
-#-Functions---------------------------------------------------------------------
-# Create links for dotfiles
-create_link() {
-  origin=$1
-  dest=$2
-  echo Linking origin file \"$origin\" to destination \"$dest\"
-
-  if [[ -f "$dest" || -d "$dest" ]] && [ ! -L "$dest" ]; then
-      echo "Destination ($dest) already exists. Renaming to $dest-old"
-      mv "$dest" "$dest-old"
-  fi
-  ln -sf "$origin" "$dest"
-}
-#-------------------------------------------------------------------------------
-
 echo "Starting Tmux setup"
 echo ""
 DOTFILES=$HOME/.dotfiles
@@ -54,10 +39,7 @@ else
 fi
 
 # Link .rc files
-for FILE in $HOME/.dotfiles/rc/*
-do
-  create_link $FILE ~/.$(basename $FILE)
-done
+bash -c $DOTFILES/setup_links.sh
 
 echo "Install .tmux"
 if [[ ! -d "$HOME/.tmux" ]]; then

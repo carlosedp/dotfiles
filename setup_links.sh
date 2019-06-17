@@ -1,15 +1,6 @@
 #!/bin/bash
 
-echo "Setting dotfiles on user home dir: $HOME"
-
-# Settings
-sync_folder="$HOME/Google\ Drive"
-
-# List of settings to be syncd between computers. Separated by spaces.
-# Settings from $HOME/Library/Containers
-container_settings='com.termius.mac'
-# Settings from $HOME/Library/Application Support
-application_support_settings='iTerm2'
+echo "Setting links to dotfiles on user home dir: $HOME"
 
 create_link() {
   origin=$1
@@ -20,7 +11,7 @@ create_link() {
       echo "Destination ($dest) already exists. Renaming to $dest-old"
       mv "$dest" "$dest-old"
   fi
-  ln -sf "$origin" "$dest"
+  ln -sfn "$origin" "$dest"
 }
 
 # Link .rc files
@@ -29,10 +20,19 @@ do
   create_link $FILE ~/.$(basename $FILE)
 done
 
+# Settings
+sync_folder="$HOME/Google\ Drive"
+
 # Link SSH keys
 if [[ ! -d "$sync_folder/SSH_Keys" ]]; then
-    ln -sf "$sync_folder/SSH_Keys" $HOME/.ssh
+    ln -sfn "$sync_folder/SSH_Keys" $HOME/.ssh
 fi
+
+# List of settings to be syncd between computers. Separated by spaces.
+# Settings from $HOME/Library/Containers
+container_settings='com.termius.mac'
+# Settings from $HOME/Library/Application Support
+application_support_settings='iTerm2'
 
 if [ $(uname) == "Darwin" ]; then
   # Link settings from ~/Library/Containers
