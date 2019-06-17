@@ -4,4 +4,5 @@ rc/config/configstore
 rc/docker/buildx/
 rc/docker/cli-plugins/
 rc/docker/trust/
+rc/docker/manifests/
 rc/config/hub

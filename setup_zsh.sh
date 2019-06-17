@@ -65,12 +65,6 @@ else
     pushd $DOTFILES; git pull; popd
 fi
 
-# Link .rc files
-for FILE in $HOME/.dotfiles/rc/*
-do
-  create_link $FILE ~/.$(basename $FILE)
-done
-
 echo "Install oh-my-zsh"
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
@@ -78,6 +72,12 @@ else
     echo "You already have the oh-my-zsh, updating..."
     pushd $HOME/.oh-my-zsh; git pull; popd
 fi
+
+# Link .rc files
+for FILE in $HOME/.dotfiles/rc/*
+do
+  create_link $FILE ~/.$(basename $FILE)
+done
 
 # Zsh plugins
 ZSH_CUSTOM=$HOME/.oh-my-zsh/custom

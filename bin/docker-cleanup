@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 # From https://github.com/HardySimpson/docker-cleanup
 
 >/tmp/run_image_ids.$$
 
-DOCKER_BIN=/usr/bin/docker
+DOCKER_BIN=`which docker`
 LOG=./docker-cleanup.log
 
 rm /tmp/run_image_ids.$$
