@@ -10,6 +10,13 @@ echo "Starting Zsh setup"
 echo ""
 DOTFILES=$HOME/.dotfiles
 
+containsElement () {
+  local e match="$1"
+  shift
+  for e; do [[ "$e" == "$match" ]] && return 0; done
+  return 1
+}
+
 sudo -v
 
 if [ $(uname) == "Darwin" ]; then
@@ -64,23 +71,22 @@ bash -c $DOTFILES/setup_links.sh
 # Zsh plugins
 ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
 
-echo "Installing spaceship prompt..."
-if [[ ! -d "$ZSH_CUSTOM/themes/spaceship-prompt" ]]; then
-    git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
-    ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-else
-    echo "You already have spaceship, updating..."
-    pushd $ZSH_CUSTOM/themes/spaceship-prompt; git pull; popd
-fi
+themes=("https://github.com/denysdovhan/spaceship-prompt" \
+        "https://github.com/romkatv/powerlevel10k" \
+        )
 
-echo "Installing powerlevel10k prompt..."
-if [[ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]]; then
-    git clone https://github.com/romkatv/powerlevel10k "$ZSH_CUSTOM/themes/powerlevel10k"
-else
-    echo "You already have powerlevel10k, updating..."
-    pushd $ZSH_CUSTOM/themes/powerlevel10k; git pull; popd
-fi
-
+for t in "${themes[@]}"
+    do
+    echo "Installing $t prompt..."
+    theme_name=`basename $t`
+    if [[ ! -d "$ZSH_CUSTOM/themes/$theme_name" ]]; then
+        echo "Installing $theme_name..."
+        git clone $t "$ZSH_CUSTOM/themes/$theme_name"
+    else
+        echo "You already have $theme_name, updating..."
+        pushd $ZSH_CUSTOM/themes/$theme_name; git pull; popd
+    fi
+done
 
 # Add plugins to the array below
 plugins=("https://github.com/carlosedp/zsh-iterm-touchbar" \
@@ -91,15 +97,11 @@ plugins=("https://github.com/carlosedp/zsh-iterm-touchbar" \
          "https://github.com/zsh-users/zsh-history-substring-search" \
          "https://github.com/MichaelAquilina/zsh-you-should-use" \
         )
-pushd "$ZSH_CUSTOM/plugins/"
-for d in */ ; do
-
-    echo TEST "$d"
-done
-popd
+plugin_names=()
 for p in "${plugins[@]}"
     do
     plugin_name=`basename $p`
+    plugin_names+=($plugin_name)
     echo "Installing $plugin_name..."
     if [[ ! -d "$ZSH_CUSTOM/plugins/$plugin_name" ]]; then
         git clone $p "$ZSH_CUSTOM/plugins/$plugin_name"
@@ -108,3 +110,17 @@ for p in "${plugins[@]}"
         pushd $ZSH_CUSTOM/plugins/$plugin_name; git pull; popd
     fi
 done
+
+# Clean unused plugins
+pushd "$ZSH_CUSTOM/plugins/"
+for d in *; do
+    if [ -d "$d" ]; then
+        if containsElement $d "${plugin_names[@]}"; then
+            echo "Contains $d."
+        else
+            echo "Does not contain $d, removing."
+            rm -rf $d
+        fi
+    fi
+done
+popd
