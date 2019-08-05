@@ -96,7 +96,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 export WASMER_DIR="/Users/cdepaula/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"  # This loads wasmer
 
-if [ $(uname -m) == "riscv64" ]; then
+#if [ $(uname -m) == "riscv64" ]; then
+if [ $CPUTYPE == "riscv64" ]; then
     GITSTATUS_DAEMON=/usr/local/bin/gitstatusd-linux-riscv64
 fi
 
