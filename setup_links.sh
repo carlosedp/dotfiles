@@ -24,7 +24,7 @@ done
 sync_folder="$HOME/Google Drive"
 
 # Link SSH keys
-if [[ ! -d "$sync_folder/SSH_Keys" ]]; then
+if [[ ! -d "$HOME/.ssh" ]]; then
     ln -sfn "$sync_folder/SSH_Keys" $HOME/.ssh
 fi
 
