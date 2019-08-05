@@ -96,10 +96,15 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 export WASMER_DIR="/Users/cdepaula/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"  # This loads wasmer
 
-#if [ $(uname -m) == "riscv64" ]; then
+# Use gitstatusd riscv64 built locally.
+# To build, run `zsh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/gitstatus/master/build.zsh)"`
 if [ $CPUTYPE == "riscv64" ]; then
     GITSTATUS_DAEMON=/usr/local/bin/gitstatusd-linux-riscv64
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# if command -v tmux>/dev/null; then
+#   [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && exec tmux
+# fi

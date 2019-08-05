@@ -118,7 +118,6 @@ echo ""
 brew cask install iterm2
 brew cask install visual-studio-code
 brew tap homebrew/cask-fonts
-brew cask install font-fira-code
 brew cask install font-firacode-nerd-font
 brew cask instal kdiff3
 brew cask install open-in-code

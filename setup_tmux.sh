@@ -42,10 +42,12 @@ fi
 bash -c $DOTFILES/setup_links.sh
 
 echo "Install .tmux"
-if [[ ! -d "$HOME/.tmux" ]]; then
-    git clone https://github.com/gpakosz/.tmux
-    ln -sf .tmux/.tmux.conf $HOME
+if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+    git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 else
     echo "You already have the .tmux, updating..."
-    pushd $HOME/.tmux; git pull; popd
+    pushd $HOME/.tmux/plugins/tpm; git pull; popd
 fi
+
+# Install Tmux plugins
+$HOME/.tmux/plugins/tpm/bin/install_plugins
