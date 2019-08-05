@@ -52,6 +52,7 @@ brew install \
     tree \
     youtube-dl \
     gawk \
+    rlwrap \
     xz
 
 # Cleanup old installs

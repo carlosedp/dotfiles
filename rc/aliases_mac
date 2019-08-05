@@ -1,5 +1,5 @@
-# Quicklook file
-alias ql='qlmanage -p "$@" >& /dev/null &'
+# Quicklook file. Depends on osx plugin from zsh oh-my-zsh
+alias ql='quick-look'
 
 alias sniffapp="lsof -i 4tcp"
 #------------------------------------------////

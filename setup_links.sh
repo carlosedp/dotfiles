@@ -21,7 +21,7 @@ do
 done
 
 # Settings
-sync_folder="$HOME/Google\ Drive"
+sync_folder="$HOME/Google Drive"
 
 # Link SSH keys
 if [[ ! -d "$sync_folder/SSH_Keys" ]]; then
@@ -38,7 +38,7 @@ if [ $(uname) == "Darwin" ]; then
   # Link settings from ~/Library/Containers
   for X in $container_settings
   do
-    if [[ ! -d "$sync_folder/Configs/$X" ]]; then
+    if [[ ! -d "$HOME/Library/Containers/$X" ]]; then
         create_link "$sync_folder/Configs/$X" "$HOME/Library/Containers/$X"
     fi
   done
@@ -46,7 +46,7 @@ if [ $(uname) == "Darwin" ]; then
   # Link settings from ~/Library/Application Support
   for X in $application_support_settings
   do
-    if [[ ! -d "$sync_folder/Configs/$X" ]]; then
+    if [[ ! -d "$HOME/Library/Application Support/$X" ]]; then
         create_link "$sync_folder/Configs/$X" "$HOME/Library/Application Support/$X"
     fi
   done

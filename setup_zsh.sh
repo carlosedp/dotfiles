@@ -73,42 +73,23 @@ else
     pushd $ZSH_CUSTOM/themes/spaceship-prompt; git pull; popd
 fi
 
-echo "Installing zsh-iterm-touchbar plugin..."
-if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar" ]]; then
-    git clone https://github.com/carlosedp/zsh-iterm-touchbar.git "$ZSH_CUSTOM/plugins/zsh-iterm-touchbar"
-else
-    echo "You already have zsh-iterm-touchbar, updating..."
-    pushd $ZSH_CUSTOM/plugins/zsh-iterm-touchbar; git pull; popd
-fi
-
-echo "Installing autoupdate-oh-my-zsh-plugins..."
-if [[ ! -d "$ZSH_CUSTOM/plugins/autoupdate" ]]; then
-    git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins "$ZSH_CUSTOM/plugins/autoupdate"
-else
-    echo "You already have autoupdate-oh-my-zsh-plugins, updating..."
-    pushd $ZSH_CUSTOM/plugins/autoupdate; git pull; popd
-fi
-
-echo "Installing zsh-autosuggestions..."
-if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-else
-    echo "You already have zsh-autosuggestions, updating..."
-    pushd $ZSH_CUSTOM/plugins/zsh-autosuggestions; git pull; popd
-fi
-
-echo "Installing zsh-syntax-highlighting..."
-if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
-else
-    echo "You already have zsh-syntax-highlighting, updating..."
-    pushd $ZSH_CUSTOM/plugins/zsh-syntax-highlighting; git pull; popd
-fi
-
-echo "Installing zsh-completions..."
-if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-completions" ]]; then
-    git clone https://github.com/zsh-users/zsh-completions "$ZSH_CUSTOM/plugins/zsh-completions"
-else
-    echo "You already have zsh-completions, updating..."
-    pushd $ZSH_CUSTOM/plugins/zsh-completions; git pull; popd
-fi
+# Add plugins to the array below
+plugins=("https://github.com/carlosedp/zsh-iterm-touchbar" \
+         "https://github.com/TamCore/autoupdate-oh-my-zsh-plugins" \
+         "https://github.com/zsh-users/zsh-autosuggestions" \
+         "https://github.com/zdharma/fast-syntax-highlighting" \
+         "https://github.com/zsh-users/zsh-completions" \
+         "https://github.com/zsh-users/zsh-history-substring-search" \
+         "https://github.com/MichaelAquilina/zsh-you-should-use" \
+        )
+for p in "${plugins[@]}"
+    do
+    plugin_name=`basename $p`
+    echo "Installing $plugin_name..."
+    if [[ ! -d "$ZSH_CUSTOM/plugins/$plugin_name" ]]; then
+        git clone $p "$ZSH_CUSTOM/plugins/$plugin_name"
+    else
+        echo "You already have $plugin_name, updating..."
+        pushd $ZSH_CUSTOM/plugins/$plugin_name; git pull; popd
+    fi
+done
