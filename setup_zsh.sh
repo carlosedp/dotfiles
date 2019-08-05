@@ -73,6 +73,15 @@ else
     pushd $ZSH_CUSTOM/themes/spaceship-prompt; git pull; popd
 fi
 
+echo "Installing powerlevel10k prompt..."
+if [[ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]]; then
+    git clone https://github.com/romkatv/powerlevel10k "$ZSH_CUSTOM/themes/powerlevel10k"
+else
+    echo "You already have powerlevel10k, updating..."
+    pushd $ZSH_CUSTOM/themes/powerlevel10k; git pull; popd
+fi
+
+
 # Add plugins to the array below
 plugins=("https://github.com/carlosedp/zsh-iterm-touchbar" \
          "https://github.com/TamCore/autoupdate-oh-my-zsh-plugins" \
@@ -82,6 +91,12 @@ plugins=("https://github.com/carlosedp/zsh-iterm-touchbar" \
          "https://github.com/zsh-users/zsh-history-substring-search" \
          "https://github.com/MichaelAquilina/zsh-you-should-use" \
         )
+pushd "$ZSH_CUSTOM/plugins/"
+for d in */ ; do
+
+    echo TEST "$d"
+done
+popd
 for p in "${plugins[@]}"
     do
     plugin_name=`basename $p`
