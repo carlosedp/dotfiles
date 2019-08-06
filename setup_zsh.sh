@@ -12,33 +12,33 @@ DOTFILES=$HOME/.dotfiles
 
 sudo -v
 
-if [ $(uname) == "Darwin" ]; then
-    echo "Checking if Homebrew is installed"
-    echo ""
-    if [[ $(command -v brew) == "" ]]; then
-        echo "Homebrew not installed, installing..."
-        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-        echo ""
-    fi
+if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
+    echo "Zsh not installed, installing..."
 
-     # Install Zsh on Mac
-    if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
-        echo "Zsh not installed, installing..."
+    if [ $(uname) == "Darwin" ]; then
+        echo "Checking if Homebrew is installed"
+        echo ""
+        if [[ $(command -v brew) == "" ]]; then
+            echo "Homebrew not installed, installing..."
+            /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+            echo ""
+        fi
+        # Install Zsh on Mac
         brew install zsh
         sudo chsh -s /usr/local/bin/zsh $USER
-    fi
-else
-    # Install Zsh on Linux
-    if [ $(cat /etc/os-release | grep -i "ID=debian") ] || [ $(cat /etc/os-release | grep -i "ID=ubuntu") ]; then
-        sudo apt update
-        sudo apt install -y zsh
-        ZSH=`which zsh`
-        sudo chsh -s $ZSH $USER
-    fi
-    if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
-        sudo dnf install -y zsh
-        ZSH=`which zsh`
-        sudo usermod --shell $ZSH $USER
+    else
+        # Install Zsh on Linux
+        if [ $(cat /etc/os-release | grep -i "ID=debian") ] || [ $(cat /etc/os-release | grep -i "ID=ubuntu") ]; then
+            sudo apt update
+            sudo apt install -y zsh
+            ZSH=`which zsh`
+            sudo chsh -s $ZSH $USER
+        fi
+        if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
+            sudo dnf install -y zsh
+            ZSH=`which zsh`
+            sudo usermod --shell $ZSH $USER
+        fi
     fi
 fi
 
