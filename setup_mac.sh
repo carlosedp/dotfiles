@@ -65,18 +65,21 @@ echo ""
 sleep 1
 
 # Install lunchy to ease usage of launchctl
-#sudo gem install lunchy
+# sudo gem install lunchy
 
 # Mount / drive with noatime
 #sudo cp com.noatime.plist /Library/LaunchDaemons/com.noatime.plist
 #sudo chown root:wheel /Library/LaunchDaemons/com.noatime.plist
 #sudo chmod 644 /Library/LaunchDaemons/com.noatime.plist
 
+# Setup dotfiles
+bash -c $DOTFILES/setup_links.sh
+
 # Setup Zsh
 bash -c $DOTFILES/setup_zsh.sh
 
-# Setup dotfiles
-bash -c $DOTFILES/setup_links.sh
+# Setup Tmux
+bash -c $DOTFILES/setup_tmux.sh
 
 # Setup OsX defaults
 bash -c $DOTFILES/osx_prefs.sh

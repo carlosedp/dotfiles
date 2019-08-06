@@ -10,13 +10,6 @@ echo "Starting Zsh setup"
 echo ""
 DOTFILES=$HOME/.dotfiles
 
-containsElement () {
-  local e match="$1"
-  shift
-  for e; do [[ "$e" == "$match" ]] && return 0; done
-  return 1
-}
-
 sudo -v
 
 if [ $(uname) == "Darwin" ]; then
@@ -110,6 +103,14 @@ for p in "${plugins[@]}"
         pushd $ZSH_CUSTOM/plugins/$plugin_name; git pull; popd
     fi
 done
+
+# Check if array contains element
+containsElement () {
+  local e match="$1"
+  shift
+  for e; do [[ "$e" == "$match" ]] && return 0; done
+  return 1
+}
 
 # Clean unused plugins
 pushd "$ZSH_CUSTOM/plugins/"

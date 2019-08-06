@@ -36,9 +36,6 @@ alias du='du -h'
 alias less='less -r'                          # raw control characters
 alias whence='type -a'                        # where, of a sort
 
-# Flush Directory Service cache
-alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
-
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 alias top='top -c'
@@ -59,7 +56,6 @@ alias diskstat='sudo iostat -d -x -m -c -t 2'
 alias elasticindex='watch -n 5 "curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/nodes?v&s=name\"; echo \"\n\"; curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/indices?v&s=index:desc\"|head -30"'
 
 alias zshupd='$HOME/.dotfiles/setup_zsh.sh'
-alias kt='stern --all-namespaces'
 alias dis='docker images --format "{{.Size}}\t{{.Repository}}:{{.Tag}}\t{{.ID}}" | sort -h'
 alias fl='footloose'
 alias tm='tmux new -A -s mySession'

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Settings
+sync_folder="$HOME/Google Drive"
+
 echo "Setting links to dotfiles on user home dir: $HOME"
 
 create_link() {
@@ -19,9 +22,6 @@ for FILE in $HOME/.dotfiles/rc/*
 do
   create_link $FILE ~/.$(basename $FILE)
 done
-
-# Settings
-sync_folder="$HOME/Google Drive"
 
 # Link SSH keys
 if [[ ! -d "$HOME/.ssh" ]]; then

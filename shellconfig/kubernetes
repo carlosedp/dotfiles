@@ -94,6 +94,6 @@ alias ks='kubectl get services'
 alias ke='kubectl get endpoints'
 
 alias wp='watch -n 1 kubectl get pods -o wide'
-
+alias kt='stern --all-namespaces'
 
 

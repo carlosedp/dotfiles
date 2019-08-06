@@ -88,9 +88,7 @@ bindkey '^[[B' history-substring-search-down
 export HISTORY_SUBSTRING_SEARCH_FUZZY=true
 
 # Load additional shell rc
-source ~/.dotfiles/shellrc
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+source ~/.dotfiles/shellconfig/shellrc
 
 # Wasmer
 export WASMER_DIR="/Users/cdepaula/.wasmer"

@@ -19,3 +19,6 @@ alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo 
 
 # Decode base64 string from the clipboard
 alias clipdecode="pbpaste|base64 --decode"
+
+# Flush Directory Service cache
+alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"

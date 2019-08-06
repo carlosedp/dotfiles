@@ -48,6 +48,3 @@ else
     echo "You already have the .tmux, updating..."
     pushd $HOME/.tmux/plugins/tpm; git pull; popd
 fi
-
-# Install Tmux plugins
-$HOME/.tmux/plugins/tpm/bin/install_plugins

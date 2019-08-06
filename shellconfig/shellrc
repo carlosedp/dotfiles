@@ -1,0 +1,52 @@
+# Generic shellrc to be used by both zshrc and bashrc
+
+### From zshrc
+
+# Make vim the default editor
+export EDITOR="vim"
+
+# Don’t clear the screen after quitting a manual page
+export MANPAGER="less -X"
+
+# Highlight section titles in manual pages
+export LESS_TERMCAP_md="$ORANGE"
+
+# Load generic aliases
+if [ -f ~/.dotfiles/shellconfig/aliases ]; then
+    source ~/.dotfiles/shellconfig/aliases
+fi
+
+# Load Mac aliases
+if [ `uname -s` = 'Darwin' ]; then
+    source ~/.dotfiles/shellconfig/aliases_mac
+fi
+
+# Load iTerm2 integration
+if [[ `echo $0` == *"zsh"* ]]; then
+    test -e "${HOME}/.dotfiles/iterm2_shell_integration.zsh" && source "${HOME}/.dotfiles/iterm2_shell_integration.zsh"
+elif [[ `echo $0` == *"bash"* ]]; then
+    test -e "${HOME}/.dotfiles/iterm2_shell_integration.bash" && source "${HOME}/.dotfiles/iterm2_shell_integration.bash"
+fi
+
+# Load Golang PATH
+source ~/.dotfiles/shellconfig/go
+
+# Load additional PATH
+source ~/.dotfiles/shellconfig/path
+
+# Kubernetes
+if [ -x "$(command -v kubectl)" ] > /dev/null 2>&1; then
+  source ~/.dotfiles/shellconfig/kubernetes
+fi
+
+# Load hub (https://github.com/github/hub)
+if [ -x "$(command -v hub)" ]; then
+  eval "$(hub alias -s)"
+fi
+
+if [ -x "$(command -v stern)" ] > /dev/null 2>&1; then
+  source <(stern --completion=zsh)
+fi
+
+# Load additional exports
+source ~/.dotfiles/shellconfig/exports
