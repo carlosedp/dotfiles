@@ -47,7 +47,6 @@ brew install \
     htop \
     jq \
     bat \
-    prettyping \
     autojump \
     tree \
     youtube-dl \
@@ -66,6 +65,9 @@ sleep 1
 
 # Install lunchy to ease usage of launchctl
 # sudo gem install lunchy
+
+# Install prettyping
+curl https://raw.githubusercontent.com/carlosedp/prettyping/master/prettyping -o /usr/local/bin/prettyping
 
 # Mount / drive with noatime
 #sudo cp com.noatime.plist /Library/LaunchDaemons/com.noatime.plist

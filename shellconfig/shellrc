@@ -22,10 +22,10 @@ if [ `uname -s` = 'Darwin' ]; then
 fi
 
 # Load iTerm2 integration
-if [[ `echo $0` == *"zsh"* ]]; then
-    test -e "${HOME}/.dotfiles/iterm2_shell_integration.zsh" && source "${HOME}/.dotfiles/iterm2_shell_integration.zsh"
-elif [[ `echo $0` == *"bash"* ]]; then
-    test -e "${HOME}/.dotfiles/iterm2_shell_integration.bash" && source "${HOME}/.dotfiles/iterm2_shell_integration.bash"
+if [[ $SHELL == *"zsh"* ]]; then
+    test -e "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.zsh" && source "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.zsh"
+elif [[ $SHELL == *"bash"* ]]; then
+    test -e "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.bash" && source "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.bash"
 fi
 
 # Load Golang PATH
