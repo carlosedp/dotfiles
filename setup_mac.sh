@@ -127,6 +127,9 @@ brew cask install font-firacode-nerd-font
 brew cask instal kdiff3
 brew cask install open-in-code
 
+# Notes
+brew cask install joplin
+
 # Ansible and sshpass
 brew install ansible
 brew install hudochenkov/sshpass/sshpass

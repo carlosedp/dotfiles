@@ -11,6 +11,9 @@ brew cask install spotify
 # Skype
 brew cask install skype
 
+# Notes
+brew cask install evernote
+
 # Utilities
 brew cask install alfred
 #brew cask install mos
@@ -24,7 +27,6 @@ brew cask install forklift
 brew cask install appcleaner
 brew cask install spectacle
 brew cask install slack
-brew cask install evernote
 brew cask install whatsapp
 brew cask install vlc
 brew cask install betterzip
