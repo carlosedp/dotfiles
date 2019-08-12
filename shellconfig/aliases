@@ -60,3 +60,4 @@ alias dis='docker images --format "{{.Size}}\t{{.Repository}}:{{.Tag}}\t{{.ID}}"
 alias fl='footloose'
 alias tm='tmux new -A -s mySession'
 alias yaegi='rlwrap yaegi'
+alias dot='cd $HOME/.dotfiles'

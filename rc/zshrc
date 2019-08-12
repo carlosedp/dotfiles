@@ -22,7 +22,7 @@ COMPLETION_WAITING_DOTS="true"
 
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Syntax highlight should be loaded before history-substring-search
-plugins=(git osx colorize python brew extract history-substring-search autojump sudo vscode zsh-iterm-touchbar docker tmux golang fast-syntax-highlighting history-substring-search zsh-autosuggestions)
+plugins=(git osx colorize python brew extract history-substring-search autojump sudo vscode zsh-iterm-touchbar docker tmux golang fast-syntax-highlighting history-substring-search zsh-autosuggestions systemd)
 
 source $ZSH/oh-my-zsh.sh
 
