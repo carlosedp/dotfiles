@@ -49,6 +49,7 @@ alias gitchanges='find . -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo \"--
 
 alias gs='git s'
 alias gr='git remote -v'
+alias glo='git l'
 
 alias ansible-syntax='ansible-playbook --syntax-check -i "127.0.0.1,"'
 alias diskstat='sudo iostat -d -x -m -c -t 2'
@@ -59,5 +60,6 @@ alias zshupd='$HOME/.dotfiles/setup_zsh.sh'
 alias dis='docker images --format "{{.Size}}\t{{.Repository}}:{{.Tag}}\t{{.ID}}" | sort -h'
 alias fl='footloose'
 alias tm='tmux new -A -s mySession'
+alias tma='tmate new -A -s mySession'
 alias yaegi='rlwrap yaegi'
 alias dot='cd $HOME/.dotfiles'
