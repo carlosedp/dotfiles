@@ -82,6 +82,7 @@ fi
 alias ksvc='kubectl get services -o wide --all-namespaces'
 alias kpod='kubectl get pods -o wide --all-namespaces'
 alias kedp='kubectl get endpoints -o wide --all-namespaces'
+alias king='kubectl get ingress -o wide --all-namespaces'
 alias kns='kubens'
 alias kctx='kubectx'
 
