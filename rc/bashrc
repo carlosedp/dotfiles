@@ -98,3 +98,7 @@ source ~/.dotfiles/shellconfig/shellrc
 
 export PATH="/work/riscv-go/misc/riscv:/work/riscv-go/bin:$PATH"
 
+# Neofetch
+if [ -x "$(command -v neofetch)" ] > /dev/null 2>&1; then
+    neofetch --disable packages
+fi
