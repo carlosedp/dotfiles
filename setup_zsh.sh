@@ -42,6 +42,7 @@ if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
     fi
 fi
 
+echo ""
 echo "Get dotfiles"
 if [[ ! -d "$DOTFILES" ]]; then
     git clone https://github.com/carlosedp/dotfiles.git $DOTFILES
@@ -50,6 +51,7 @@ else
     pushd $DOTFILES; git pull; popd
 fi
 
+echo ""
 echo "Install oh-my-zsh"
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
@@ -57,6 +59,13 @@ else
     echo "You already have the oh-my-zsh, updating..."
     pushd $HOME/.oh-my-zsh; git pull; popd
 fi
+
+echo ""
+echo "Add completion scripts"
+mkdir -p $HOME/.oh-my-zsh/completions
+for FILE in $HOME/.dotfiles/completion/*; do
+    ln -sfn "$FILE" $HOME/.oh-my-zsh/completions/_$(basename $FILE)
+done
 
 # Link .rc files
 bash -c $DOTFILES/setup_links.sh
@@ -112,7 +121,8 @@ containsElement () {
   return 1
 }
 
-# Clean unused plugins
+echo ""
+echo "Clean unused plugins"
 pushd "$ZSH_CUSTOM/plugins/"
 for d in *; do
     if [ -d "$d" ]; then
@@ -125,3 +135,8 @@ for d in *; do
     fi
 done
 popd
+
+echo ""
+echo "Clean completion cache"
+\rm -rf $home/.zcompdump*
+

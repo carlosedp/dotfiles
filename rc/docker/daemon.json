@@ -1,5 +1,1 @@
-{
-  "debug" : true,
-  "experimental" : true,
-  "features": { "buildkit": true } 
-  }
+{"debug":true,"experimental":true,"features":{"buildkit":true}}

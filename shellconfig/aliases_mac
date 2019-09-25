@@ -7,7 +7,7 @@ alias sniffapp="lsof -i 4tcp"
 #------------------------------------------////
 alias ping='prettyping'
 alias cat='bat -p'
-alias brewupd='brew update && brew upgrade && brew cask upgrade'
+alias brewupd='brew update && brew upgrade && brew cask upgrade && brew cleanup'
 alias brewdeps='brew list -1 | while read cask; do echo -ne "\x1B[1;34m $cask \x1B[0m"; brew uses $cask --installed | awk '"'"'{printf(" %s ", $0)}'"'"'; echo ""; done'
 
 # Recursively delete `.DS_Store` files
