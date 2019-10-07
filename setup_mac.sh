@@ -52,7 +52,9 @@ brew install \
     youtube-dl \
     gawk \
     rlwrap \
-    xz
+    xz \
+    neofetch \
+    gnu-tar
 
 # Cleanup old installs
 brew update
