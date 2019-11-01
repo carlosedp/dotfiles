@@ -53,22 +53,22 @@ fi
       command_execution_time  # duration of the last command
       background_jobs         # presence of background jobs
       virtualenv              # python virtual environment (https://docs.python.org/3/library/venv.html)
-      anaconda                # conda environment (https://conda.io/)
-      pyenv                   # python environment (https://github.com/pyenv/pyenv)
-      nodenv                  # node.js version from nodenv (https://github.com/nodenv/nodenv)
-      nvm                     # node.js version from nvm (https://github.com/nvm-sh/nvm)
-      nodeenv                 # node.js environment (https://github.com/ekalinin/nodeenv)
+    #   anaconda                # conda environment (https://conda.io/)
+    #   pyenv                   # python environment (https://github.com/pyenv/pyenv)
+    #   nodenv                  # node.js version from nodenv (https://github.com/nodenv/nodenv)
+    #   nvm                     # node.js version from nvm (https://github.com/nvm-sh/nvm)
+    #   nodeenv                 # node.js environment (https://github.com/ekalinin/nodeenv)
       # node_version          # node.js version
-      # go_version            # go version (https://golang.org)
+      go_version            # go version (https://golang.org)
       # rust_version          # rustc version (https://www.rust-lang.org)
-      rbenv                   # ruby version from rbenv (https://github.com/rbenv/rbenv)
-      rvm                     # ruby version from rvm (https://rvm.io)
+    #   rbenv                   # ruby version from rbenv (https://github.com/rbenv/rbenv)
+    #   rvm                     # ruby version from rvm (https://rvm.io)
       kubecontext             # current kubernetes context (https://kubernetes.io/)
       terraform               # terraform workspace (https://www.terraform.io)
       context                 # user@host
-      nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
-      ranger                  # ranger shell (https://github.com/ranger/ranger)
-      # ram                   # free RAM
+    #   nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
+    #   ranger                  # ranger shell (https://github.com/ranger/ranger)
+    #   ram                   # free RAM
       # load                  # CPU load
       # time                  # current time
       # =========================[ Line #2 ]=========================
@@ -668,7 +668,7 @@ fi
   # The expansion below will show P9K_KUBECONTEXT_CLOUD_CLUSTER if it's not empty and fall back
   # to P9K_KUBECONTEXT_NAME. Parameter expansions are very flexible and fast, too. See reference:
   # http://zsh.sourceforge.net/Doc/Release/Expansion.html#Parameter-Expansion.
-  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION='${P9K_KUBECONTEXT_CLOUD_CLUSTER:-${P9K_KUBECONTEXT_NAME}}:${P9K_KUBECONTEXT_NAMESPACE}'
+  typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION='${P9K_KUBECONTEXT_CLOUD_CLUSTER:-${P9K_KUBECONTEXT_NAME}}'
 
   # Custom prefix.
   # typeset -g POWERLEVEL9K_KUBECONTEXT_PREFIX='%248Fat '
