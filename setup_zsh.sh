@@ -73,8 +73,7 @@ bash -c $DOTFILES/setup_links.sh
 # Zsh plugins
 ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
 
-themes=("https://github.com/denysdovhan/spaceship-prompt" \
-        "https://github.com/romkatv/powerlevel10k" \
+themes=("https://github.com/romkatv/powerlevel10k" \
         )
 
 for t in "${themes[@]}"

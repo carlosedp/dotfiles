@@ -1,7 +1,0 @@
-  Clone from github.
-  Run make (which uses rebar);
-
-$ git clone git://github.com/massemanet/eper.git
-$ cd eper
-$ make
-
