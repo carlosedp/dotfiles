@@ -34,6 +34,9 @@ source ~/.dotfiles/shellconfig/go
 # Load additional PATH
 source ~/.dotfiles/shellconfig/path
 
+# Additional functions
+source ~/.dotfiles/shellconfig/funcs
+
 # Kubernetes
 if [ -x "$(command -v kubectl)" ] > /dev/null 2>&1; then
   source ~/.dotfiles/shellconfig/kubernetes

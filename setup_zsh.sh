@@ -32,7 +32,7 @@ if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
             sudo apt update
             sudo apt install -y zsh
             ZSH=`which zsh`
-            sudo chsh -s $ZSH $USER
+            sudo chsh $USER -s $ZSH
         fi
         if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
             sudo dnf install -y zsh
