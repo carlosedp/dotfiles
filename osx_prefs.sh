@@ -12,11 +12,8 @@ defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 # Enable subpixel font rendering on non-Apple LCDs
 defaults write NSGlobalDomain AppleFontSmoothing -int 2
 
-# Enable the 2D Dock
-#defaults write com.apple.dock no-glass -bool true
-
 # Automatically hide and show the Dock
-#defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide -bool true
 
 #Make Dock icons of hidden applications translucent
 defaults write com.apple.dock showhidden -bool true
@@ -59,14 +56,12 @@ defaults write -g ApplePressAndHoldEnabled -bool false
 
 # Automatically illuminate built-in MacBook keyboard in low light
 defaults write com.apple.BezelServices kDim -bool true
+
 # Turn off keyboard illumination when computer is not used for 5 minutes
 defaults write com.apple.BezelServices kDimTime -int 300
 
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
-
-#Disable press-and-hold for keys in favor of key repeat"
-defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 #Set a blazingly fast keyboard repeat rate"
 #defaults write NSGlobalDomain KeyRepeat -int 0.02
@@ -165,6 +160,12 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
 #Show Path bar in Finder"
 defaults write com.apple.finder ShowPathbar -bool true
+
+# Specify iTerm2 preferences directory
+defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/Google Drive/Configs/iTerm2"
+
+# Tell iTerm2 to use the custom preferences in the directory
+defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 
 echo "Kill affected applications"
 for app in Safari Finder Dock Mail SystemUIServer; do killall "$app" >/dev/null 2>&1; done

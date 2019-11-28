@@ -44,9 +44,6 @@ sleep 1
 # Install additional fonts
 sudo cp $HOME/.dotfiles/fonts/Dank* /Library/Fonts
 
-# Install lunchy to ease usage of launchctl
-# sudo gem install lunchy
-
 # Install prettyping
 curl https://raw.githubusercontent.com/carlosedp/prettyping/master/prettyping -o /usr/local/bin/prettyping
 

@@ -128,7 +128,7 @@
   required = true
 
 [credential]
-  helper = osxkeychain
+	helper = store
 
 [mergetool "kdiff3"]
   path = kdiff3
