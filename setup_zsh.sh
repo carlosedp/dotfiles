@@ -25,22 +25,32 @@ if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
         fi
         # Install Zsh on Mac
         brew install zsh
-        sudo chsh -s /usr/local/bin/zsh $USER
     else
         # Install Zsh on Linux
         if [ $(cat /etc/os-release | grep -i "ID=debian") ] || [ $(cat /etc/os-release | grep -i "ID=ubuntu") ]; then
             sudo apt update
             sudo apt install -y zsh
-            ZSH=`which zsh`
-            sudo chsh $USER -s $ZSH
         fi
         if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
             sudo dnf install -y zsh
-            ZSH=`which zsh`
-            sudo usermod --shell $ZSH $USER
         fi
     fi
 fi
+
+echo "Change default shell to zsh"
+if [ $(uname) == "Darwin" ]; then
+    sudo chsh -s /usr/local/bin/zsh $USER
+else
+    if [ $(cat /etc/os-release | grep -i "ID=debian") ] || [ $(cat /etc/os-release | grep -i "ID=ubuntu") ] || [ $(cat /etc/os-release | grep -i "ID=alpine"); then
+        ZSH=`which zsh`
+        sudo chsh $USER -s $ZSH
+    fi
+    if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
+        ZSH=`which zsh`
+        sudo usermod --shell $ZSH $USER
+    fi
+fi
+
 
 echo ""
 echo "Get dotfiles"
