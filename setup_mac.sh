@@ -36,6 +36,7 @@ echo "Install brews"
 echo "==================================="
 echo ""
 brew bundle install
+brew bundle install --file Brewfile-casks-store
 echo ""
 echo "done ..."
 echo ""

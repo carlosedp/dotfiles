@@ -1,0 +1,57 @@
+cask_args appdir: "/Applications"
+
+brew "mas"
+
+cask "alfred"
+cask "appcleaner"
+cask "arduino"
+cask "betterzip"
+cask "batchmod"
+cask "docker"
+cask "evernote"
+cask "firefox"
+cask "font-firacode-nerd-font"
+cask "font-ibm-plex"
+cask "franz"
+cask "google-backup-and-sync"
+cask "google-chrome"
+cask "go2shell"
+cask "grandperspective"
+cask "handbrake"
+cask "iterm2"
+cask "itsycal"
+cask "joplin"
+cask "kdiff3"
+cask "minikube"
+cask "minishift"
+cask "muzzle"
+cask "nightowl"
+cask "obinslab-starter"
+cask "open-in-code"
+cask "qlcolorcode"
+cask "qlmarkdown"
+cask "qlstephen"
+cask "quicklook-json"
+cask "spectacle"
+cask "spotify"
+cask "skype"
+cask "steam"
+cask "touchswitcher"
+cask "transmission"
+cask "unshaky"
+cask "vanilla"
+cask "virtualbox"
+cask "vlc"
+cask "visual-studio-code"
+
+mas "Amphetamine", id: 937984704
+mas "Disk Speed Test", id: 425264550
+mas "Evernote", id: 406056744
+mas "ForkLift", id: 412448059
+mas "LastPass", id: 926036361
+mas "LimeChat", id: 414030210
+mas "OTP Manager", id: 928941247
+mas "Pixelmator", id: 407963104
+mas "Slack", id: 803453959
+mas "Speedtest", id: 1153157709
+mas "TweetDeck", id: 485812721
