@@ -11,16 +11,6 @@ export MANPAGER="less -X"
 # Highlight section titles in manual pages
 export LESS_TERMCAP_md="$ORANGE"
 
-# Load generic aliases
-if [ -f ~/.dotfiles/shellconfig/aliases ]; then
-    source ~/.dotfiles/shellconfig/aliases
-fi
-
-# Load Mac aliases
-if [ `uname -s` = 'Darwin' ]; then
-    source ~/.dotfiles/shellconfig/aliases_mac
-fi
-
 # Load iTerm2 integration
 if [[ $SHELL == *"zsh"* ]]; then
     test -e "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.zsh" && source "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.zsh"
@@ -53,6 +43,16 @@ fi
 
 # Load additional exports
 source ~/.dotfiles/shellconfig/exports
+
+# Load generic aliases
+if [ -f ~/.dotfiles/shellconfig/aliases ]; then
+    source ~/.dotfiles/shellconfig/aliases
+fi
+
+# Load Mac aliases
+if [ `uname -s` = 'Darwin' ]; then
+    source ~/.dotfiles/shellconfig/aliases_mac
+fi
 
 # Neofetch
 if [ -x "$(command -v neofetch)" ] > /dev/null 2>&1; then
