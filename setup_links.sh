@@ -24,7 +24,7 @@ do
 done
 
 # Link SSH keys
-if [[ ! -d "$HOME/.ssh" ]]; then
+if [[ ! -d "$HOME/.ssh" ]] && [[ -d "$sync_folder/SSH_Keys" ]]; then
     ln -sfn "$sync_folder/SSH_Keys" $HOME/.ssh
 fi
 
@@ -32,7 +32,7 @@ fi
 # Settings from $HOME/Library/Containers
 container_settings='com.termius.mac'
 # Settings from $HOME/Library/Application Support
-application_support_settings='iTerm2'
+application_support_settings='iTerm2 2fa'
 
 if [ $(uname) == "Darwin" ]; then
   # Link settings from ~/Library/Containers
@@ -50,4 +50,11 @@ if [ $(uname) == "Darwin" ]; then
         create_link "$sync_folder/Configs/$X" "$HOME/Library/Application Support/$X"
     fi
   done
+
+  # Link workflows from ~/Library/Services/
+  for X in $HOME/.dotfiles/automator/*
+  do
+    create_link "$X" "$HOME/Library/Services/$(basename $X)"
+  done
+
 fi

@@ -51,7 +51,7 @@ bindkey '^[[B' history-substring-search-down
 export HISTORY_SUBSTRING_SEARCH_FUZZY=true
 
 # Load additional shell rc
-source ~/.dotfiles/shellconfig/shellrc
+source ~/.dotfiles/shellconfig/shellrc.sh
 
 # Wasmer
 export WASMER_DIR="/Users/cdepaula/.wasmer"

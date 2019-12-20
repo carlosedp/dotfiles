@@ -4,10 +4,10 @@
 
     }
   },
-  "stackOrchestrator" : "swarm",
-  "experimental" : "enabled",
-  "credsStore" : "desktop",
   "HttpHeaders" : {
     "User-Agent" : "Docker-Client/19.03.3 (darwin)"
-  }
+  },
+  "stackOrchestrator" : "swarm",
+  "credsStore" : "desktop",
+  "experimental" : "enabled"
 }

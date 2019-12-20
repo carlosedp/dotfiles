@@ -48,6 +48,9 @@ sudo cp $HOME/.dotfiles/fonts/Dank* /Library/Fonts
 # Install prettyping
 curl https://raw.githubusercontent.com/carlosedp/prettyping/master/prettyping -o /usr/local/bin/prettyping
 
+# Install Go applications
+bash -c $DOTFILES/go_apps.sh
+
 # Mount / drive with noatime
 #sudo cp com.noatime.plist /Library/LaunchDaemons/com.noatime.plist
 #sudo chown root:wheel /Library/LaunchDaemons/com.noatime.plist

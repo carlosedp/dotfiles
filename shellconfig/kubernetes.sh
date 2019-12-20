@@ -64,19 +64,12 @@ kdesc() {
 }
 #export -f kdesc
 
-if [[ `echo $0` == '-bash' ]]; then
-  source <(kubectl completion bash)
-elif [[ `echo $0` == '-zsh' ]]; then
-  source <(kubectl completion zsh)
-fi
+# Load kubectl completion
+source <(kubectl completion $(ps -p $$ -oargs= |tr -d "-"))
 
-
+# Load openshift oc completion
 if [ -x "$(command -v oc)" ] > /dev/null 2>&1; then
-  if [[ `echo $0` == '-bash' ]]; then
-    source <(oc completion bash)
-  elif [[ `echo $0` == '-zsh' ]]; then
-    source <(oc completion zsh)
-  fi
+    source <(oc completion $(ps -p $$ -oargs= |tr -d "-"))
 fi
 
 alias ksvc='kubectl get services -o wide --all-namespaces'

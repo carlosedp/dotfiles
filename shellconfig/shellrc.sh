@@ -12,24 +12,20 @@ export MANPAGER="less -X"
 export LESS_TERMCAP_md="$ORANGE"
 
 # Load iTerm2 integration
-if [[ $SHELL == *"zsh"* ]]; then
-    test -e "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.zsh" && source "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.zsh"
-elif [[ $SHELL == *"bash"* ]]; then
-    test -e "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.bash" && source "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.bash"
-fi
+test -e ${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.$(ps -p $$ -oargs= |tr -d "-") && source ${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.$(ps -p $$ -oargs= |tr -d "-")
 
 # Load Golang PATH
-source ~/.dotfiles/shellconfig/go
+source ~/.dotfiles/shellconfig/go.sh
 
 # Load additional PATH
-source ~/.dotfiles/shellconfig/path
+source ~/.dotfiles/shellconfig/path.sh
 
 # Additional functions
-source ~/.dotfiles/shellconfig/funcs
+source ~/.dotfiles/shellconfig/funcs.sh
 
 # Kubernetes
 if [ -x "$(command -v kubectl)" ] > /dev/null 2>&1; then
-  source ~/.dotfiles/shellconfig/kubernetes
+  source ~/.dotfiles/shellconfig/kubernetes.sh
 fi
 
 # Load hub (https://github.com/github/hub)
@@ -37,21 +33,20 @@ if [ -x "$(command -v hub)" ]; then
   eval "$(hub alias -s)"
 fi
 
+# Load stern completion
 if [ -x "$(command -v stern)" ] > /dev/null 2>&1; then
-  source <(stern --completion=zsh)
+  source <(stern --completion=$(ps -p $$ -oargs= |tr -d "-"))
 fi
 
 # Load additional exports
-source ~/.dotfiles/shellconfig/exports
+source ~/.dotfiles/shellconfig/exports.sh
 
 # Load generic aliases
-if [ -f ~/.dotfiles/shellconfig/aliases ]; then
-    source ~/.dotfiles/shellconfig/aliases
-fi
+source ~/.dotfiles/shellconfig/aliases.sh
 
 # Load Mac aliases
 if [ `uname -s` = 'Darwin' ]; then
-    source ~/.dotfiles/shellconfig/aliases_mac
+    source ~/.dotfiles/shellconfig/aliases_mac.sh
 fi
 
 # Neofetch
