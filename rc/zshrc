@@ -32,6 +32,7 @@ fpath=($HOME/.oh-my-zsh/custom/plugins/zsh-completions/ $fpath)
 
 # Customize to your needs...
 export POWERLEVEL9K_CONTEXT_TEMPLATE="%n@`hostname -s`"
+export POWERLEVEL9K_TRANSIENT_PROMPT=always
 
 # zmv
 autoload -U zmv
