@@ -23,10 +23,8 @@ cask "itsycal"
 cask "joplin"
 cask "kdiff3"
 cask "minikube"
-cask "minishift"
 cask "muzzle"
 cask "nightowl"
-cask "obinslab-starter"
 cask "open-in-code"
 cask "qlcolorcode"
 cask "qlmarkdown"
@@ -43,6 +41,7 @@ cask "vanilla"
 cask "virtualbox"
 cask "vlc"
 cask "visual-studio-code"
+cask "horndis"
 
 mas "Amphetamine", id: 937984704
 mas "Disk Speed Test", id: 425264550
