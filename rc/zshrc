@@ -28,6 +28,7 @@ source $ZSH/oh-my-zsh.sh
 # Enable zsh plugins
 source $HOME/.oh-my-zsh/custom/plugins/autoupdate-oh-my-zsh-plugins/autoupdate.plugin.zsh
 source $HOME/.oh-my-zsh/custom/plugins/zsh-you-should-use/you-should-use.plugin.zsh
+source $HOME/.oh-my-zsh/custom/plugins/forgit/forgit.plugin.zsh
 fpath=($HOME/.oh-my-zsh/custom/plugins/zsh-completions/ $fpath)
 
 # zmv
@@ -68,3 +69,5 @@ fi
 # fi
 
 export ZSH_TMUX_AUTOSTART=true
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
