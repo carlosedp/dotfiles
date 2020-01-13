@@ -17,5 +17,8 @@ if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
     echo "Installing yaegi"
     go get -u github.com/containous/yaegi/cmd/yaegi
 
+    # fzf - Command line fuzzy finder
+    echo "Installing fzf"
+    go get -u github.com/junegunn/fzf
 
 fi
