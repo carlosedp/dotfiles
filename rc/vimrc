@@ -1,4 +1,5 @@
 set nocompatible
+filetype plugin on
 set term=xterm-256color
 set number  " Show line numbers
 set linebreak   " Break lines at word (requires Wrap lines)
@@ -26,3 +27,16 @@ set backspace=indent,eol,start  " Backspace behaviour
 
 set cursorline
 set mouse-=a
+
+" Colour the 73rd column so that we don’t type over our limit
+"set colorcolumn=73
+"set colorcolumn+=51
+
+" Force the cursor onto a new line after 80 characters
+set textwidth=80
+" However, in Git commit messages, let’s make it 72 characters
+autocmd FileType gitcommit set textwidth=72
+" Colour the 81st (or 73rd) column so that we don’t type over our limit
+set colorcolumn=+1
+" In Git commit messages, also colour the 51st column (for titles)
+autocmd FileType gitcommit set colorcolumn+=51
