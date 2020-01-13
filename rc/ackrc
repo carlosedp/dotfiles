@@ -1,2 +1,4 @@
 --type-set=md=.md,.mkd,.markdown
 --pager=less -FRX
+--ignore-dir=vendor
+--ignore-dir=node_modules
