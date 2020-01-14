@@ -52,9 +52,9 @@ if [ $(uname) == "Darwin" ]; then
   done
 
   # Link workflows from ~/Library/Services/
-  for X in $HOME/.dotfiles/automator/*
+  for X in $(ls "$sync_folder/Configs/automator/")
   do
-    create_link "$X" "$HOME/Library/Services/$(basename $X)"
+    create_link "$sync_folder/Configs/automator/"$X "$HOME/Library/Services/$X"
   done
 
 fi
