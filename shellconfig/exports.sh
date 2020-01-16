@@ -15,3 +15,11 @@ export MANPAGER="less -X";
 
 # Do not clear screen after exiting LESS
 unset LESS
+
+# Add alt-up/down keybinding to fzf preview window
+export FORGIT_FZF_DEFAULT_OPTS="
+$FORGIT_FZF_DEFAULT_OPTS
+--bind='alt-up:preview-up'
+--bind='alt-down:preview-down'
+"
+
