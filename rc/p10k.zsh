@@ -735,4 +735,4 @@ fi
 
  # Customize to your needs...
  export POWERLEVEL9K_CONTEXT_TEMPLATE="%n@`hostname -s`"
- export POWERLEVEL9K_TRANSIENT_PROMPT=always
+ export POWERLEVEL9K_TRANSIENT_PROMPT=same-dir

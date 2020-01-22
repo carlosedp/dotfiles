@@ -51,6 +51,7 @@ alias gitchanges='find . -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo \"--
 alias gs='git s -u'
 alias gr='git remote -v'
 alias glo='git l'
+alias gcs='git commit -v -s'
 
 alias ansible-syntax='ansible-playbook --syntax-check -i "127.0.0.1,"'
 alias diskstat='sudo iostat -d -x -m -c -t 2'

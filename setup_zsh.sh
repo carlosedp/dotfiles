@@ -71,6 +71,15 @@ else
 fi
 
 echo ""
+echo "Install fzf"
+if [[ ! -d "$HOME/.fzf" ]]; then
+    git clone https://github.com/junegunn/fzf $HOME/.fzf --depth=1
+else
+    echo "You already have the fzf, updating..."
+    pushd $HOME/.fzf; git pull --depth=1; popd
+fi
+
+echo ""
 echo "Add completion scripts"
 mkdir -p $HOME/.oh-my-zsh/completions
 for FILE in $HOME/.dotfiles/completion/*; do
