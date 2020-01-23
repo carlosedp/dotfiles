@@ -733,6 +733,8 @@ fi
 (( ! p9k_classic_restore_aliases )) || setopt aliases
 'builtin' 'unset' 'p9k_classic_restore_aliases'
 
- # Customize to your needs...
- export POWERLEVEL9K_CONTEXT_TEMPLATE="%n@`hostname -s`"
- export POWERLEVEL9K_TRANSIENT_PROMPT=same-dir
+# Customize to your needs...
+export POWERLEVEL9K_CONTEXT_TEMPLATE="%n@`hostname -s`"
+export POWERLEVEL9K_TRANSIENT_PROMPT=same-dir
+export POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc'
+
