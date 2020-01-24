@@ -22,22 +22,29 @@ set -eou pipefail
 IFS=$'\n\t'
 
 SELF_CMD="$0"
+
 KUBECTX="${XDG_CACHE_HOME:-$HOME/.kube}/kubectx"
 
 usage() {
-  cat <<"EOF"
+  local SELF
+  SELF="kubectx"
+  if [[ "$(basename "$0")" == kubectl-* ]]; then # invoked as plugin
+    SELF="kubectl ctx"
+  fi
+
+  cat <<EOF
 USAGE:
-  kubectx                       : list the contexts
-  kubectx <NAME>                : switch to context <NAME>
-  kubectx -                     : switch to the previous context
-  kubectx -c, --current         : show the current context name
-  kubectx <NEW_NAME>=<NAME>     : rename context <NAME> to <NEW_NAME>
-  kubectx <NEW_NAME>=.          : rename current-context to <NEW_NAME>
-  kubectx -d <NAME> [<NAME...>] : delete context <NAME> ('.' for current-context)
+  $SELF                       : list the contexts
+  $SELF <NAME>                : switch to context <NAME>
+  $SELF -                     : switch to the previous context
+  $SELF -c, --current         : show the current context name
+  $SELF <NEW_NAME>=<NAME>     : rename context <NAME> to <NEW_NAME>
+  $SELF <NEW_NAME>=.          : rename current-context to <NEW_NAME>
+  $SELF -d <NAME> [<NAME...>] : delete context <NAME> ('.' for current-context)
                                   (this command won't delete the user/cluster entry
                                   that is used by the context)
 
-  kubectx -h,--help             : show this message
+  $SELF -h,--help             : show this message
 EOF
 }
 
@@ -107,7 +114,7 @@ choose_context_interactive() {
   local choice
   choice="$(_KUBECTX_FORCE_COLOR=1 \
     FZF_DEFAULT_COMMAND="${SELF_CMD}" \
-    fzf --ansi || true)"
+    fzf --ansi --no-preview || true)"
   if [[ -z "${choice}" ]]; then
     echo 2>&1 "error: you did not choose any of the options"
     exit 1

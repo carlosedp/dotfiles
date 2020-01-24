@@ -21,7 +21,7 @@ COMPLETION_WAITING_DOTS="true"
 
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Syntax highlight should be loaded before history-substring-search
-plugins=(git osx colorize python brew extract history-substring-search autojump sudo vscode zsh-iterm-touchbar docker tmux golang fast-syntax-highlighting history-substring-search zsh-autosuggestions systemd fzf)
+plugins=(git osx colorize python brew extract history-substring-search autojump sudo vscode zsh-iterm-touchbar docker tmux golang fast-syntax-highlighting history-substring-search zsh-autosuggestions systemd fzf dirhistory history common-aliases)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -29,7 +29,7 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/.oh-my-zsh/custom/plugins/autoupdate-oh-my-zsh-plugins/autoupdate.plugin.zsh
 source $HOME/.oh-my-zsh/custom/plugins/zsh-you-should-use/you-should-use.plugin.zsh
 source $HOME/.oh-my-zsh/custom/plugins/forgit/forgit.plugin.zsh
-fpath=($HOME/.oh-my-zsh/custom/plugins/zsh-completions/ $fpath)
+fpath=($HOME/.oh-my-zsh/custom/plugins/zsh-completions/ $HOME/.dotfiles/completions $fpath)
 
 # zmv
 autoload -U zmv
