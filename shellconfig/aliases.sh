@@ -44,7 +44,6 @@ alias grep='grep --color=auto '
 alias sudo='sudo '
 
 alias sc-dreload='sudo systemctl daemon-reload'
-alias jo='sudo journalctl -xef -u '
 
 # Git aliases
 alias gitchanges='find . -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo \"--------------- \n Repo: \"{} && cd {} && git status -s && echo)" \;'
