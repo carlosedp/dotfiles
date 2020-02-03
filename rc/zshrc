@@ -1,3 +1,6 @@
+# Debug zsh startup
+#zmodload zsh/zprof
+
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -71,3 +74,6 @@ fi
 export ZSH_TMUX_AUTOSTART=true
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Debug zsh startup
+#zprof

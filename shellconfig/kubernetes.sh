@@ -68,9 +68,10 @@ kdesc() {
 source <(kubectl completion $(ps -p $$ -oargs= |tr -d "-"))
 
 # Load openshift oc completion
-if [ -x "$(command -v oc)" ] > /dev/null 2>&1; then
-    source <(oc completion $(ps -p $$ -oargs= |tr -d "-"))
-fi
+# Disable due to load time
+#if [ -x "$(command -v oc)" ] > /dev/null 2>&1; then
+#    source <(oc completion $(ps -p $$ -oargs= |tr -d "-"))
+#fi
 
 alias ksvc='kubectl get services -o wide --all-namespaces'
 alias kpod='kubectl get pods -o wide --all-namespaces'
