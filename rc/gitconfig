@@ -145,7 +145,16 @@
 [help]
   # Automatically correct and execute mistyped commands
   autocorrect = 1
+
 [pull]
-	rebase = true
+  rebase = true
+
 [rebase]
-	autoStash = true
+  autoStash = true
+
+[sendemail]
+  ; setup for using git send-email; prompts for password
+  smtpuser = carlosedp@gmail.com
+  smtpserver = smtp.googlemail.com
+  smtpencryption = tls
+  smtpserverport = 587
