@@ -3,6 +3,10 @@
 # Only run if Go is present
 if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
 
+    # Github Hub
+    echo "Installing Github hub"
+    go get -u github.com/github/hub
+
     # Command line two-factor authentication
     echo "Installing 2fa"
     go get -u rsc.io/2fa

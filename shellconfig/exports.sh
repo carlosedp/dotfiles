@@ -21,5 +21,6 @@ export FORGIT_FZF_DEFAULT_OPTS="
 $FORGIT_FZF_DEFAULT_OPTS
 --bind='alt-up:preview-up'
 --bind='alt-down:preview-down'
+--no-mouse
 "
 
