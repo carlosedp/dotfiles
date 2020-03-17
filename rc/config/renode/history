@@ -1,0 +1,617 @@
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+ start
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+ start
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart1 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart4 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart4 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+showAnalyzer uart1
+showAnalyzer uart2
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart4 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+showAnalyzer uart2
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart4 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+showAnalyzer uart2
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ showAnalyzer uart2
+ start
+reset
+runMacro reset
+runMacro $reset
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ =@@.pio/build/disco_f407vg/firmware.elf
+ showAnalyzer uart2
+ start
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ =@.pio/build/disco_f407vg/firmware.elf
+ showAnalyzer uart2
+ start
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ ?=@.pio/build/disco_f407vg/firmware.elf
+ start
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ =@.pio/build/disco_f407vg/firmware.elf
+ start
+ =@.pio/build/disco_f407vg/firmware.elf
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ start
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ \=@.pio/build/disco_f407vg/firmware.elf
+ start
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ =@.pio/build/disco_f407vg/firmware.elf
+ start
+analyzers 
+showAnalyzer uart4
+ include @stm32f4.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+showAnalyzer 
+showAnalyzer q
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+ start
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+ start
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+ start
+machine Reset
+alias 
+alias reset "machine Reset" 
+ include @scripts/single-node/sifive_fe310.resc
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+ start
+ include @scripts/single-node/stm32f4_discovery.resc
+ machine StartGdbServer 3333 True
+ logLevel 2
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart2 externalUART
+ showAnalyzer uart2
+ sysbus LoadELF @.pio/build/disco_f407vg/firmware.elf
+ start
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ include @scripts/single-node/sifive_fe310.resc
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ alias reset "machine Reset"
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+start
+reset
+start
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+start
+reset
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+machine Reset
+ include @scripts/single-node/sifive_fe310.resc
+reset
+machine Reset
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+ alias reset "machine Reset"
+start
+reset
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+start
+directly to `__start`
+sysbus.cpu PC `sysbus GetSymbolAddress "vinit"`
+cpu PC `sysbus GetSymbolAddress "vinit"`
+cpu PerformanceInMips 320
+cpu PC
+sysbus GetSymbolAddress vinit
+sysbus GetSymbolAddress "vinit"
+sysbus GetSymbolAddress \"vinit\"
+sysbus GetSymbolAddress "vinit"
+sysbus GetSymbolAddress 
+ include @HiFive1.resc
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+start
+reset
+ alias reset "machine Reset"
+reset
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+start
+Clear 
+ include @HiFive1.resc
+$bin=@.pio/build/hifive1/firmware.elf
+ alias reset "machine Reset"
+start
+reset
+ include @HiFive1.resc
+$bin?=@.pio/build/hifive1/firmware.elf
+start
+Clear
+$bin=.pio/build/hifive1/firmware.elf
+$bin=@.pio/build/hifive1/firmware.el
+$bin=@.pio/build/hifive1/firmware.elf
+$bin
+echo
+echo $bin
+$bin=@./.pio/build/hifive1/firmware.elf
+start
+Clear
+$bin=@./.pio/build/hifive1/firmware.elf
+ include @HiFive1.resc
+pwd
+$bin=@./.pio/build/hifive1/firmware.elf
+ include @HiFive1.resc
+start
+machine Reset
+ include @HiFive1.resc
+$bin=@./.pio/build/hifive1/firmware.elf
+start
+Clear
+$bin=@./.pio/build/hifive1/firmware.elf
+ include @HiFive1.resc
+include @HiFive1.resc
+ include @scripts/single-node/sifive_fe310.resc
+start
+machine Reset
+asd
+include @HiFive1.resc
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+start
+machine Reset
+include @HiFive1.resc
+Clear
+$bin=@.pio/build/hifive1/firmware.elf
+include @HiFive1.resc
+$bin=@.pio/build/hifive1/firmware.elf
+include @HiFive1.resc
+ alias reset "machine Reset"
+start
+reset
+Clear
+$bin=@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+$bin=@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+start
+reset
+machine Reset
+$bin=@./.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ alias reset "machine Reset"
+start
+reset
+ include @scripts/single-node/sifive_fe310.resc
+$bin=@./.pio/build/hifive1/firmware.elf
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+start
+machine Reset
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+sysbus.cpu PC `sysbus GetSymbolAddress "vinit"`
+ sysbus LoadELF @.pio/build/hifive1/firmware.elf
+sysbus Tag <0x10008000 4> "PRCI_HFROSCCFG" 0xFFFFFFFF
+sysbus Tag <0x10008008 4> "PRCI_PLLCFG" 0xFFFFFFFF
+sysbus LoadELF @.pio/build/hifive1/firmware.elf
+sysbus.cpu PC `sysbus GetSymbolAddress "vinit"`
+Clear
+$bin=@./.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+Clear
+$bin=@./.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+Clear
+ include @scripts/single-node/sifive_fe310.resc
+start
+Clear
+$bin?=@http://antmicro.com/projects/renode/zephyr-fe310-shell.elf-s_323068-cf87169150ecdb30ad5a14c87ae209c53dd3eca2
+ include @scripts/single-node/sifive_fe310.resc
+start
+Clear
+$bin=@/Users/cdepaula/Documents/PlatformIO/Projects/ConsoleEcho/.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+start
+reset
+sysbus LoadELF @.pio/build/hifive1/firmware.elf
+$bin=@/Users/cdepaula/Documents/PlatformIO/Projects/ConsoleEcho/.pio/build/hifive1/firmware.elf
+ include @HiFive1.resc
+ alias reset "machine Reset"
+start
+reset
+Clear
+$bin=@/Users/cdepaula/Documents/PlatformIO/Projects/ConsoleEcho/.pio/build/hifive1/firmware.elf
+ include @HiFive1.resc
+$bin=@/Users/cdepaula/Documents/PlatformIO/Projects/ConsoleEcho/.pio/build/hifive1/firmware.elf
+ include @HiFive1.resc
+ alias reset "machine Reset"
+start
+reset
+$bin=@/Users/cdepaula/Documents/PlatformIO/Projects/ConsoleEcho/.pio/build/hifive1/firmware.elf
+ include @HiFive1.resc
+ alias reset "machine Reset"
+start
+$bin=@/Users/cdepaula/Documents/PlatformIO/Projects/ConsoleEcho/.pio/build/hifive1/firmware.elf
+start
+ include @HiFive1.resc
+$bin=@/Users/cdepaula/Documents/PlatformIO/Projects/ConsoleEcho/.pio/build/hifive1/firmware.elf
+ alias reset "machine Reset"
+ include @HiFive1.resc
+start
+reset
+$bin=@/Users/cdepaula/Documents/PlatformIO/Projects/ConsoleEcho/.pio/build/hifive1/firmware.elf
+ include @HiFive1.resc
+ alias reset "machine Reset"
+start
+reset
+ =@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+ \=@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+ =@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+ =@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+reset
+ '\=@.pio/build/hifive1/firmware.elf'
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+$bin=@.pio/build/hifive1/firmware.elf
+include HiFive1.resc
+include @HiFive1.resc
+ alias reset "machine Reset"
+start
+reset
+ =@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+ ''=@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+ '\'=@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+ \=@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+=@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+ $\b\i\n=@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+ $bin=@.pio/build/hifive1/firmware.elf
+ include @scripts/single-node/sifive_fe310.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+reset
+ $bin=@.pio/build/hifive1/firmware.elf
+ include @HiFive1.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ start
+reset
+ include @HiFive1.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
+ include @HiFive1.resc
+ machine StartGdbServer 3333 True
+ alias reset "machine Reset"
+ alias "reset halt" "machine Reset"
+ emulation CreateServerSocketTerminal 1234 "externalUART"
+ connector Connect uart0 externalUART
