@@ -9,5 +9,4 @@ rc/docker/manifests/
 rc/docker/.buildNodeID
 rc/config/hub
 rc/config/rebar3/hex.config
-rc/config/renode/cached_binaries*
-rc/config/renode/binaries_index
+rc/config/renode/*

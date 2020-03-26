@@ -18,7 +18,7 @@ alias ql='quick-look'
 
 alias sniffapp="lsof -i 4tcp"
 alias ping='prettyping'
-alias cat='bat -p'
+alias cat='bat --italic-text=always -p'
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"

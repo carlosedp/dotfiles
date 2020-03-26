@@ -82,6 +82,7 @@ alias kctx='kubectx'
 
 alias k=kubectl
 alias kd='kubectl delete'
+alias kdf='kubectl delete --grace-period=0 --force'
 alias kc='kubectl create'
 alias kg='kubectl get all'
 alias kp='kubectl get pods -o wide'
