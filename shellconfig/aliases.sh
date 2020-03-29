@@ -42,6 +42,7 @@ alias top='top -c'
 alias screen='screen -RR'
 alias grep='grep --color=auto '
 alias sudo='sudo '
+alias p='ps aux | grep -v ]$'
 
 alias sc-dreload='sudo systemctl daemon-reload'
 

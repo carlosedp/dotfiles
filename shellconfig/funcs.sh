@@ -26,4 +26,7 @@ function gsendpatch () {
     $@ $patch
 }
 
-
+function qi () {
+    echo "Querying image $1"
+    docker manifest inspect $1 | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$'
+}
