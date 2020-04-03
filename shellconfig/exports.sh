@@ -24,3 +24,6 @@ $FORGIT_FZF_DEFAULT_OPTS
 --no-mouse
 "
 
+if [ -f /usr/libexec/java_home ]; then
+    export JAVA_HOME=`/usr/libexec/java_home`
+fi

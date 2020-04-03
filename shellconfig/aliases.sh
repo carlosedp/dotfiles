@@ -33,7 +33,7 @@ alias df='df -h'
 alias du='du -h'
 
 # Misc :)
-alias less='less -r'                          # raw control characters
+alias less='less -rX'                          # raw control characters
 alias whence='type -a'                        # where, of a sort
 
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
@@ -66,3 +66,5 @@ alias tm='tmux new -A -s mySession'
 alias tma='tmate new -A -s mySession'
 alias yaegi='rlwrap yaegi'
 alias dot='cd $HOME/.dotfiles'
+alias query-manifest='qi'
+alias tree='tree -I "out|node_modules|vendor|build"'

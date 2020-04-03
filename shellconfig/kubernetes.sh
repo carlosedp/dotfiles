@@ -1,4 +1,4 @@
-## Kubernetes
+
 
 klog() {
     POD=$1
@@ -62,6 +62,19 @@ kdesc() {
     NS=`echo ${PODS} |awk '{print $1}'`
     kubectl describe pod --namespace=${NS} ${PODNAME}
 }
+
+# Kubectl command for all namespaces
+ka() {
+    kubectl $@ --all-namespaces
+}
+
+# Kubectl command for specific namespace
+kn() {
+    namespace=$1
+    shift
+    kubectl -n $namespace $@
+}
+
 #export -f kdesc
 
 # Load kubectl completion
