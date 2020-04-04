@@ -16,6 +16,15 @@ export MANPAGER="less -X";
 # Do not clear screen after exiting LESS
 unset LESS
 
+# Make vim the default editor
+export EDITOR="vim"
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# Highlight section titles in manual pages
+export LESS_TERMCAP_md="$ORANGE"
+
 # Add alt-up/down keybinding to fzf preview window
 export FORGIT_FZF_DEFAULT_OPTS="
 $FORGIT_FZF_DEFAULT_OPTS
@@ -24,6 +33,16 @@ $FORGIT_FZF_DEFAULT_OPTS
 --no-mouse
 "
 
+# Additional PATH exports
+export PATH="$HOME/.dotfiles/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+
+## Golang path
+export GOPATH=$HOME/go
+export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
+
+# Set JAVA home dir
 if [ -f /usr/libexec/java_home ]; then
     export JAVA_HOME=`/usr/libexec/java_home`
 fi

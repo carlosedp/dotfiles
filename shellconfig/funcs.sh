@@ -1,10 +1,18 @@
-#!/bin/bash
+# Functions when required functionality won't work with an alias
 
 # Generate a scp command to copy files between hosts
-scppath () { echo $USER@`hostname -I | awk '{print $1}'`:`readlink -f $1`; }
+scppath () {
+    echo $USER@`hostname -I | awk '{print $1}'`:`readlink -f $1`;
+}
 
 # Call journalctl for process or all if no arguments
-jo () { if [[ "$1" != "" ]]; then sudo journalctl -xef -u $1; else sudo journalctl -xef; fi }
+jo () {
+    if [[ "$1" != "" ]]; then
+        sudo journalctl -xef -u $1;
+    else
+        sudo journalctl -xef;
+    fi
+}
 
 
 # Generate a patch email from git commits
@@ -26,7 +34,10 @@ function gsendpatch () {
     $@ $patch
 }
 
+# Query Docker image manifest
 function qi () {
     echo "Querying image $1"
-    docker manifest inspect $1 | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$'
+    OUT=$(docker manifest inspect $1 | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$' 2> /dev/null)
+    echo $OUT
+
 }

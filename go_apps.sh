@@ -20,9 +20,7 @@ if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
     # Yaegi - Go command line interpreter
     echo "Installing yaegi"
     go get -u github.com/containous/yaegi/cmd/yaegi
-
-    # fzf - Command line fuzzy finder
-    echo "Installing fzf"
-    go get -u github.com/junegunn/fzf
-
+else
+    echo "You don't have Go installed"
+    exit 1
 fi

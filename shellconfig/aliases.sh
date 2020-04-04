@@ -1,4 +1,4 @@
-# Aliases
+# Generic Aliases
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
@@ -68,3 +68,6 @@ alias yaegi='rlwrap yaegi'
 alias dot='cd $HOME/.dotfiles'
 alias query-manifest='qi'
 alias tree='tree -I "out|node_modules|vendor|build"'
+
+alias sniffapp="lsof -i 4tcp"
+alias ping='prettyping'

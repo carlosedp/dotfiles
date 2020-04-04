@@ -16,8 +16,6 @@ alias which='gwhich'
 # Quicklook file. Depends on osx plugin from zsh oh-my-zsh
 alias ql='quick-look'
 
-alias sniffapp="lsof -i 4tcp"
-alias ping='prettyping'
 alias cat='bat --italic-text=always -p --pager "less -rX"'
 
 # Recursively delete `.DS_Store` files
@@ -31,4 +29,4 @@ alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo 
 alias clipdecode="pbpaste|base64 --decode"
 
 # Flush Directory Service cache
-alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
+alias flushdns="dscacheutil -flushcache && killall -HUP mDNSResponder"

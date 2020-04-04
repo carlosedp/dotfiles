@@ -35,26 +35,20 @@ sleep 3
 echo "Install brews"
 echo "==================================="
 echo ""
-brew bundle install
-brew bundle install --file Brewfile-casks-store
+# Command line apps
+brew bundle install --file $DOTFILES/Brewfile
+# Mac apps
+brew bundle install --file $DOTFILES/Brewfile-casks-store
 echo ""
 echo "done ..."
 echo ""
 sleep 1
 
 # Install additional fonts
-sudo cp $HOME/.dotfiles/fonts/Dank* /Library/Fonts
-
-# Install prettyping
-curl https://raw.githubusercontent.com/carlosedp/prettyping/master/prettyping -o /usr/local/bin/prettyping
+sudo cp $HOME/.dotfiles/fonts/* /Library/Fonts
 
 # Install Go applications
 bash -c $DOTFILES/go_apps.sh
-
-# Mount / drive with noatime
-#sudo cp com.noatime.plist /Library/LaunchDaemons/com.noatime.plist
-#sudo chown root:wheel /Library/LaunchDaemons/com.noatime.plist
-#sudo chmod 644 /Library/LaunchDaemons/com.noatime.plist
 
 # Setup dotfiles
 bash -c $DOTFILES/setup_links.sh

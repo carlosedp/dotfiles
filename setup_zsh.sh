@@ -53,7 +53,7 @@ fi
 
 
 echo ""
-echo "Get dotfiles"
+echo "Update dotfiles"
 if [[ ! -d "$DOTFILES" ]]; then
     git clone https://github.com/carlosedp/dotfiles.git $DOTFILES
 else
@@ -71,12 +71,25 @@ else
 fi
 
 echo ""
-echo "Install fzf"
+echo "Install fzf plugin"
+if [[ $(command -v go) == "" ]]; then
+    # Install fzf - Command line fuzzy finder
+    echo "Installing fzf"
+    go get -u github.com/junegunn/fzf
+else
+    echo "You don't have Go installed, can't install fzf."
+fi
+
 if [[ ! -d "$HOME/.fzf" ]]; then
     git clone https://github.com/junegunn/fzf $HOME/.fzf --depth=1
 else
     echo "You already have the fzf, updating..."
     pushd $HOME/.fzf; git pull --depth=1; popd
+fi
+
+if [[ $(command -v fzf) == "" ]]; then
+    echo "You don't have fzf installed, install thru go_apps.sh script..."
+    echo ""
 fi
 
 echo ""
