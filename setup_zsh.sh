@@ -72,7 +72,7 @@ fi
 
 echo ""
 echo "Install fzf plugin"
-if [[ $(command -v go) == "" ]]; then
+if [[ $(command -v go) != "" ]]; then
     # Install fzf - Command line fuzzy finder
     echo "Installing fzf"
     go get -u github.com/junegunn/fzf
@@ -83,7 +83,7 @@ fi
 if [[ ! -d "$HOME/.fzf" ]]; then
     git clone https://github.com/junegunn/fzf $HOME/.fzf --depth=1
 else
-    echo "You already have the fzf, updating..."
+    echo "You already have the fzf config, updating..."
     pushd $HOME/.fzf; git pull --depth=1; popd
 fi
 
