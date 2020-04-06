@@ -11,10 +11,13 @@ ALPINEPACKAGES="ack nfs-utils build-base"
 # Install Linux packages
 if [ $(cat /etc/os-release | grep -i "ID=debian") ] || [ $(cat /etc/os-release | grep -i "ID=ubuntu") ]; then
     sudo apt update
+    sudo apt upgrade
     sudo apt install -y $BASEPACKAGES
     sudo apt install -y $DEBIANPACKAGES
 fi
 if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
+    sudo dnf update
+    sudo dnf upgrade
     sudo dnf install -y $BASEPACKAGES
     sudo dnf install -y $FEDORAPACKAGES
 fi

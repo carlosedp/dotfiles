@@ -1,5 +1,7 @@
 # Install Go apps
 
+export PATH=/usr/local/go/bin:$PATH
+
 # Only run if Go is present
 if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
 
