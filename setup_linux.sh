@@ -3,7 +3,7 @@
 DOTFILES=$HOME/.dotfiles
 cd $HOME
 
-BASEPACKAGES="sudo openssh-client openssh-server curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux autojump neofetch lshw telnet iotop"
+BASEPACKAGES="sudo lsb-release openssh-client openssh-server curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux autojump neofetch lshw telnet iotop"
 DEBIANPACKAGES="locales ack-grep nfs-common apt-utils build-essential"
 FEDORAPACKAGES="ack nfs-utils @development-tools"
 ALPINEPACKAGES="ack nfs-utils build-base"
@@ -45,7 +45,7 @@ case $ARCH in
         return 0
         ;;
 esac
-curl -sL https://dl.google.com/go/go$GOVERSION.linux-$P_ARCH.tar.gz | tar xf - -C /usr/local
+curl -sL https://dl.google.com/go/go$GOVERSION.linux-$P_ARCH.tar.gz | sudo tar xzf - -C /usr/local
 export PATH=/usr/local/go/bin:$PATH
 echo "Installed Go version $GOVERSION for $P_ARCH"
 echo ""

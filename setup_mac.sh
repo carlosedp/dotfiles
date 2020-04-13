@@ -24,7 +24,7 @@ echo ""
 if [[ ! `which brew` ]]; then
     echo "Homebrew not installed, installing..."
     echo ""
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 else
     echo "Homebrew is installed, will update"
     echo ""
