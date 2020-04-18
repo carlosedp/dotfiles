@@ -41,3 +41,9 @@ function qi () {
     echo $OUT
 
 }
+
+# Execute ripgrep output thru pager
+function rg()
+{
+   $(which rg) -p "$@" | less -FRX
+}

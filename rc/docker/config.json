@@ -1,11 +1,11 @@
 {
-  "HttpHeaders" : {
-    "User-Agent" : "Docker-Client/19.03.5 (darwin)"
-  },
   "auths" : {
     "https://index.docker.io/v1/" : {
 
     }
+  },
+  "HttpHeaders" : {
+    "User-Agent" : "Docker-Client/19.03.5 (darwin)"
   },
   "experimental" : "enabled",
   "stackOrchestrator" : "swarm"

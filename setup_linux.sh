@@ -3,7 +3,7 @@
 DOTFILES=$HOME/.dotfiles
 cd $HOME
 
-BASEPACKAGES="sudo lsb-release openssh-client openssh-server curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux autojump neofetch lshw telnet iotop"
+BASEPACKAGES="sudo lsb-release openssh-client openssh-server curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux autojump neofetch lshw telnet iotop ripgrep"
 DEBIANPACKAGES="locales ack-grep nfs-common apt-utils build-essential"
 FEDORAPACKAGES="ack nfs-utils @development-tools"
 ALPINEPACKAGES="ack nfs-utils build-base"

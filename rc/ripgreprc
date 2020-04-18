@@ -1,0 +1,12 @@
+--colors=line:none
+--colors=path:fg:green
+--colors=path:style:bold
+--colors=path:style:underline
+--colors=line:fg:green
+--colors=line:style:bold
+--colors=match:bg:yellow
+--colors=match:fg:black
+--smart-case
+--glob=!git/*
+--glob=!vendor/*
+--glob=!node_modules/*

@@ -10,6 +10,8 @@ export HISTTIMEFORMAT="%d/%m/%y %T "
 export LANG="en_US.UTF-8";
 export LC_ALL="en_US.UTF-8";
 
+export LESS="-FRX"
+
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -X";
 
@@ -46,3 +48,6 @@ export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
 if [ -f /usr/libexec/java_home ]; then
     export JAVA_HOME=`/usr/libexec/java_home`
 fi
+
+# Ripgrep config
+export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
