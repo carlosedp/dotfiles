@@ -53,6 +53,7 @@ alias gr='git remote -v'
 alias glo='git l'
 alias gcs='git commit -v -s'
 alias gt='git log --tags -10 --simplify-by-decoration  --reverse --date=format:"%Y-%m-%d %H:%I:%S" --format=format:"%C(03)%>|(10)%h%C(reset)  %C(04)%ad%C(reset)  %C(green)%<(16,trunc)%an%C(reset)  %C(bold 1)%d%C(reset)"'
+alias gcsn!='git commit -v --no-edit -s --amend'
 
 alias ansible-syntax='ansible-playbook --syntax-check -i "127.0.0.1,"'
 alias diskstat='sudo iostat -d -x -m -c -t 2'

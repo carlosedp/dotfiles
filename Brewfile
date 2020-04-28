@@ -1,4 +1,3 @@
-tap "homebrew/dupes"
 tap "beeftornado/rmtree"
 tap "boz/repo"
 tap "buo/cask-upgrade"

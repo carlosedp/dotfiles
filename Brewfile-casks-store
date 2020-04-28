@@ -30,7 +30,7 @@ cask "qlcolorcode"
 cask "qlmarkdown"
 cask "qlstephen"
 cask "quicklook-json"
-cask "spectacle"
+cask "rectangle"
 cask "spotify"
 cask "skype"
 cask "steam"
@@ -43,6 +43,7 @@ cask "virtualbox-extension-pack"
 cask "vlc"
 cask "visual-studio-code"
 cask "horndis"
+cask "tweetbot"
 
 mas "Amphetamine", id: 937984704
 mas "Disk Speed Test", id: 425264550
