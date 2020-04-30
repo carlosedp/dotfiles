@@ -1,11 +1,11 @@
 {
-  "stackOrchestrator" : "swarm",
-  "experimental" : "enabled",
   "auths" : {
     "https://index.docker.io/v1/" : {
 
     }
   },
+  "experimental" : "enabled",
+  "stackOrchestrator" : "swarm",
   "HttpHeaders" : {
     "User-Agent" : "Docker-Client/19.03.8 (darwin)"
   }

@@ -169,17 +169,13 @@ done
 popd
 
 echo ""
-echo "Update kubectx/kubens plugins"
-pushd $DOTFILES/bin
+echo "Update kubectx/kubens completion"
+pushd $DOTFILES/completion
 for X in kubectx kubens; do
-    curl -sL -o $X https://raw.githubusercontent.com/ahmetb/kubectx/master/$X
-    chmod +x $X
-    pushd $DOTFILES/completion
     curl -sL -o $X.bash https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/$X.bash
     curl -sL -o $X.zsh https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/$X.zsh
     chmod +x $X.bash
     chmod +x $X.zsh
-    popd
 done;
 popd
 

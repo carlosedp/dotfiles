@@ -37,9 +37,12 @@ function gsendpatch () {
 # Query Docker image manifest
 function qi () {
     echo "Querying image $1"
-    OUT=$(docker manifest inspect $1 | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$' 2> /dev/null)
-    echo $OUT
-
+    OUT=$(docker manifest inspect $1 | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' 2> /dev/null | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$')
+    if [ $? -eq 0 ]; then
+        echo $OUT
+    else
+        echo "Image does not have a multiarch manifest."
+    fi
 }
 
 # Execute ripgrep output thru pager

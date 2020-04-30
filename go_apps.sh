@@ -22,6 +22,11 @@ if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
     # Yaegi - Go command line interpreter
     echo "Installing yaegi"
     go get -u github.com/containous/yaegi/cmd/yaegi
+
+    # Kubectx and Kubens
+    echo "Installing kubectx and kubens"
+    go get -u github.com/ahmetb/kubectx/cmd/kubectx
+    go get -u github.com/ahmetb/kubectx/cmd/kubens
 else
     echo "You don't have Go installed"
     exit 1
