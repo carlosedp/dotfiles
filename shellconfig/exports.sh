@@ -45,7 +45,7 @@ export GOPATH=$HOME/go
 export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
 
 # Set JAVA home dir
-if [ /usr/libexec/java_home ]; then
+if [ -f /usr/libexec/java_home ] && [ /usr/libexec/java_home ]; then
     export JAVA_HOME=`/usr/libexec/java_home`
 fi
 

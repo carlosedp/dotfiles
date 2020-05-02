@@ -1,25 +1,39 @@
 #!/bin/bash
 
+RED="\e[31m"
+REDBOLD="\e[31m\e[1m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+RESET="\e[0m"
+
+log () {
+    if [ $2 ]; then
+        echo `printf "$2$1 $RESET"`
+    else
+        echo `printf "$RESET$1 $RESET"`
+    fi
+}
+
 # Check pre-reqs
 if [[ $(command -v git) == "" ]] || [[ $(command -v curl) == "" ]]; then
-    echo "Curl or git not installed..."
+    log "Curl or git not installed..." $REDBOLD
     exit 1
 fi
 
-echo "Starting Zsh setup"
+log "Starting Zsh setup" $GREEN
 echo ""
 DOTFILES=$HOME/.dotfiles
 
 sudo -v
 
 if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
-    echo "Zsh not installed, installing..."
+    log "Zsh not installed, installing..." $GREEN
 
     if [ $(uname) == "Darwin" ]; then
-        echo "Checking if Homebrew is installed"
+        log "> Checking if Homebrew is installed" $YELLOW
         echo ""
         if [[ $(command -v brew) == "" ]]; then
-            echo "Homebrew not installed, installing..."
+            log "> Homebrew not installed, installing..." $YELLOW
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
             echo ""
         fi
@@ -27,73 +41,82 @@ if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
         brew install zsh
     else
         # Install Zsh on Linux
-        if [ $(cat /etc/os-release | grep -i "ID=debian") ] || [ $(cat /etc/os-release | grep -i "ID=ubuntu") ]; then
+        DISTRO=$(cat /etc/os-release)
+        if [ $(echo $DISTRO | grep -i "ID=debian") ] || [ $(echo $DISTRO | grep -i "ID=ubuntu") ]; then
             sudo apt update
             sudo apt install -y zsh
-        fi
-        if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
+        elif [ $(echo $DISTRO | grep -i "ID=fedora") ]; then
             sudo dnf install -y zsh
+        elif [ $(echo $DISTRO | grep -i "ID=alpine") ]; then
+            sudo apk add -y zsh
+        elif [ $(echo $DISTRO | grep -i "ID=void") ]; then
+            sudo xbps-install zsh
+        else
+            log "Your distro is not supported, install zsh manually." $REDBOLD
+            exit 1
         fi
     fi
 fi
 
-echo "Change default shell to zsh"
+log "Change default shell to zsh" $GREEN
 if [ $(uname) == "Darwin" ]; then
     sudo chsh -s /usr/local/bin/zsh $USER
 else
-    if [ $(cat /etc/os-release | grep -i "ID=debian") ] || [ $(cat /etc/os-release | grep -i "ID=ubuntu") ] || [ $(cat /etc/os-release | grep -i "ID=alpine"); then
+    DISTRO=$(cat /etc/os-release)
+    if [ $(echo $DISTRO | grep -i "ID=debian") ] || [ $(echo $DISTRO | grep -i "ID=ubuntu") ] || [ $(echo $DISTRO | grep -i "ID=alpine") ] || [ $(echo $DISTRO | grep -i "ID=void") ]; then
         ZSH=`which zsh`
         sudo chsh $USER -s $ZSH
-    fi
-    if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
+    elif [ $(echo $DISTRO | grep -i "ID=fedora") ]; then
         ZSH=`which zsh`
         sudo usermod --shell $ZSH $USER
+    else
+        log "Your distro is not supported, change default shell manually." $RED
     fi
 fi
 
 
 echo ""
-echo "Update dotfiles"
+log "Update dotfiles" $GREEN
 if [[ ! -d "$DOTFILES" ]]; then
-    git clone https://github.com/carlosedp/dotfiles.git $DOTFILES
+    git clone --quiet https://github.com/carlosedp/dotfiles.git $DOTFILES
 else
-    echo "You already have the dotfiles, updating..."
+    log "> You already have the dotfiles, updating..." $YELLOW
     pushd $DOTFILES; git pull; popd
 fi
 
 echo ""
-echo "Install oh-my-zsh"
+log "Install oh-my-zsh" $GREEN
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 else
-    echo "You already have the oh-my-zsh, updating..."
-    pushd $HOME/.oh-my-zsh; git pull; popd
+    log "> You already have the oh-my-zsh, updating..." $YELLOW
+    pushd $HOME/.oh-my-zsh; git pull --quiet; popd
 fi
 
 echo ""
-echo "Install fzf plugin"
+log "Install fzf plugin" $GREEN
 if [[ $(command -v go) != "" ]]; then
     # Install fzf - Command line fuzzy finder
-    echo "Installing fzf"
+    log "> Installing fzf" $YELLOW
     go get -u github.com/junegunn/fzf
 else
-    echo "You don't have Go installed, can't install fzf."
+    log "> You don't have Go installed, can't install fzf." $RED
 fi
 
 if [[ ! -d "$HOME/.fzf" ]]; then
-    git clone https://github.com/junegunn/fzf $HOME/.fzf --depth=1
+    git clone --quiet https://github.com/junegunn/fzf $HOME/.fzf --depth=1
 else
-    echo "You already have the fzf config, updating..."
-    pushd $HOME/.fzf; git pull --depth=1; popd
+    log "> You already have the fzf config, updating..." $GREEN
+    pushd $HOME/.fzf; git pull --quiet --depth=1; popd
 fi
 
 if [[ $(command -v fzf) == "" ]]; then
-    echo "You don't have fzf installed, install thru go_apps.sh script..."
+    log "You don't have fzf installed, install thru go_apps.sh script..."$RED
     echo ""
 fi
 
 echo ""
-echo "Add completion scripts"
+log "Add completion scripts" $GREEN
 mkdir -p $HOME/.oh-my-zsh/completions
 for FILE in $HOME/.dotfiles/completion/*; do
     ln -sfn "$FILE" $HOME/.oh-my-zsh/completions/_$(basename $FILE)
@@ -110,14 +133,14 @@ themes=("https://github.com/romkatv/powerlevel10k" \
 
 for t in "${themes[@]}"
     do
-    echo "Installing $t prompt..."
+    log "Installing $t prompt..." $GREEN
     theme_name=`basename $t`
     if [[ ! -d "$ZSH_CUSTOM/themes/$theme_name" ]]; then
-        echo "Installing $theme_name..."
-        git clone $t "$ZSH_CUSTOM/themes/$theme_name"
+        log "> Installing $theme_name..." $YELLOW
+        git clone --quiet $t "$ZSH_CUSTOM/themes/$theme_name"
     else
-        echo "You already have $theme_name, updating..."
-        pushd $ZSH_CUSTOM/themes/$theme_name; git pull; popd
+        log "> You already have $theme_name, updating..." $YELLOW
+        pushd $ZSH_CUSTOM/themes/$theme_name; git pull --quiet; popd
     fi
 done
 
@@ -136,12 +159,12 @@ for p in "${plugins[@]}"
     do
     plugin_name=`basename $p`
     plugin_names+=($plugin_name)
-    echo "Installing $plugin_name..."
+    log "Installing $plugin_name..." $GREEN
     if [[ ! -d "$ZSH_CUSTOM/plugins/$plugin_name" ]]; then
-        git clone $p "$ZSH_CUSTOM/plugins/$plugin_name"
+        git clone --quiet $p "$ZSH_CUSTOM/plugins/$plugin_name"
     else
-        echo "You already have $plugin_name, updating..."
-        pushd $ZSH_CUSTOM/plugins/$plugin_name; git pull; popd
+        log "> You already have $plugin_name, updating..." $YELLOW
+        pushd $ZSH_CUSTOM/plugins/$plugin_name; git pull --quiet; popd
     fi
 done
 
@@ -154,14 +177,14 @@ containsElement () {
 }
 
 echo ""
-echo "Clean unused plugins"
+log "Clean unused plugins" $GREEN
 pushd "$ZSH_CUSTOM/plugins/"
 for d in *; do
     if [ -d "$d" ]; then
         if containsElement $d "${plugin_names[@]}"; then
-            echo "Contains $d."
+            log "Keep $d." $YELLOW
         else
-            echo "Does not contain $d, removing."
+            log "Should not have $d, removing." $YELLOW
             rm -rf $d
         fi
     fi
@@ -169,7 +192,7 @@ done
 popd
 
 echo ""
-echo "Update kubectx/kubens completion"
+log "Update kubectx/kubens completion" $GREEN
 pushd $DOTFILES/completion
 for X in kubectx kubens; do
     curl -sL -o $X.bash https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/$X.bash
@@ -180,6 +203,9 @@ done;
 popd
 
 echo ""
-echo "Clean completion cache"
+log "Clean completion cache" $GREEN
 \rm -rf $home/.zcompdump*
 
+echo ""
+log "ZSH Setup finished!" $GREEN
+echo ""
