@@ -1,12 +1,12 @@
 # Functions when required functionality won't work with an alias
 
 # Generate a scp command to copy files between hosts
-scppath () {
+function scppath () {
     echo $USER@`hostname -I | awk '{print $1}'`:`readlink -f $1`;
 }
 
 # Call journalctl for process or all if no arguments
-jo () {
+function jo () {
     if [[ "$1" != "" ]]; then
         sudo journalctl -xef -u $1;
     else
@@ -46,7 +46,11 @@ function qi () {
 }
 
 # Execute ripgrep output thru pager
-function rg()
-{
+function rg() {
    $(which rg) -p "$@" | less -FRX
+}
+
+# Install latest Golang. Replaces current one on /usr/local/go
+function install_golang() {
+    declare -A ARCH=( [x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x ); FILE=$(curl -sL https://golang.org/dl/?mode=json | jq -r '.[].files[].filename' | sort -n | grep -i $(uname -s) | grep tar | grep ${ARCH[$(uname -m)]} | tail -1); curl -sL https://dl.google.com/go/$FILE --output $FILE; sudo rm -rf /usr/local/go; sudo tar vxf $FILE -C /usr/local/
 }
