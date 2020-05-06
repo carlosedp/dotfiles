@@ -63,7 +63,7 @@ if [ $(uname) == "Darwin" ]; then
     sudo chsh -s /usr/local/bin/zsh $USER
 else
     DISTRO=$(cat /etc/os-release)
-    if [ $(echo $DISTRO | grep -i "ID=debian") ] || [ $(echo $DISTRO | grep -i "ID=ubuntu") ] || [ $(echo $DISTRO | grep -i "ID=alpine") ] || [ $(echo $DISTRO | grep -i "ID=void") ]; then
+    if [[ $(echo $DISTRO | grep -i "ID=debian") || $(echo $DISTRO | grep -i "ID=ubuntu") || $(echo $DISTRO | grep -i "ID=alpine") || $(echo $DISTRO | grep -i "ID=void") ]]; then
         ZSH=`which zsh`
         sudo chsh $USER -s $ZSH
     elif [ $(echo $DISTRO | grep -i "ID=fedora") ]; then
