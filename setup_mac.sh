@@ -3,6 +3,16 @@
 DOTFILES=$HOME/.dotfiles
 cd $HOME
 
+echo "Checking if macOS is up to date..."
+if [[ "$(sudo softwareupdate -l 2>&1)" != *"No new software available"* ]]; then
+echo "Updating macOS"
+sudo softwareupdate -i -a
+echo "Reboot your machine now and run this script again afterwards."
+exit 0
+else
+echo "This macOS is up to date."
+fi
+
 echo "Don't forget to install XCode or Developer tools"
 echo "======================================================="
 echo ""
@@ -30,6 +40,7 @@ else
     echo ""
     brew update
 fi
+brew analytics off
 sleep 3
 
 echo "Install brews"
@@ -69,5 +80,10 @@ fi
 
 # Add user to passwordless sudo
 #sudo sed -i "%admin    ALL = (ALL) NOPASSWD:ALL"
+
+# App configs
+
+## VSCode settings sync
+code --install-extension Shan.code-settings-sync
 
 echo "Setup finished!"

@@ -161,11 +161,5 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 #Show Path bar in Finder"
 defaults write com.apple.finder ShowPathbar -bool true
 
-# Specify iTerm2 preferences directory
-defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/Google Drive/Configs/iTerm2"
-
-# Tell iTerm2 to use the custom preferences in the directory
-defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
-
 echo "Kill affected applications"
 for app in Safari Finder Dock Mail SystemUIServer; do killall "$app" >/dev/null 2>&1; done

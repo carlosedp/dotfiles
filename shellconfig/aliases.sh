@@ -72,3 +72,5 @@ alias tree='tree -I "out|node_modules|vendor|build"'
 
 alias sniffapp="lsof -i 4tcp"
 alias ping='prettyping'
+alias fuck='sudo $(history -p \!\!)'
+alias aptupd='for C in update upgrade autoclean autoremove; do sudo apt $C; done;'

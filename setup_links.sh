@@ -29,21 +29,12 @@ if [[ ! -d "$HOME/.ssh" ]] && [[ -d "$sync_folder/SSH_Keys" ]]; then
 fi
 
 # List of settings to be syncd between computers. Separated by spaces.
-# Settings from $HOME/Library/Containers
-container_settings='com.termius.mac'
+
 # Settings from $HOME/Library/Application Support
-application_support_settings='iTerm2 2fa'
+application_support_settings='2fa'
 
 if [ $(uname) == "Darwin" ]; then
-  # Link settings from ~/Library/Containers
-  for X in $container_settings
-  do
-    if [[ ! -d "$HOME/Library/Containers/$X" ]]; then
-        create_link "$sync_folder/Configs/$X" "$HOME/Library/Containers/$X"
-    fi
-  done
-
-  # Link settings from ~/Library/Application Support
+  # Link private settings to ~/Library/Application Support
   for X in $application_support_settings
   do
     if [[ ! -d "$HOME/Library/Application Support/$X" ]]; then
@@ -55,6 +46,12 @@ if [ $(uname) == "Darwin" ]; then
   for X in $(ls "$sync_folder/Configs/automator/")
   do
     create_link "$sync_folder/Configs/automator/"$X "$HOME/Library/Services/$X"
+  done
+
+  # Link preferences from ~/Library/Preferences/
+  for X in $(ls "$HOME/.dotfiles/mac/configs/")
+  do
+    create_link "$HOME/.dotfiles/mac/configs/$X" "$HOME/Library/Preferences/$X"
   done
 
 fi
