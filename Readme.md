@@ -74,6 +74,7 @@ The dotfiles is structured as:
 * `setup_links.sh` - Configures symbolic links to directories and rc files. Called by `setup_mac.sh`, `setup_tmux.sh` and `setup_zsh.sh`.
 * `setup_mac.sh` - Setup Mac with command line tools, Homebrew package manager. Installs homebrew applications, fonts, go applications, links, zsh, tmux thru aux scripts. All Mac related setup goes here.
 * `setup_linux.sh` - Setup Linux with basic packages. Installs go applications, links, zsh, tmux thru aux scripts. All Linux related setup goes here.
+* `setup_apps.sh` - Setup application specific configs and themes.
 * `setup_tmux.sh` - Installs and configure Tmux on any platform (Mac / Linux)
 * `setup_zsh.sh` - Installs and configures Zsh, its plugins and theme. Sets it as default for current user. Also updates all packages and dependencies whenever run.
 

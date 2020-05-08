@@ -56,7 +56,6 @@ brew "git"
 brew "go"
 brew "htop"
 brew "hub"
-brew "hyperkit", link: false
 brew "iperf3"
 brew "istioctl"
 brew "jq"

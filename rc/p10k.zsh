@@ -736,5 +736,5 @@ fi
 # Customize to your needs...
 export POWERLEVEL9K_CONTEXT_TEMPLATE="%n@%m"
 export POWERLEVEL9K_TRANSIENT_PROMPT=same-dir
-export POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc'
+export POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|istioctl'
 

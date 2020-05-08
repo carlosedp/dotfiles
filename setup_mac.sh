@@ -73,17 +73,12 @@ bash -c $DOTFILES/setup_tmux.sh
 # Setup OsX defaults
 bash -c $DOTFILES/osx_prefs.sh
 
+# Setup application specific configs
+bash -c $DOTFILES/setup_apps.sh
+
 # Add TouchID authentication to Sudo
 if [[ ! `grep "pam_tid.so" /etc/pam.d/sudo` ]]; then
     echo -e "auth       sufficient     pam_tid.so\n$(cat /etc/pam.d/sudo)" |sudo tee /etc/pam.d/sudo;
 fi
-
-# Add user to passwordless sudo
-#sudo sed -i "%admin    ALL = (ALL) NOPASSWD:ALL"
-
-# App configs
-
-## VSCode settings sync
-code --install-extension Shan.code-settings-sync
 
 echo "Setup finished!"

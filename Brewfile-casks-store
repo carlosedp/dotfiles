@@ -47,7 +47,6 @@ cask "tweetbot"
 
 mas "Amphetamine", id: 937984704
 mas "Disk Speed Test", id: 425264550
-mas "Evernote", id: 406056744
 mas "ForkLift", id: 412448059
 mas "LastPass", id: 926036361
 mas "LimeChat", id: 414030210
@@ -55,4 +54,3 @@ mas "OTP Manager", id: 928941247
 mas "Pixelmator", id: 407963104
 mas "Slack", id: 803453959
 mas "Speedtest", id: 1153157709
-mas "TweetDeck", id: 485812721

@@ -1,0 +1,189 @@
+html {
+	font-family: "Menlo", monospace;
+	font-size: 9pt;
+	background-color: #202020;
+	color: #ffffff;
+	padding: 2px 4px;
+	margin: 0;
+}
+
+body {
+	margin: 0;
+	padding: 0.5ex 2.0ex 0.5ex 1.5ex;
+}
+
+body.normal {
+	line-height: 3.0ex;
+}
+
+hr {
+	margin: 0.5em 0.1em;
+	border: none;
+	height: 2px;
+	color: #8e9c69;
+	background: #8e9c69;
+}
+
+a {
+	/* color: #99c7ff; */
+	color: inherit;
+}
+
+.inlineimage {
+	margin: 5px 0;
+	max-width: 200px;
+	max-height: 150px;
+	-webkit-box-shadow: 2px 2px 2px #888;
+}
+
+.line {
+	padding: 0.2ex 0;
+}
+
+.time {
+	color: #5F5A60;
+}
+
+.place {
+	color: #9a703f;
+}
+
+/* nick colours */
+.sender[type=normal] {
+	color: #c4af75;
+	font-weight: bold;
+	margin-right: 1.5ex;
+}
+
+.sender[type=myself] {
+	color: #8e9c69;
+	font-weight: bold;
+	margin-right: 1.5ex;
+}
+
+/* message colours */
+.message[type=privmsg] {
+	color: #ffffff;
+}
+
+.message[type=action] {
+	color: inherit;
+}
+
+.message[type=notice] {
+	color: #8e9c69;
+}
+
+.message[type=system] {
+	color: #808080;
+}
+
+.message[type=error] {
+	color: #ca773f;
+	font-weight: bold;
+}
+
+.message[type=reply] {
+	color: #f9ed97;
+}
+
+.message[type=error_reply] {
+	color: #e3c59c;
+}
+
+.message[type=dcc_send_send] {
+	color: #5e5960;
+}
+
+.message[type=dcc_send_receive] {
+	color: #5e5960;
+}
+
+.message[type=join] {
+	color: #666666;
+}
+
+.message[type=part] {
+	color: #666666;
+}
+
+.message[type=quit] {
+	color: #666666;
+}
+
+.message[type=kick] {
+	color: #666666;
+}
+
+.message[type=kill] {
+	color: #666666;
+}
+
+.message[type=nick] {
+	color: #5e5960;
+}
+
+.message[type=mode] {
+	color: #8e9c69;
+}
+
+.message[type=topic] {
+	color: #8e9c69;
+}
+
+.message[type=invite] {
+	color: #daefa3;
+	font-style: italic;
+}
+
+.message[type=wallops] {
+	color: #5e5960;
+}
+
+.message[type=debug_send] {
+	color: #5e5960;
+}
+
+.message[type=debug_receive] {
+	color: #5e5960;
+}
+
+/* link styles */
+.url {
+	word-break: break-all;
+}
+
+.address {
+	text-decoration: underline;
+	word-break: break-all;
+}
+
+/* text highlight */
+.highlight {
+	color: #ffffff;
+	font-weight: normal;
+}
+
+/* nick line highlight */
+body.normal .line[highlight=true]>.sender[type=normal] {
+	background-color: #424242;
+	color: #cf7d34;
+}
+
+/* message line highlight */
+.line[highlight=true] {
+	background-color: #424242;
+}
+
+/* emote prefix */
+body.normal div.line[type=action] .sender[type=normal]::before,
+div.line[type=action] .sender[type=myself]::before {
+	content: "• ";
+}
+
+/* disable mirc colours */
+.effect[color-number] {
+	color: inherit;
+	background-color: inherit;
+	font-style: italic;
+}
