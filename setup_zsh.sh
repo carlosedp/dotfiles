@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 RED="\e[31m"
 REDBOLD="\e[31m\e[1m"
@@ -15,21 +15,36 @@ log () {
 }
 
 # Check pre-reqs
-if [[ $(command -v git) == "" ]] || [[ $(command -v curl) == "" ]]; then
-    log "Curl or git not installed..." $REDBOLD
-    exit 1
+EXIT=0
+for C in sudo curl git bash; do
+    if [[ ! $(command -v $C) ]]; then
+        log "ERROR: The command $C is not installed" $REDBOLD
+        EXIT=1
+    fi
+done
+if [ $EXIT == "1" ]; then exit 1; fi
+
+# Load Linux distro info
+if [ $(uname -s) != "Darwin" ]; then
+    if [ -f /etc/os-release ]; then
+        source /etc/os-release
+    else
+        log "ERROR: I need the file /etc/os-release to determine the Linux distribution..." $REDBOLD
+        exit 1
+    fi
 fi
 
 log "Starting Zsh setup" $GREEN
 echo ""
 DOTFILES=$HOME/.dotfiles
+PATH=/usr/local/go/bin:$HOME/go/bin:"$PATH"
 
 sudo -v
 
-if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
+if [ ! "$(command -v zsh)" ] 2> /dev/null 2>&1; then
     log "Zsh not installed, installing..." $GREEN
 
-    if [ $(uname) == "Darwin" ]; then
+    if [ $(uname -s) == "Darwin" ]; then
         log "> Checking if Homebrew is installed" $YELLOW
         echo ""
         if [[ $(command -v brew) == "" ]]; then
@@ -41,34 +56,32 @@ if [ -x "$(command zsh --version)" ] 2> /dev/null 2>&1; then
         brew install zsh
     else
         # Install Zsh on Linux
-        DISTRO=$(cat /etc/os-release)
-        if [ $(echo $DISTRO | grep -i "ID=debian") ] || [ $(echo $DISTRO | grep -i "ID=ubuntu") ]; then
+        if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
             sudo apt update
-            sudo apt install -y zsh
-        elif [ $(echo $DISTRO | grep -i "ID=fedora") ]; then
+            sudo apt install --no-install-recommends -y zsh
+        elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
             sudo dnf install -y zsh
-        elif [ $(echo $DISTRO | grep -i "ID=alpine") ]; then
-            sudo apk add -y zsh
-        elif [ $(echo $DISTRO | grep -i "ID=void") ]; then
-            sudo xbps-install zsh
+        elif [ $ID == "alpine" ]; then
+            sudo apk add zsh
+        elif [ $ID == "void" ]; then
+            sudo xbps-install -Su zsh
         else
-            log "Your distro is not supported, install zsh manually." $REDBOLD
+            log "ERROR: Your distro is not supported, install zsh manually." $REDBOLD
             exit 1
         fi
     fi
 fi
 
 log "Change default shell to zsh" $GREEN
-if [ $(uname) == "Darwin" ]; then
+if [ $(uname -s) == "Darwin" ]; then
     sudo chsh -s /usr/local/bin/zsh $USER
 else
-    DISTRO=$(cat /etc/os-release)
-    if [[ $(echo $DISTRO | grep -i "ID=debian") || $(echo $DISTRO | grep -i "ID=ubuntu") || $(echo $DISTRO | grep -i "ID=alpine") || $(echo $DISTRO | grep -i "ID=void") ]]; then
+    if [[ $ID == "debian" || $ID == "ubuntu" || $ID == "void" ]]; then
         ZSH=`which zsh`
         sudo chsh $USER -s $ZSH
-    elif [ $(echo $DISTRO | grep -i "ID=fedora") ]; then
+    elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
         ZSH=`which zsh`
-        sudo usermod --shell $ZSH $USER
+        sudo usermod --shell $ZSH $(whoami)
     else
         log "Your distro is not supported, change default shell manually." $RED
     fi

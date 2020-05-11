@@ -1,6 +1,10 @@
+#!/usr/bin/env bash
+
 # Install Go apps
 
 export PATH=/usr/local/go/bin:"$PATH"
+echo "Installing Go apps..."
+echo ""
 
 # Only run if Go is present
 if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
@@ -28,6 +32,6 @@ if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
     go get -u github.com/ahmetb/kubectx/cmd/kubectx
     go get -u github.com/ahmetb/kubectx/cmd/kubens
 else
-    echo "You don't have Go installed"
+    echo "ERROR: You don't have Go installed."
     exit 1
 fi

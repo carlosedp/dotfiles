@@ -20,7 +20,7 @@ do
     continue
   fi
   fini=$($DOCKER_BIN inspect -f '{{.State.FinishedAt}}' $cid | awk -F. '{print $1}')
-  if [ $(uname) == "Darwin" ]; then
+  if [ $(uname -s) == "Darwin" ]; then
     diff=$(expr $(date +"%s") - $(date -j -f %Y-%m-%dT%H:%M:%S "$fini" +"%s"))
   else
     diff=$(expr $(date +"%s") - $(date --date="$fini" +"%s"))

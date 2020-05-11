@@ -52,5 +52,5 @@ function rg() {
 
 # Install latest Golang. Replaces current one on /usr/local/go
 function install_golang() {
-    declare -A ARCH=( [x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x ); FILE=$(curl -sL https://golang.org/dl/?mode=json | grep -E 'go[0-9\.]+' | sed 's/.*\(go.*\.tar\.gz\).*/\1/' | sort -n | grep -i $(uname -s) | grep tar | grep ${ARCH[$(uname -m)]} | tail -1); curl -sL https://dl.google.com/go/$FILE -o $FILE && sudo rm -rf /usr/local/go && sudo tar vxf $FILE -C /usr/local/ && echo "Installed $FILE" || echo "Error installing Go"
+    if $(ldd --version 2>&1 | grep -i musl > /dev/null); then echo "ERROR: Distro not supported for Go.";return 1; fi && declare -A ARCH=( [x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x ); FILE=$(curl -sL https://golang.org/dl/?mode=json | grep -E 'go[0-9\.]+' | sed 's/.*\(go.*\.tar\.gz\).*/\1/' | sort -n | grep -i $(uname -s) | grep tar | grep ${ARCH[$(uname -m)]} | tail -1); curl -sL https://dl.google.com/go/$FILE -o $FILE && sudo rm -rf /usr/local/go && sudo tar vxf $FILE -C /usr/local/ 2>/dev/null && echo "Installed $FILE" || echo "Error installing Go"
 }

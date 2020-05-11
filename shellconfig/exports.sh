@@ -34,6 +34,17 @@ $FORGIT_FZF_DEFAULT_OPTS
 --bind='alt-down:preview-down'
 --no-mouse
 "
+# Change fzf trigger from "**"
+export FZF_COMPLETION_TRIGGER=';'
+
+# Don't use fzf trigger for ssh completion
+_fzf_complete_ssh_notrigger() {
+    FZF_COMPLETION_TRIGGER='' _fzf_complete_ssh
+}
+
+if [ -n "${ZSH_NAME}" ]; then
+    compdef _fzf_complete_ssh_notrigger ssh scp rsync
+fi
 
 # Additional PATH exports
 export PATH="$HOME/.dotfiles/bin:$PATH"

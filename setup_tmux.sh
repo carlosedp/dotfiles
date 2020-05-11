@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "Starting Tmux setup"
 echo ""
@@ -6,8 +6,19 @@ DOTFILES=$HOME/.dotfiles
 pushd $HOME
 
 tmuxcommand=tmux
-if [ -x "$(command $tmuxcommand --version)" ] 2> /dev/null 2>&1; then
-    if [ $(uname) == "Darwin" ]; then
+
+# Load Linux distro info
+if [ $(uname -s) != "Darwin" ]; then
+    if [ -f /etc/os-release ]; then
+        source /etc/os-release
+    else
+        log "ERROR: I need the file /etc/os-release to determine the Linux distribution..."
+        exit 1
+    fi
+fi
+
+if [ ! "$(command -v $tmuxcommand )" ] 2> /dev/null 2>&1; then
+    if [ $(uname -s) == "Darwin" ]; then
         echo "Checking if Homebrew is installed"
         echo ""
         if [[ $(command -v brew) == "" ]]; then
@@ -21,12 +32,18 @@ if [ -x "$(command $tmuxcommand --version)" ] 2> /dev/null 2>&1; then
         brew install $tmuxcommand
     else
         # Install tmux on Linux
-        if [ $(cat /etc/os-release | grep -i "ID=debian") ] || [ $(cat /etc/os-release | grep -i "ID=ubuntu") ]; then
+        if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
             sudo apt update
-            sudo apt install -y $tmuxcommand
-        fi
-        if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
+            sudo apt install --no-install-recommends -y $tmuxcommand
+        elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
             sudo dnf install -y $tmuxcommand
+        elif [ $ID == "alpine" ]; then
+            sudo apk add $tmuxcommand
+        elif [ $ID == "void" ]; then
+            sudo xbps-install -Su $tmuxcommand
+        else
+            echo "ERROR: Your distro is not supported, install tmux manually."
+            exit 1
         fi
     fi
 fi

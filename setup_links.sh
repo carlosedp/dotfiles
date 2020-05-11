@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Settings
 sync_folder="$HOME/Google Drive"
@@ -33,7 +33,7 @@ fi
 # Settings from $HOME/Library/Application Support
 application_support_settings='2fa'
 
-if [ $(uname) == "Darwin" ]; then
+if [ $(uname -s) == "Darwin" ]; then
   # Link private settings to ~/Library/Application Support
   for X in $application_support_settings
   do

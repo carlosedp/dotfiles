@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DOTFILES=$HOME/.dotfiles
 cd $HOME
@@ -56,7 +56,7 @@ echo ""
 sleep 1
 
 # Install additional fonts
-sudo cp $HOME/.dotfiles/fonts/* /Library/Fonts
+for F in $HOME/.dotfiles/fonts/*.tar.gz; do sudo tar vxf $F -C /Library/Fonts; done
 
 # Install Go applications
 bash -c $DOTFILES/go_apps.sh

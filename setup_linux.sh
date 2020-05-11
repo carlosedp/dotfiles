@@ -1,54 +1,38 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DOTFILES=$HOME/.dotfiles
 cd $HOME
 
-BASEPACKAGES="sudo lsb-release openssh-client openssh-server curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux autojump neofetch lshw telnet iotop ripgrep"
-DEBIANPACKAGES="locales ack-grep nfs-common apt-utils build-essential"
-FEDORAPACKAGES="ack nfs-utils @development-tools"
-ALPINEPACKAGES="ack nfs-utils build-base"
+BASEPACKAGES="sudo curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux autojump neofetch lshw iotop ripgrep rsync tree"
+DEBIANPACKAGES="openssh-client openssh-server locales ack-grep nfs-common apt-utils build-essential lsb-release telnet xz-utils"
+FEDORAPACKAGES="openssh-client openssh-server ack nfs-utils @development-tools which lsb-release telnet xz"
+ALPINEPACKAGES="openssh-client openssh-serverack nfs-utils build-base telnet xz"
+VOIDPACKAGES="openssh inetutils-telnet xz"
 
 # Install Linux packages
-if [ $(cat /etc/os-release | grep -i "ID=debian") ] || [ $(cat /etc/os-release | grep -i "ID=ubuntu") ]; then
+source /etc/os-release
+if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
     sudo apt update
-    sudo apt upgrade
-    sudo apt install -y $BASEPACKAGES
-    sudo apt install -y $DEBIANPACKAGES
-fi
-if [ $(cat /etc/os-release | grep -i "ID=fedora") ]; then
-    sudo dnf update
-    sudo dnf upgrade
+    sudo apt upgrade -y
+    sudo apt install --no-install-recommends -y $BASEPACKAGES
+    sudo apt install --no-install-recommends -y $DEBIANPACKAGES
+elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
+    sudo dnf update -y
     sudo dnf install -y $BASEPACKAGES
     sudo dnf install -y $FEDORAPACKAGES
-fi
-if [ $(cat /etc/os-release | grep -i "ID=alpine") ]; then
+elif [ $ID == "alpine" ]; then
     sudo apk update
     sudo apk add $BASEPACKAGES
     sudo apk add $ALPINEPACKAGES
+elif [ $ID == "void" ]; then
+    sudo xbps-install -Su -y $BASEPACKAGES
+    sudo xbps-install -Su -y $VOIDPACKAGES
 fi
 
 # Install Golang
-GOVERSION=1.14.1
-ARCH=$(uname -m)
-case $ARCH in
-    x86_64*)
-        P_ARCH=amd64
-        ;;
-    aarch64*)
-        P_ARCH=arm64
-        ;;
-    arm*hf)
-        P_ARCH=armhf
-        ;;
-    *)
-        echo "Install golang error: missing arch '${ARCH}'" >&2
-        return 0
-        ;;
-esac
-curl -sL https://dl.google.com/go/go$GOVERSION.linux-$P_ARCH.tar.gz | sudo tar xzf - -C /usr/local
-export PATH=/usr/local/go/bin:$PATH
-echo "Installed Go version $GOVERSION for $P_ARCH"
-echo ""
+echo "Installing Golang..."
+source $DOTFILES/shellconfig/funcs.sh
+install_golang
 
 # Install Go applications
 bash -c $DOTFILES/go_apps.sh

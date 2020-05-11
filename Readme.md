@@ -4,7 +4,20 @@ This is an attempt to document my dotfiles and each directory/file purpose. The 
 
 ## Installing
 
-The dotfiles serves both Linux and Mac hosts. I have different methods of setting each up.
+There is a kickstart script that automates install on both. You need at least `sudo`, `bash`, `ca-certificates` and `curl` installed. For your distro, run as root:
+
+* Debian/Ubuntu: `apt update && apt install -y --no-install-recommends sudo bash curl ca-certificates`
+* Alpine: `apk add sudo bash curl ca-certificates`
+* Fedora/CentOS: `dnf install -y sudo bash curl ca-certificates`
+* Void Linux: `xbps-install -Su -y sudo bash curl ca-certificates`
+
+Then, run:
+
+```sh
+curl -Lks https://github.com/carlosedp/dotfiles/raw/master/kickstart.sh | bash
+```
+
+The dotfiles serves both Linux and Mac hosts. I have different methods of setting each up manually.
 
 ### Mac
 
