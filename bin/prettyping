@@ -16,15 +16,8 @@
 
 # TODO: Adjust how many items in the legend are printed based on the terminal width.
 #
-# TODO: Detect the following kinds of message and avoid printing it repeatedly.
-# From 192.168.1.11: icmp_seq=4 Destination Host Unreachable
-# Request timeout for icmp_seq 378
-#
 # TODO: Handle when a single message is spread over multiple lines. Specially,
 # like in this case: https://bitbucket.org/denilsonsa/small_scripts/issue/5
-#
-# TODO: Print the destination (also) at the bottom bar. Useful after leaving
-# the script running for quite some time.
 #
 # TODO: Print the destination as escape codes to xterm title.
 #
@@ -207,7 +200,6 @@ export LC_ALL=C
 # 	echo "This is the PID I want $!"
 # 	wait
 # ) | cmd_b
-
 
 # Ignore Ctrl+C here.
 # If I don't do this, this shell script is killed before
@@ -742,6 +734,7 @@ BEGIN {
 ############################################################
 # Main loop
 {
+	UNR = 0
 	if ( $0 ~ /^[0-9]+ bytes from .*: icmp_[rs]eq=[0-9]+ ttl=[0-9]+ time=[0-9.]+ *ms/ ) {
 		# Sample line from ping:
 		# 64 bytes from 8.8.8.8: icmp_seq=1 ttl=49 time=184 ms
@@ -813,6 +806,25 @@ BEGIN {
 		# Do nothing on blank lines.
 	} else if ( $0 == "error shutting down ssl" ) {
 		# Common error message when using httping, ignore it.
+	} else if ( $0 ~ /.*Destination Host Unreachable.*/ ) {
+		# Detect "Destination Host Unreachable" but supress repeated lines
+		if ($UNR == 0) {
+			if ( other_line_times >= 2 ) {
+				other_line_finished_repeating()
+			}
+			lost_a_packet()
+			# Making sure the last_seq number is correct.
+			gsub(/.* icmp_seq /, "")
+			seq = int($0)
+			last_seq = seq
+
+			print_newlines_if_needed()
+			print_statistics_bar_if_terminal()
+
+			UNR = 1
+		}
+	# Supress additional lines from "Destination Host Unreachable"
+	} else if ( $0 ~ /^Vr HL TOS  Len.*/ || $0 ~ /[0-9]  [0-9]  [0-9][0-9] [0-9][0-9][0-9][0-9] [0-9a-f][0-9a-f][0-9a-f][0-9a-f]   [0-9].*/ ) {
 	} else if ( $0 ~ /^ping: sendto: No route to host/ || $0 ~ /^Request timeout for icmp_seq [0-9]+/ || $0 ~ /^ping: sendto: Host is down/ ) {
 		# Reply timeout is printed on Mac OS X.
 
@@ -865,3 +877,6 @@ BEGIN {
 	# Not needed when the output is a terminal, but does not hurt either.
 	fflush()
 }'
+
+# Print destination host on exit
+echo "PING destination: $1"

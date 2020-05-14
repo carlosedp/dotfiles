@@ -36,6 +36,7 @@ function gsendpatch () {
 
 # Query Docker image manifest
 function qi () {
+    if [ -z $1 ]; then echo "Missing image parameter."; return 1; fi
     echo "Querying image $1"
     OUT=$(docker manifest inspect $1 | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' 2> /dev/null | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$')
     if [ $? -eq 0 ]; then

@@ -6,7 +6,7 @@ cd $HOME
 BASEPACKAGES="sudo curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux autojump neofetch lshw iotop ripgrep rsync tree"
 DEBIANPACKAGES="openssh-client openssh-server locales ack-grep nfs-common apt-utils build-essential lsb-release telnet xz-utils"
 FEDORAPACKAGES="openssh-client openssh-server ack nfs-utils @development-tools which lsb-release telnet xz"
-ALPINEPACKAGES="openssh-client openssh-serverack nfs-utils build-base telnet xz"
+ALPINEPACKAGES="openssh-client openssh-server ack nfs-utils build-base xz"
 VOIDPACKAGES="openssh inetutils-telnet xz"
 
 # Install Linux packages

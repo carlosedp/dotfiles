@@ -54,6 +54,7 @@ plugins=(
     common-aliases
     tig
     ripgrep
+    zsh-completions
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -62,7 +63,7 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/.oh-my-zsh/custom/plugins/autoupdate-oh-my-zsh-plugins/autoupdate.plugin.zsh
 source $HOME/.oh-my-zsh/custom/plugins/zsh-you-should-use/you-should-use.plugin.zsh
 source $HOME/.oh-my-zsh/custom/plugins/forgit/forgit.plugin.zsh
-fpath=($HOME/.oh-my-zsh/custom/plugins/zsh-completions/ $HOME/.dotfiles/completions $fpath)
+fpath=($ZSH/custom/plugins/zsh-completions/src $fpath)
 
 # zmv
 autoload -U zmv

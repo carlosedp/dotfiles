@@ -14,7 +14,7 @@ There is a kickstart script that automates install on both. You need at least `s
 Then, run:
 
 ```sh
-curl -Lks https://github.com/carlosedp/dotfiles/raw/master/kickstart.sh | bash
+curl -Ls https://github.com/carlosedp/dotfiles/raw/master/kickstart.sh | bash
 ```
 
 The dotfiles serves both Linux and Mac hosts. I have different methods of setting each up manually.
