@@ -1,5 +1,26 @@
 # Kubernetes functions and aliases
 
+## Aliases
+alias ksvc='kubectl get services -o wide --all-namespaces'
+alias kpod='kubectl get pods -o wide --all-namespaces'
+alias kedp='kubectl get endpoints -o wide --all-namespaces'
+alias king='kubectl get ingress -o wide --all-namespaces'
+alias kns='kubens'
+alias kctx='kubectx'
+
+alias k=kubectl
+alias kd='kubectl delete'
+alias kdf='kubectl delete --grace-period=0 --force'
+alias kc='kubectl create'
+alias kg='kubectl get all'
+alias kp='kubectl get pods -o wide'
+alias ks='kubectl get services'
+alias ke='kubectl get endpoints'
+
+alias wp='watch -n 1 kubectl get pods -o wide'
+alias kt='stern --all-namespaces'
+
+## Functions
 klog() {
     POD=$1
     CONTAINER_NAME=""
@@ -74,35 +95,3 @@ kn() {
     shift
     kubectl -n $namespace $@
 }
-
-#export -f kdesc
-
-# Load kubectl completion
-source <(kubectl completion $(ps -p $$ -oargs= |tr -d "-"))
-
-# Load openshift oc completion
-# Disable due to load time
-#if [ -x "$(command -v oc)" ] > /dev/null 2>&1; then
-#    source <(oc completion $(ps -p $$ -oargs= |tr -d "-"))
-#fi
-
-alias ksvc='kubectl get services -o wide --all-namespaces'
-alias kpod='kubectl get pods -o wide --all-namespaces'
-alias kedp='kubectl get endpoints -o wide --all-namespaces'
-alias king='kubectl get ingress -o wide --all-namespaces'
-alias kns='kubens'
-alias kctx='kubectx'
-
-alias k=kubectl
-alias kd='kubectl delete'
-alias kdf='kubectl delete --grace-period=0 --force'
-alias kc='kubectl create'
-alias kg='kubectl get all'
-alias kp='kubectl get pods -o wide'
-alias ks='kubectl get services'
-alias ke='kubectl get endpoints'
-
-alias wp='watch -n 1 kubectl get pods -o wide'
-alias kt='stern --all-namespaces'
-
-

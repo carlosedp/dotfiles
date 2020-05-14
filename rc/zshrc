@@ -3,8 +3,10 @@
 ###
 
 # Debug zsh startup. Uncomment to enable
-#ZSHDEBUG=on
+# ZSHDEBUG=on
 [ ${ZSHDEBUG} ] && zmodload zsh/zprof
+
+: ${ZSH_DISABLE_COMPFIX:=true}
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
@@ -64,6 +66,7 @@ source $HOME/.oh-my-zsh/custom/plugins/autoupdate-oh-my-zsh-plugins/autoupdate.p
 source $HOME/.oh-my-zsh/custom/plugins/zsh-you-should-use/you-should-use.plugin.zsh
 source $HOME/.oh-my-zsh/custom/plugins/forgit/forgit.plugin.zsh
 fpath=($ZSH/custom/plugins/zsh-completions/src $fpath)
+fpath=($HOME/.dotfiles/completion $fpath)
 
 # zmv
 autoload -U zmv

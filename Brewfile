@@ -15,6 +15,7 @@ tap "weaveworks/tap"
 # GNU Tools
 brew "coreutils"
 brew "bash"
+brew "bash-completion"
 brew "binutils"
 brew "diffutils"
 brew "findutils"

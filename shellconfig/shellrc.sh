@@ -54,11 +54,6 @@ if [ -x "$(command -v hub)" ]; then
   eval "$(hub alias -s)"
 fi
 
-# Load stern log tool completion
-if [ -x "$(command -v stern)" ] > /dev/null 2>&1; then
-  source <(stern --completion=$(ps -p $$ -oargs= |tr -d "-"))
-fi
-
 # Load iTerm2 integration
 [ -f ${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell} ] && source ${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell}
 

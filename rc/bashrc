@@ -84,5 +84,10 @@ if ! shopt -oq posix; then
 fi
 complete -cf sudo
 
+# Load shell complations
+for F in $HOME/.dotfiles/completion/*.bash; do
+    source $F;
+done
+
 # Load additional shell rc
 source ~/.dotfiles/shellconfig/shellrc.sh

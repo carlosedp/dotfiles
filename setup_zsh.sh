@@ -129,12 +129,11 @@ if [[ $(command -v fzf) == "" ]]; then
 fi
 
 echo ""
-log "Add completion scripts" $GREEN
-mkdir -p $HOME/.oh-my-zsh/completions
-for FILE in $HOME/.dotfiles/completion/*; do
-    ln -sfn "$FILE" $HOME/.oh-my-zsh/completions/_$(basename $FILE)
-done
+log "Add/Update completion scripts" $GREEN
+bash -c $DOTFILES/update_completions.sh
 
+
+log "Create dotfiles links" $GREEN
 # Link .rc files
 bash -c $DOTFILES/setup_links.sh
 
@@ -202,17 +201,6 @@ for d in *; do
         fi
     fi
 done
-popd
-
-echo ""
-log "Update kubectx/kubens completion" $GREEN
-pushd $DOTFILES/completion
-for X in kubectx kubens; do
-    curl -sL -o $X.bash https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/$X.bash
-    curl -sL -o $X.zsh https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/$X.zsh
-    chmod +x $X.bash
-    chmod +x $X.zsh
-done;
 popd
 
 echo ""
