@@ -14,8 +14,12 @@ source /etc/os-release
 if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
     sudo apt update
     sudo apt upgrade -y
-    sudo apt install --no-install-recommends -y $BASEPACKAGES
-    sudo apt install --no-install-recommends -y $DEBIANPACKAGES
+    for i in $BASEPACKAGES; do
+        sudo apt install --no-install-recommends $i
+    done
+    for i in $DEBIANPACKAGES; do
+        sudo apt install --no-install-recommends $i
+    done
 elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
     sudo dnf update -y
     sudo dnf install -y $BASEPACKAGES

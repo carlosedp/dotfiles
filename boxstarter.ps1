@@ -109,8 +109,9 @@ Set-TaskbarOptions -Size Large -Dock Bottom -Combine Full -AlwaysShowIconsOn
 # if you wanna know what's available, try this:
 # Get-WindowsOptionalFeature  -Online | sort @{Expression = "State"; Descending = $True}, @{Expression = "FeatureName"; Descending = $False}| Format-Table -GroupBy State
 
-choco install Microsoft-Windows-Subsystem-Linux -source windowsfeatures
-choco install Microsoft-Hyper-V-All -source windowsFeatures
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
+choco install Microsoft-Hyper-V-All -source WindowsFeatures -y
+choco install Microsoft-Windows-Subsystem-Linux -source WindowsFeatures -y
 
 # Install Debian WSL
 Invoke-WebRequest -Uri https://aka.ms/wsl-debian-gnulinux -OutFile ~/Debian.appx -UseBasicParsing
@@ -144,7 +145,7 @@ $ChocoInstalls = @(
     'virtualbox',
     'VirtualBox.ExtensionPack',
     'vlc',
-    'visualstudiocode'
+    'vscode'
     'google-backup-and-sync',
     'joplin'
 )
