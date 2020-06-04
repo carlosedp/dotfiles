@@ -1,0 +1,47 @@
+[global_config]
+  handle_size = 0
+  title_hide_sizetext = True
+  title_transmit_fg_color = "#bd93f9"
+  title_transmit_bg_color = "#282a36"
+  title_receive_fg_color = "#8be9fd"
+  title_receive_bg_color = "#282a36"
+  title_inactive_fg_color = "#f8f8f2"
+  title_inactive_bg_color = "#282a36"
+[keybindings]
+  new_tab = <Super>t
+  close_term = <Primary><Shift>w
+  next_tab = <Super>Right
+  prev_tab = <Super>Left
+  group_tab = <Primary><Shift>t
+[profiles]
+  [[default]]
+    background_color = "#1e1f29"
+    background_darkness = 0.96
+    background_type = transparent
+    cursor_blink = False
+    cursor_shape = underline
+    cursor_color = "#bbbbbb"
+    font = DankMono Nerd Font 12
+    foreground_color = "#f8f8f2"
+    scrollbar_position = hidden
+    scrollback_infinite = True
+    palette = "#000000:#ff5555:#50fa7b:#f1fa8c:#bd93f9:#ff79c6:#8be9fd:#bbbbbb:#555555:#ff5555:#50fa7b:#f1fa8c:#bd93f9:#ff79c6:#8be9fd:#ffffff"
+    login_shell = True
+    use_system_font = False
+    copy_on_selection = True
+  [[terminator_default]]
+    background_color = "#282a36"
+    foreground_color = "#f8f8f2"
+    palette = "#44475a:#ff5555:#50fa7b:#ffb86c:#3465a4:#ff79c6:#f1fa8c:#44475a:#44475a:#ff5555:#50fa7b:#ffb86c:#729fcf:#ad7fa8:#f1fa8c:#44475a"
+    copy_on_selection = True
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+      command = ""
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]
