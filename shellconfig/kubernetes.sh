@@ -41,11 +41,11 @@ klog() {
     esac
     done
     INDEX="${INPUT_INDEX:-1}"
-    PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
-    PODNAME=`echo ${PODS} |awk '{print $2}'`
+    PODS=$(kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1)
+    PODNAME=$(echo ${PODS} |awk '{print $2}')
     echo "Pod: ${PODNAME}"
     echo
-    NS=`echo ${PODS} |awk '{print $1}'`
+    NS=$(echo ${PODS} |awk '{print $1}')
     kubectl logs -f --namespace=${NS} ${PODNAME} ${CONTAINER_NAME}
 }
 
@@ -64,11 +64,11 @@ kexec() {
     POD=$1
     INPUT_INDEX=$2
     INDEX="${INPUT_INDEX:-1}"
-    PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
-    PODNAME=`echo ${PODS} |awk '{print $2}'`
+    PODS=$(kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1)
+    PODNAME=$(echo ${PODS} |awk '{print $2}')
     echo "Pod: ${PODNAME}"
     echo
-    NS=`echo ${PODS} |awk '{print $1}'`
+    NS=$(echo ${PODS} |awk '{print $1}')
     kubectl exec -it --namespace=${NS} ${PODNAME} /bin/sh
 }
 
@@ -76,11 +76,11 @@ kdesc() {
     POD=$1
     INPUT_INDEX=$2
     INDEX="${INPUT_INDEX:-1}"
-    PODS=`kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1`
-    PODNAME=`echo ${PODS} |awk '{print $2}'`
+    PODS=$(kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1)
+    PODNAME=$(echo ${PODS} |awk '{print $2}')
     echo "Pod: ${PODNAME}"
     echo
-    NS=`echo ${PODS} |awk '{print $1}'`
+    NS=$(echo ${PODS} |awk '{print $1}')
     kubectl describe pod --namespace=${NS} ${PODNAME}
 }
 

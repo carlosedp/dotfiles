@@ -19,7 +19,7 @@ source ~/.dotfiles/shellconfig/funcs.sh
 source ~/.dotfiles/shellconfig/aliases.sh
 
 # Load Mac aliases
-if [ `uname -s` = 'Darwin' ]; then
+if [ $(uname -s) = 'Darwin' ]; then
     source ~/.dotfiles/shellconfig/aliases_mac.sh
 fi
 
@@ -37,8 +37,8 @@ export WASMER_DIR="$HOME/.wasmer"
 
 # Use gitstatusd built locally if exists
 # To build, run `zsh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/gitstatus/master/build.zsh)"`
-if command -v $HOME/.dotfiles/bin/gitstatusd-linux-`uname -m` &> /dev/null; then
-    GITSTATUS_DAEMON=$HOME/.dotfiles/bin/gitstatusd-linux-`uname -m`
+if command -v $HOME/.dotfiles/bin/gitstatusd-linux-$(uname -m) &> /dev/null; then
+    GITSTATUS_DAEMON=$HOME/.dotfiles/bin/gitstatusd-linux-$(uname -m)
 fi
 
 # Load fzf plugin. Installed thru setup_zsh.sh

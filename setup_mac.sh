@@ -19,7 +19,7 @@ echo ""
 echo "Testing if you have XCode or Developer tools already installed"
 echo ""
 # Test for XCode install
-if [[ ! `which gcc` ]]; then
+if [[ ! $(which gcc) ]]; then
     echo "Xcode/Dev Tools not installed. Installing..."
     xcode-select --install
 else
@@ -31,7 +31,7 @@ sleep 2
 # Test if homebrew is installed
 echo "Testing if you have Homebrew already installed"
 echo ""
-if [[ ! `which brew` ]]; then
+if [[ ! $(which brew) ]]; then
     echo "Homebrew not installed, installing..."
     echo ""
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -77,7 +77,7 @@ bash -c $DOTFILES/osx_prefs.sh
 bash -c $DOTFILES/setup_apps.sh
 
 # Add TouchID authentication to Sudo
-if [[ ! `grep "pam_tid.so" /etc/pam.d/sudo` ]]; then
+if [[ ! $(grep "pam_tid.so" /etc/pam.d/sudo) ]]; then
     echo -e "auth       sufficient     pam_tid.so\n$(cat /etc/pam.d/sudo)" |sudo tee /etc/pam.d/sudo;
 fi
 

@@ -8,9 +8,9 @@ RESET="\e[0m"
 
 log () {
     if [ $2 ]; then
-        echo `printf "$2$1 $RESET"`
+        echo $(printf "$2$1 $RESET")
     else
-        echo `printf "$RESET$1 $RESET"`
+        echo $(printf "$RESET$1 $RESET")
     fi
 }
 
@@ -77,10 +77,10 @@ if [ $(uname -s) == "Darwin" ]; then
     sudo chsh -s /usr/local/bin/zsh $USER
 else
     if [[ $ID == "debian" || $ID == "ubuntu" || $ID == "void" ]]; then
-        ZSH=`which zsh`
+        ZSH=$(which zsh)
         sudo chsh $USER -s $ZSH
     elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
-        ZSH=`which zsh`
+        ZSH=$(which zsh)
         sudo usermod --shell $ZSH $(whoami)
     else
         log "Your distro is not supported, change default shell manually." $RED
@@ -146,7 +146,7 @@ themes=("https://github.com/romkatv/powerlevel10k" \
 for t in "${themes[@]}"
     do
     log "Installing $t prompt..." $GREEN
-    theme_name=`basename $t`
+    theme_name=$(basename $t)
     if [[ ! -d "$ZSH_CUSTOM/themes/$theme_name" ]]; then
         log "> Installing $theme_name..." $YELLOW
         git clone --quiet $t "$ZSH_CUSTOM/themes/$theme_name"
@@ -169,7 +169,7 @@ plugins=("https://github.com/carlosedp/zsh-iterm-touchbar" \
 plugin_names=()
 for p in "${plugins[@]}"
     do
-    plugin_name=`basename $p`
+    plugin_name=$(basename $p)
     plugin_names+=($plugin_name)
     log "Installing $plugin_name..." $GREEN
     if [[ ! -d "$ZSH_CUSTOM/plugins/$plugin_name" ]]; then

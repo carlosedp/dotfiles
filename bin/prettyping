@@ -176,7 +176,7 @@ parse_arguments() {
 	fi
 }
 
-MYNAME=`basename "$0"`
+MYNAME=$(basename "$0")
 parse_arguments "$@"
 
 

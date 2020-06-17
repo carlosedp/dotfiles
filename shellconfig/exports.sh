@@ -37,15 +37,6 @@ $FORGIT_FZF_DEFAULT_OPTS
 # Change fzf trigger from "**"
 export FZF_COMPLETION_TRIGGER=';'
 
-# Don't use fzf trigger for ssh completion
-_fzf_complete_ssh_notrigger() {
-    FZF_COMPLETION_TRIGGER='' _fzf_complete_ssh
-}
-
-if [ -n "${ZSH_NAME}" ]; then
-    compdef _fzf_complete_ssh_notrigger ssh scp rsync
-fi
-
 # Additional PATH exports
 export PATH="$HOME/.dotfiles/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
@@ -57,7 +48,7 @@ export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
 
 # Set JAVA home dir
 if [ -f /usr/libexec/java_home ] && [ /usr/libexec/java_home ]; then
-    export JAVA_HOME=`/usr/libexec/java_home`
+    export JAVA_HOME=$(/usr/libexec/java_home)
 fi
 
 # Ripgrep config

@@ -16,9 +16,9 @@ RESET="\e[0m"
 
 log () {
     if [ $2 ]; then
-        echo `printf "$2$1 $RESET"`
+        echo $(printf "$2$1 $RESET")
     else
-        echo `printf "$RESET$1 $RESET"`
+        echo $(printf "$RESET$1 $RESET")
     fi
 }
 

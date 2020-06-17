@@ -3,7 +3,7 @@
 
 >/tmp/run_image_ids.$$
 
-DOCKER_BIN=`which docker`
+DOCKER_BIN=$(which docker)
 LOG=./docker-cleanup.log
 
 rm /tmp/run_image_ids.$$

@@ -4,9 +4,9 @@ SPARSEBUNDLE=/Volumes/macs/cdepaula-mac.sparsebundle
 
 chflags -R nouchg $SPARSEBUNDLE
 
-OUTPUT=`hdiutil attach -nomount -readwrite -noverify -noautofsck "$SPARSEBUNDLE"`
+OUTPUT=$(hdiutil attach -nomount -readwrite -noverify -noautofsck "$SPARSEBUNDLE")
 
-PART=`echo $OUTPUT | grep Apple_HFS | awk print '{$1}'`
+PART=$(echo $OUTPUT | grep Apple_HFS | awk print '{$1}')
 
 fsck_hfs -drfy $PART
 
