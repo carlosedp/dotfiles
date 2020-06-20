@@ -1,12 +1,13 @@
 # Kubernetes functions and aliases
 
 ## Aliases
-alias ksvc='kubectl get services -o wide --all-namespaces'
-alias kpod='kubectl get pods -o wide --all-namespaces'
-alias kedp='kubectl get endpoints -o wide --all-namespaces'
-alias king='kubectl get ingress -o wide --all-namespaces'
+alias ksvc='kubectl get services -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
+alias kpod='kubectl get pods -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
+alias kedp='kubectl get endpoints -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
+alias king='kubectl get ingress -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
 alias kns='kubens'
 alias kctx='kubectx'
+alias kaf='kubectl apply -f'
 
 alias k=kubectl
 alias kd='kubectl delete'

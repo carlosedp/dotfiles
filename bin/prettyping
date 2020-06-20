@@ -806,7 +806,7 @@ BEGIN {
 		# Do nothing on blank lines.
 	} else if ( $0 == "error shutting down ssl" ) {
 		# Common error message when using httping, ignore it.
-	} else if ( $0 ~ /.*Destination Host Unreachable.*/ ) {
+	} else if ( $0 ~ /.*Destination Host Unreachable.*|.*Destination Net Unreachable.*/ ) {
 		# Detect "Destination Host Unreachable" but supress repeated lines
 		if ($UNR == 0) {
 			if ( other_line_times >= 2 ) {
