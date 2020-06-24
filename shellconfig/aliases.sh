@@ -25,9 +25,6 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
-export LANG=en_US.UTF-8
-export LC_CTYPE=en_US.UTF-8
-
 # Default to human readable figures
 alias df='df -h'
 alias du='du -h'

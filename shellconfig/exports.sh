@@ -7,8 +7,9 @@ export HISTIGNORE=" *:ls:cd:cd -:pwd:exit:date:* --help:* -h:pony:pony add *:pon
 export HISTTIMEFORMAT="%d/%m/%y %T "
 
 # Prefer US English and use UTF-8
-export LANG="en_US.UTF-8";
-export LC_ALL="en_US.UTF-8";
+export LC_CTYPE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
 
 export LESS="-FRX"
 
