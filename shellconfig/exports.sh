@@ -54,3 +54,8 @@ fi
 
 # Ripgrep config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+
+# Use Secretive as SSH key storage on Mac
+if [ $(uname -s) = 'Darwin' ]; then
+    export SSH_AUTH_SOCK=/Users/cdepaula/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh
+fi

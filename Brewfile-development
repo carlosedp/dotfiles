@@ -1,0 +1,22 @@
+# Golang
+brew "go"
+
+# Erlang
+brew "erlang"
+brew "rebar3"
+
+# Python
+brew "python"
+
+# Jsonnet
+brew "jsonnet"
+
+# Arduino
+cask "arduino"
+
+# Development Environment
+cask "visual-studio-code"
+cask "open-in-code"
+cask "kdiff3"
+cask "font-firacode-nerd-font"
+cask "font-ibm-plex"

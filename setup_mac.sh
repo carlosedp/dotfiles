@@ -48,6 +48,8 @@ echo "==================================="
 echo ""
 # Command line apps
 brew bundle install --file $DOTFILES/Brewfile
+# Development Tools
+brew bundle install --file $DOTFILES/Brewfile-development
 # Mac apps
 brew bundle install --file $DOTFILES/Brewfile-casks-store
 echo ""
