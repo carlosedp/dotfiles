@@ -52,6 +52,9 @@ if [ -f /usr/libexec/java_home ] && [ /usr/libexec/java_home ]; then
     export JAVA_HOME=$(/usr/libexec/java_home)
 fi
 
+# Add Erlang shell history and unicode messages
+export ERL_AFLAGS="+pc unicode -kernel shell_history enabled"
+
 # Ripgrep config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
