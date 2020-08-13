@@ -5,18 +5,20 @@ if [ "$#" -eq 0 ]
         echo ""
         echo "Highlights output based on regex and color id"
         echo "Usage: cat log.txt | highlight.sh pattern1 pattern2 pattern3"
+        echo "The patterns can use regular expressions between double quotes (\"\")"
         echo ""
         echo "Colors are used sequentially for each pattern:"
-        echo "Color     ID"
-        echo "Black     30"
-        echo "Red       31"
-        echo "Green     32"
-        echo "Yellow    33"
-        echo "Blue      34"
-        echo "Magenta   35"
-        echo "Cyan      36"
-        echo "White     37"
         echo ""
+        echo $'\e[4m'"Color     ID"$'\e[1m\033[m\033[K'
+        echo $'\e[1m\033[30m'"Black     30"
+        echo $'\e[1m\033[31m'"Red       31"
+        echo $'\e[1m\033[32m'"Green     32"
+        echo $'\e[1m\033[33m'"Yellow    33"
+        echo $'\e[1m\033[34m'"Blue      34"
+        echo $'\e[1m\033[35m'"Magenta   35"
+        echo $'\e[1m\033[36m'"Cyan      36"
+        echo $'\e[1m\033[37m'"White     37"
+        echo $'\e[1m\033[m\033[K'
         exit 1
 fi
 
