@@ -40,7 +40,7 @@ alias screen='screen -RR'
 alias grep='grep --color=auto '
 alias sudo='sudo '
 alias p='ps aux | grep -v ]$'
-alias hl=$HOME/.dotfiles/bin/highlight.sh
+alias hl='$HOME/.dotfiles/bin/highlight'
 
 alias sc-dreload='sudo systemctl daemon-reload'
 
