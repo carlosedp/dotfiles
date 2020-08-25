@@ -40,7 +40,6 @@ cask "vlc"
 cask "horndis"
 cask "tweetbot"
 cask "background-music"
-cask "secretive"
 
 mas "Amphetamine", id: 937984704
 mas "Disk Speed Test", id: 425264550
