@@ -48,7 +48,7 @@ function qi () {
 
 # Execute ripgrep output thru pager
 function rg() {
-   $(which rg) -p "$@" | less -FRX
+   command rg -p "$@" | less -FRX
 }
 
 # Install latest Golang. Replaces current one on /usr/local/go
