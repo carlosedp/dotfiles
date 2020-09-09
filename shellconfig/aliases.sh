@@ -60,6 +60,7 @@ alias elasticindex='watch -n 5 "curl -s \"http://elasticsearch.internal.carlosed
 
 alias zshupd='$HOME/.dotfiles/setup_zsh.sh'
 alias dis='docker images --format "{{.Size}}\t{{.Repository}}:{{.Tag}}\t{{.ID}}" | sort -h'
+alias dc='docker-compose'
 alias fl='footloose'
 alias tm='tmux new -A -s mySession'
 alias tma='tmate new -A -s mySession'
