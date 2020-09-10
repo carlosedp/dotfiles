@@ -15,10 +15,10 @@ if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
     sudo apt update
     sudo apt upgrade -y
     for i in $BASEPACKAGES; do
-        sudo apt install --no-install-recommends $i
+        sudo apt install -y --no-install-recommends $i
     done
     for i in $DEBIANPACKAGES; do
-        sudo apt install --no-install-recommends $i
+        sudo apt install -y --no-install-recommends $i
     done
 elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
     sudo dnf update -y
