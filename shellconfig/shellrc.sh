@@ -9,22 +9,8 @@ elif [ -n "${ZSH_NAME}" ]; then
     shell="zsh"
 fi
 
-# Load exports
-source ~/.dotfiles/shellconfig/exports.sh
-
-# Functions
-source ~/.dotfiles/shellconfig/funcs.sh
-
-# Load generic aliases
-source ~/.dotfiles/shellconfig/aliases.sh
-
-# Load Mac aliases
-if [ $(uname -s) = 'Darwin' ]; then
-    source ~/.dotfiles/shellconfig/aliases_mac.sh
-fi
-
 #####
-# Now load plugins and utilities
+# Load plugins and utilities
 #####
 
 # Enable autojump
@@ -56,6 +42,20 @@ fi
 
 # Load iTerm2 integration
 [ -f ${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell} ] && source ${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell}
+
+# Load exports
+source ~/.dotfiles/shellconfig/exports.sh
+
+# Functions
+source ~/.dotfiles/shellconfig/funcs.sh
+
+# Load generic aliases
+source ~/.dotfiles/shellconfig/aliases.sh
+
+# Load Mac aliases
+if [ $(uname -s) = 'Darwin' ]; then
+    source ~/.dotfiles/shellconfig/aliases_mac.sh
+fi
 
 #####
 # These are at the end to print on user login
