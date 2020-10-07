@@ -31,6 +31,10 @@ if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
     echo "Installing kubectx and kubens"
     go get -u github.com/ahmetb/kubectx/cmd/kubectx
     go get -u github.com/ahmetb/kubectx/cmd/kubens
+
+    # Hey web load test
+    echo "Installing Hey"
+    go get -u github.com/rakyll/hey
 else
     echo "ERROR: You don't have Go installed."
     exit 1
