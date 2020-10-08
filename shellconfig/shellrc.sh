@@ -46,6 +46,9 @@ fi
 # Load exports
 source ~/.dotfiles/shellconfig/exports.sh
 
+# Load private exports
+[ -f ${HOME}/Dropbox/Configs/exports-private.sh ] && source ${HOME}/Dropbox/Configs/exports-private.sh
+
 # Functions
 source ~/.dotfiles/shellconfig/funcs.sh
 

@@ -2,7 +2,7 @@
 
 ## Aliases
 alias ksvc='kubectl get services -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
-alias kpod='kubectl get pods -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
+alias kpod='kubectl get pods -o wide --all-namespaces --sort-by="{.metadata.namespace}" |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
 alias kedp='kubectl get endpoints -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
 alias king='kubectl get ingress -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
 alias kns='kubens'
