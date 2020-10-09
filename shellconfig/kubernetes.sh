@@ -90,9 +90,22 @@ ka() {
     kubectl $@ --all-namespaces
 }
 
-# Kubectl command for specific namespace
+# Get not running pods
+knr() {
+    kubectl get pods -A -o wide| grep -v Running |grep -v Completed |awk {'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'} | column -t
+}
+
+# Watch not running pods
+wnr() {
+    watch 'kubectl get pods -A -o wide| grep -v Running |grep -v Completed |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
+}
+
+# Get nodes
 kn() {
-    namespace=$1
-    shift
-    kubectl -n $namespace $@
+    kubectl get nodes -o wide| awk {'print substr($1,1,30)" " $2" " $3" " $4" " $5" " $7'} | column -t
+}
+
+# Watch nodes
+wn() {
+    watch 'kubectl get nodes -o wide | awk {'"'"'print substr($1,1,30)" " $2" " $3" " $4" " $5" " $7'"'"'} | column -t'
 }

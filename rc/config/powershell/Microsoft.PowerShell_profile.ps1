@@ -27,4 +27,4 @@ foreach ($item in $itemlist) {
 }
 
 # Load custom prompt
-. $Env:HOME/.dotfiles/powershell/prompt.ps1
+. $Env:HOME/.config/powershell/prompt.ps1

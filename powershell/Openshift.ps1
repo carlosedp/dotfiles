@@ -6,3 +6,6 @@ Function ShutdownOCP {
     Get-VM -Location (Get-Folder -Name ocp*) | Where-Object { $_.PowerState -eq "PoweredOn" } | Shutdown-VMGuest
 }
 
+function PoweroffHost () {
+    Get-VMHost | ForEach-Object { Get-View $_.ID } | ForEach-Object { $_.ShutdownHost_Task($TRUE) }
+}
