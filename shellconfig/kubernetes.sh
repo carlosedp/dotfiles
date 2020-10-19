@@ -133,7 +133,16 @@ kshell() {
   #kubectl exec -ti $1 -- command -v bash &> /dev/null && kubectl exec -ti $1 -- bash || kubectl exec -ti $1 -- sh
 }
 
+# Delete pod
+kdp() {
+    kubectl delete pod $@ &
+}
+# Force delete pod
+kdpf() {
+kubectl delete --grace-period=0 --force pod $@ &
+}
+
 # Add completions
 complete -o default -F __kubectl_get_resource_pod kshell
 complete -F __start_kubectl stern kt klog kdesc kexec
-complete -F __kubectl_get_resource_pod stern kt klog kdesc kexec
+complete -F __kubectl_get_resource_pod stern kt klog kdesc kexec kdp kdpf
