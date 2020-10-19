@@ -1,7 +1,7 @@
 # Powershell startup script
 
 # Install required modules
-$modules = @("VMware.PowerCLI")
+$modules = @("VMware.PowerCLI", "PSFzf")
 foreach ($module in $modules) {
     if (Get-Module -ListAvailable | Where-Object { $_.Name -eq $module }) {
         Write-Host "Module $module already installed."

@@ -1,5 +1,18 @@
 # Kubernetes functions and aliases
 
+# Load Kubernetes completion
+if [ -n "${BASH}" ]; then
+    source <(kubectl completion bash)
+    if [ -x "$(command -v stern)" ] > /dev/null 2>&1; then
+        source <(stern --completion=bash)
+    fi
+elif [ -n "${ZSH_NAME}" ]; then
+    source <(kubectl completion zsh)
+    if [ -x "$(command -v stern)" ] > /dev/null 2>&1; then
+        source <(stern --completion=zsh)
+    fi
+fi
+
 ## Aliases
 alias ksvc='kubectl get services -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
 alias kpod='kubectl get pods -o wide --all-namespaces --sort-by="{.metadata.namespace}" |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
@@ -20,6 +33,9 @@ alias ke='kubectl get endpoints'
 
 alias wp='watch -n 1 kubectl get pods -o wide'
 alias kt='stern --all-namespaces'
+
+# Approve OCP CSRs
+alias csrapprove="oc get csr -oname | xargs oc adm certificate approve"
 
 ## Functions
 klog() {
@@ -109,3 +125,15 @@ kn() {
 wn() {
     watch 'kubectl get nodes -o wide | awk {'"'"'print substr($1,1,30)" " $2" " $3" " $4" " $5" " $7'"'"'} | column -t'
 }
+
+# Open shell in pod
+kshell() {
+  [[ $# -lt 1 ]] && echo "usage: kshell <pod_name>]" && return
+  kubectl exec -ti $@ -- /bin/sh -c 'command -v bash &> /dev/null && bash || sh'
+  #kubectl exec -ti $1 -- command -v bash &> /dev/null && kubectl exec -ti $1 -- bash || kubectl exec -ti $1 -- sh
+}
+
+# Add completions
+complete -o default -F __kubectl_get_resource_pod kshell
+complete -F __start_kubectl stern kt klog kdesc kexec
+complete -F __kubectl_get_resource_pod stern kt klog kdesc kexec
