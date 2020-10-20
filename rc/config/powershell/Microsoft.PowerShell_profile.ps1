@@ -1,7 +1,7 @@
 # Powershell startup script
 
 # Install required modules
-$modules = @("VMware.PowerCLI", "PSFzf", "PSReadLine", "oh-my-posh", "posh-git")
+$modules = @("VMware.PowerCLI", "PSFzf", "PSReadLine", "oh-my-posh", "posh-git", "git-aliases")
 foreach ($module in $modules) {
     if (Get-Module -ListAvailable | Where-Object { $_.Name -eq $module }) {
         Write-Host "Module $module already installed."
@@ -34,6 +34,9 @@ $itemlist = $items.split(" ")
 foreach ($item in $itemlist) {
     . $item
 }
+
+# Import git aliases
+Import-Module git-aliases -DisableNameChecking
 
 # Load custom prompt
 Set-Theme Powerlevel10k-Classic
