@@ -108,12 +108,12 @@ ka() {
 
 # Get not running pods
 knr() {
-    kubectl get pods -A -o wide| grep -v Running |grep -v Completed |awk {'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'} | column -t
+    kubectl get pods -A -o wide| grep -v "Running\|Completed" |awk {'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'} | column -t
 }
 
 # Watch not running pods
 wnr() {
-    watch 'kubectl get pods -A -o wide| grep -v Running |grep -v Completed |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
+    watch 'kubectl get pods -A -o wide| grep -v "Running\|Completed" |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
 }
 
 # Get nodes
