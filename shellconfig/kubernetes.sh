@@ -135,4 +135,8 @@ _kubectl_startup () {
     complete -o default -o nospace -F __kubectl_get_resource_pod stern kt klog kdesc kexec kdp kdpf kshell
 }
 
-compdef _kubectl_startup stern kt klog kdesc kexec kdp kdpf kshell
+if [ -n "${BASH}" ]; then
+    complete -o default -o nospace -F _kubectl_startup stern kt klog kdesc kexec kdp kdpf kshell
+elif [ -n "${ZSH_NAME}" ]; then
+    compdef _kubectl_startup stern kt klog kdesc kexec kdp kdpf kshell
+fi
