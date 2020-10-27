@@ -2,7 +2,7 @@
 
 # Generate a scp command to copy files between hosts
 function scppath () {
-    echo $USER@$(hostname -I | awk '{print $1}'`:`readlink -f $1);
+    echo $USER@$(hostname -I | awk '{print $1}'):$(readlink -f $1);
 }
 
 # Call journalctl for process or all if no arguments

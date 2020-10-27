@@ -7,7 +7,7 @@ BASEPACKAGES="sudo curl wget git file dbus bc bash-completion hdparm sysstat les
 DEBIANPACKAGES="openssh-client openssh-server locales ack-grep nfs-common apt-utils build-essential lsb-release telnet xz-utils apt-rdepends"
 FEDORAPACKAGES="openssh-client openssh-server ack nfs-utils @development-tools which lsb-release telnet xz"
 ALPINEPACKAGES="openssh-client openssh-server ack nfs-utils build-base xz"
-VOIDPACKAGES="openssh inetutils-telnet xz"
+VOIDPACKAGES="base-devel openssh inetutils-telnet xz"
 
 # Install Linux packages
 source /etc/os-release
