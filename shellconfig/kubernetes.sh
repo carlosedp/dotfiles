@@ -1,18 +1,5 @@
 # Kubernetes functions and aliases
 
-# Load Kubernetes completion
-if [ -n "${BASH}" ]; then
-    source <(kubectl completion bash)
-    if [ -x "$(command -v stern)" ] > /dev/null 2>&1; then
-        source <(stern --completion=bash)
-    fi
-elif [ -n "${ZSH_NAME}" ]; then
-    source <(kubectl completion zsh)
-    if [ -x "$(command -v stern)" ] > /dev/null 2>&1; then
-        source <(stern --completion=zsh)
-    fi
-fi
-
 ## Aliases
 alias ksvc='kubectl get services -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
 alias kpod='kubectl get pods -o wide --all-namespaces --sort-by="{.metadata.namespace}" |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
@@ -142,7 +129,10 @@ kdpf() {
 kubectl delete --grace-period=0 --force pod $@ &
 }
 
-# Add completions
-complete -o default -F __kubectl_get_resource_pod kshell
-complete -F __start_kubectl stern kt klog kdesc kexec
-complete -F __kubectl_get_resource_pod stern kt klog kdesc kexec kdp kdpf
+# Initialize and add custom completions
+_kubectl_startup () {
+    _kubectl
+    complete -o default -o nospace -F __kubectl_get_resource_pod stern kt klog kdesc kexec kdp kdpf kshell
+}
+
+compdef _kubectl_startup stern kt klog kdesc kexec kdp kdpf kshell
