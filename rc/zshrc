@@ -29,6 +29,9 @@ unsetopt nomatch
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
+# Autosuggest Async                                                                      │
+ZSH_AUTOSUGGEST_USE_ASYNC=true
+
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Syntax highlight should be loaded before history-substring-search
 plugins=(
