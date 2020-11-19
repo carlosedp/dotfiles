@@ -32,6 +32,9 @@ COMPLETION_WAITING_DOTS="true"
 # Autosuggest Async                                                                      │
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 
+# Only show targets on Makefile completion
+zstyle ':completion:*:*:make:*' tag-order 'targets'
+
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Syntax highlight should be loaded before history-substring-search
 plugins=(
