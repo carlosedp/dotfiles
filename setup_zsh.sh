@@ -59,7 +59,7 @@ if [ ! "$(command -v zsh)" ] 2> /dev/null 2>&1; then
         if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
             sudo apt update
             sudo apt install --no-install-recommends -y zsh
-        elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
+        elif [ $ID == "fedora" ] || [ $ID == "centos" ] || [ $ID == "rhel" ]; then
             sudo dnf install -y zsh
         elif [ $ID == "alpine" ]; then
             sudo apk add zsh
@@ -79,7 +79,7 @@ else
     if [[ $ID == "debian" || $ID == "ubuntu" || $ID == "void" ]]; then
         ZSH=$(which zsh)
         sudo chsh $USER -s $ZSH
-    elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
+    elif [ $ID == "fedora" ] || [ $ID == "centos" ] || [ $ID == "rhel" ]; then
         ZSH=$(which zsh)
         sudo usermod --shell $ZSH $(whoami)
     else
