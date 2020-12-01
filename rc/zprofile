@@ -1,12 +1,3 @@
-# ~/.profile: executed by Bourne-compatible login shells.
-
-if [ "$BASH" ]; then
-  if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
-  fi
-fi
-
-mesg n || true
 
 # >>> JVM installed by coursier >>>
 export JAVA_HOME="/Users/cdepaula/Library/Caches/Coursier/jvm/graalvm@20.3.0/Contents/Home"

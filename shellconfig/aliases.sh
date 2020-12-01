@@ -1,5 +1,8 @@
 # Generic Aliases
 
+# Override problematic aliases
+# alias -g P=''
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."

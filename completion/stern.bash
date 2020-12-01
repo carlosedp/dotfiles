@@ -36,9 +36,103 @@ __stern_contains_word()
     return 1
 }
 
+__stern_handle_go_custom_completion()
+{
+    __stern_debug "${FUNCNAME[0]}: cur is ${cur}, words[*] is ${words[*]}, #words[@] is ${#words[@]}"
+
+    local shellCompDirectiveError=1
+    local shellCompDirectiveNoSpace=2
+    local shellCompDirectiveNoFileComp=4
+    local shellCompDirectiveFilterFileExt=8
+    local shellCompDirectiveFilterDirs=16
+
+    local out requestComp lastParam lastChar comp directive args
+
+    # Prepare the command to request completions for the program.
+    # Calling ${words[0]} instead of directly stern allows to handle aliases
+    args=("${words[@]:1}")
+    requestComp="${words[0]} __completeNoDesc ${args[*]}"
+
+    lastParam=${words[$((${#words[@]}-1))]}
+    lastChar=${lastParam:$((${#lastParam}-1)):1}
+    __stern_debug "${FUNCNAME[0]}: lastParam ${lastParam}, lastChar ${lastChar}"
+
+    if [ -z "${cur}" ] && [ "${lastChar}" != "=" ]; then
+        # If the last parameter is complete (there is a space following it)
+        # We add an extra empty parameter so we can indicate this to the go method.
+        __stern_debug "${FUNCNAME[0]}: Adding extra empty parameter"
+        requestComp="${requestComp} \"\""
+    fi
+
+    __stern_debug "${FUNCNAME[0]}: calling ${requestComp}"
+    # Use eval to handle any environment variables and such
+    out=$(eval "${requestComp}" 2>/dev/null)
+
+    # Extract the directive integer at the very end of the output following a colon (:)
+    directive=${out##*:}
+    # Remove the directive
+    out=${out%:*}
+    if [ "${directive}" = "${out}" ]; then
+        # There is not directive specified
+        directive=0
+    fi
+    __stern_debug "${FUNCNAME[0]}: the completion directive is: ${directive}"
+    __stern_debug "${FUNCNAME[0]}: the completions are: ${out[*]}"
+
+    if [ $((directive & shellCompDirectiveError)) -ne 0 ]; then
+        # Error code.  No completion.
+        __stern_debug "${FUNCNAME[0]}: received error from custom completion go code"
+        return
+    else
+        if [ $((directive & shellCompDirectiveNoSpace)) -ne 0 ]; then
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                __stern_debug "${FUNCNAME[0]}: activating no space"
+                compopt -o nospace
+            fi
+        fi
+        if [ $((directive & shellCompDirectiveNoFileComp)) -ne 0 ]; then
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                __stern_debug "${FUNCNAME[0]}: activating no file completion"
+                compopt +o default
+            fi
+        fi
+    fi
+
+    if [ $((directive & shellCompDirectiveFilterFileExt)) -ne 0 ]; then
+        # File extension filtering
+        local fullFilter filter filteringCmd
+        # Do not use quotes around the $out variable or else newline
+        # characters will be kept.
+        for filter in ${out[*]}; do
+            fullFilter+="$filter|"
+        done
+
+        filteringCmd="_filedir $fullFilter"
+        __stern_debug "File filtering command: $filteringCmd"
+        $filteringCmd
+    elif [ $((directive & shellCompDirectiveFilterDirs)) -ne 0 ]; then
+        # File completion for directories only
+        local subDir
+        # Use printf to strip any trailing newline
+        subdir=$(printf "%s" "${out[0]}")
+        if [ -n "$subdir" ]; then
+            __stern_debug "Listing directories in $subdir"
+            __stern_handle_subdirs_in_dir_flag "$subdir"
+        else
+            __stern_debug "Listing directories in ."
+            _filedir -d
+        fi
+    else
+        while IFS='' read -r comp; do
+            COMPREPLY+=("$comp")
+        done < <(compgen -W "${out[*]}" -- "$cur")
+    fi
+}
+
 __stern_handle_reply()
 {
     __stern_debug "${FUNCNAME[0]}"
+    local comp
     case $cur in
         -*)
             if [[ $(type -t compopt) = "builtin" ]]; then
@@ -50,7 +144,9 @@ __stern_handle_reply()
             else
                 allflags=("${flags[*]} ${two_word_flags[*]}")
             fi
-            COMPREPLY=( $(compgen -W "${allflags[*]}" -- "$cur") )
+            while IFS='' read -r comp; do
+                COMPREPLY+=("$comp")
+            done < <(compgen -W "${allflags[*]}" -- "$cur")
             if [[ $(type -t compopt) = "builtin" ]]; then
                 [[ "${COMPREPLY[0]}" == *= ]] || compopt +o nospace
             fi
@@ -95,19 +191,32 @@ __stern_handle_reply()
     local completions
     completions=("${commands[@]}")
     if [[ ${#must_have_one_noun[@]} -ne 0 ]]; then
-        completions=("${must_have_one_noun[@]}")
+        completions+=("${must_have_one_noun[@]}")
+    elif [[ -n "${has_completion_function}" ]]; then
+        # if a go completion function is provided, defer to that function
+        __stern_handle_go_custom_completion
     fi
     if [[ ${#must_have_one_flag[@]} -ne 0 ]]; then
         completions+=("${must_have_one_flag[@]}")
     fi
-    COMPREPLY=( $(compgen -W "${completions[*]}" -- "$cur") )
+    while IFS='' read -r comp; do
+        COMPREPLY+=("$comp")
+    done < <(compgen -W "${completions[*]}" -- "$cur")
 
     if [[ ${#COMPREPLY[@]} -eq 0 && ${#noun_aliases[@]} -gt 0 && ${#must_have_one_noun[@]} -ne 0 ]]; then
-        COMPREPLY=( $(compgen -W "${noun_aliases[*]}" -- "$cur") )
+        while IFS='' read -r comp; do
+            COMPREPLY+=("$comp")
+        done < <(compgen -W "${noun_aliases[*]}" -- "$cur")
     fi
 
     if [[ ${#COMPREPLY[@]} -eq 0 ]]; then
-        declare -F __custom_func >/dev/null && __custom_func
+		if declare -F __stern_custom_func >/dev/null; then
+			# try command name qualified custom func
+			__stern_custom_func
+		else
+			# otherwise fall back to unqualified for compatibility
+			declare -F __custom_func >/dev/null && __custom_func
+		fi
     fi
 
     # available in bash-completion >= 2, not always present on macOS
@@ -132,7 +241,7 @@ __stern_handle_filename_extension_flag()
 __stern_handle_subdirs_in_dir_flag()
 {
     local dir="$1"
-    pushd "${dir}" >/dev/null 2>&1 && _filedir -d && popd >/dev/null 2>&1
+    pushd "${dir}" >/dev/null 2>&1 && _filedir -d && popd >/dev/null 2>&1 || return
 }
 
 __stern_handle_flag()
@@ -171,7 +280,8 @@ __stern_handle_flag()
     fi
 
     # skip the argument to a two word flag
-    if __stern_contains_word "${words[c]}" "${two_word_flags[@]}"; then
+    if [[ ${words[c]} != *"="* ]] && __stern_contains_word "${words[c]}" "${two_word_flags[@]}"; then
+			  __stern_debug "${FUNCNAME[0]}: found a flag ${words[c]}, skip the next argument"
         c=$((c+1))
         # if we are looking for a flags value, don't show commands
         if [[ $c -eq $cword ]]; then
@@ -249,17 +359,17 @@ if ! which kubectl >/dev/null 2>&1; then
 	__is_kubectl_installed=false
 fi
 
-__kubectl_override_flag_list=(kubeconfig context namespace)
-__kubectl_override_flags()
+__stern_kubectl_override_flag_list=(kubeconfig context namespace)
+__stern_kubectl_override_flags()
 {
-    local ${__kubectl_override_flag_list[*]} two_word_of of
+    local ${__stern_kubectl_override_flag_list[*]} two_word_of of
     for w in "${words[@]}"; do
         if [ -n "${two_word_of}" ]; then
             eval "${two_word_of}=\"--${two_word_of}=\${w}\""
             two_word_of=
             continue
         fi
-        for of in "${__kubectl_override_flag_list[@]}"; do
+        for of in "${__stern_kubectl_override_flag_list[@]}"; do
             case "${w}" in
                 --${of}=*)
                     eval "${of}=\"${w}\""
@@ -273,14 +383,14 @@ __kubectl_override_flags()
             namespace="--all-namespaces"
         fi
     done
-    for of in "${__kubectl_override_flag_list[@]}"; do
+    for of in "${__stern_kubectl_override_flag_list[@]}"; do
         if eval "test -n \"\$${of}\""; then
             eval "echo \${${of}}"
         fi
     done
 }
 
-__kubectl_get_namespaces()
+__stern_kubectl_get_namespaces()
 {
     local template kubectl_out
 
@@ -293,7 +403,7 @@ __kubectl_get_namespaces()
     fi
 }
 
-__kubectl_config_get_contexts()
+__stern_kubectl_config_get_contexts()
 {
     local template kubectl_out
 
@@ -301,11 +411,11 @@ __kubectl_config_get_contexts()
         return 1
     fi
     template="{{ range .contexts  }}{{ .name }} {{ end }}"
-    if kubectl_out=$(kubectl config $(__kubectl_override_flags) -o template --template="${template}" view 2>/dev/null); then
+    if kubectl_out=$(kubectl config $(__stern_kubectl_override_flags) -o template --template="${template}" view 2>/dev/null); then
         COMPREPLY=( $( compgen -W "${kubectl_out[*]}" -- "$cur" ) )
     fi
 }
-	
+
 _stern_root_command()
 {
     last_command="stern"
@@ -321,62 +431,105 @@ _stern_root_command()
     flags_completion=()
 
     flags+=("--all-namespaces")
+    flags+=("-A")
     local_nonpersistent_flags+=("--all-namespaces")
+    local_nonpersistent_flags+=("-A")
     flags+=("--color=")
+    two_word_flags+=("--color")
+    local_nonpersistent_flags+=("--color")
     local_nonpersistent_flags+=("--color=")
     flags+=("--completion=")
+    two_word_flags+=("--completion")
+    local_nonpersistent_flags+=("--completion")
     local_nonpersistent_flags+=("--completion=")
     flags+=("--container=")
+    two_word_flags+=("--container")
     two_word_flags+=("-c")
+    local_nonpersistent_flags+=("--container")
     local_nonpersistent_flags+=("--container=")
+    local_nonpersistent_flags+=("-c")
     flags+=("--container-state=")
+    two_word_flags+=("--container-state")
+    local_nonpersistent_flags+=("--container-state")
     local_nonpersistent_flags+=("--container-state=")
     flags+=("--context=")
+    two_word_flags+=("--context")
     flags_with_completion+=("--context")
-    flags_completion+=("__kubectl_config_get_contexts")
+    flags_completion+=("__stern_kubectl_config_get_contexts")
+    local_nonpersistent_flags+=("--context")
     local_nonpersistent_flags+=("--context=")
     flags+=("--exclude=")
+    two_word_flags+=("--exclude")
     two_word_flags+=("-e")
+    local_nonpersistent_flags+=("--exclude")
     local_nonpersistent_flags+=("--exclude=")
+    local_nonpersistent_flags+=("-e")
     flags+=("--exclude-container=")
+    two_word_flags+=("--exclude-container")
     two_word_flags+=("-E")
+    local_nonpersistent_flags+=("--exclude-container")
     local_nonpersistent_flags+=("--exclude-container=")
+    local_nonpersistent_flags+=("-E")
     flags+=("--help")
     flags+=("-h")
     local_nonpersistent_flags+=("--help")
+    local_nonpersistent_flags+=("-h")
     flags+=("--include=")
+    two_word_flags+=("--include")
     two_word_flags+=("-i")
+    local_nonpersistent_flags+=("--include")
     local_nonpersistent_flags+=("--include=")
+    local_nonpersistent_flags+=("-i")
     flags+=("--init-containers")
     local_nonpersistent_flags+=("--init-containers")
     flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig")
     local_nonpersistent_flags+=("--kubeconfig=")
     flags+=("--namespace=")
+    two_word_flags+=("--namespace")
     flags_with_completion+=("--namespace")
-    flags_completion+=("__kubectl_get_namespaces")
+    flags_completion+=("__stern_kubectl_get_namespaces")
     two_word_flags+=("-n")
     flags_with_completion+=("-n")
-    flags_completion+=("__kubectl_get_namespaces")
+    flags_completion+=("__stern_kubectl_get_namespaces")
+    local_nonpersistent_flags+=("--namespace")
     local_nonpersistent_flags+=("--namespace=")
+    local_nonpersistent_flags+=("-n")
     flags+=("--output=")
+    two_word_flags+=("--output")
     two_word_flags+=("-o")
+    local_nonpersistent_flags+=("--output")
     local_nonpersistent_flags+=("--output=")
+    local_nonpersistent_flags+=("-o")
     flags+=("--selector=")
+    two_word_flags+=("--selector")
     two_word_flags+=("-l")
+    local_nonpersistent_flags+=("--selector")
     local_nonpersistent_flags+=("--selector=")
+    local_nonpersistent_flags+=("-l")
     flags+=("--since=")
+    two_word_flags+=("--since")
     two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--since")
     local_nonpersistent_flags+=("--since=")
+    local_nonpersistent_flags+=("-s")
     flags+=("--tail=")
+    two_word_flags+=("--tail")
+    local_nonpersistent_flags+=("--tail")
     local_nonpersistent_flags+=("--tail=")
     flags+=("--template=")
+    two_word_flags+=("--template")
+    local_nonpersistent_flags+=("--template")
     local_nonpersistent_flags+=("--template=")
     flags+=("--timestamps")
     flags+=("-t")
     local_nonpersistent_flags+=("--timestamps")
+    local_nonpersistent_flags+=("-t")
     flags+=("--version")
     flags+=("-v")
     local_nonpersistent_flags+=("--version")
+    local_nonpersistent_flags+=("-v")
 
     must_have_one_flag=()
     must_have_one_noun=()
@@ -403,6 +556,7 @@ __start_stern()
     local commands=("stern")
     local must_have_one_flag=()
     local must_have_one_noun=()
+    local has_completion_function
     local last_command
     local nouns=()
 

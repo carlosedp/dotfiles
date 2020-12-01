@@ -48,8 +48,6 @@ echo "==================================="
 echo ""
 # Command line apps
 brew bundle install --file $DOTFILES/Brewfile
-# Development Tools
-brew bundle install --file $DOTFILES/Brewfile-development
 # Mac apps
 brew bundle install --file $DOTFILES/Brewfile-casks-store
 echo ""
@@ -60,14 +58,14 @@ sleep 1
 # Install additional fonts
 for F in $HOME/.dotfiles/fonts/*.tar.gz; do sudo tar vxf $F -C /Library/Fonts; done
 
-# Install Go applications
-bash -c $DOTFILES/go_apps.sh
-
 # Setup dotfiles
 bash -c $DOTFILES/setup_links.sh
 
 # Setup Zsh
 bash -c $DOTFILES/setup_zsh.sh
+
+# Install Development tools
+bash -c $DOTFILES/setup_development.sh
 
 # Setup Tmux
 bash -c $DOTFILES/setup_tmux.sh

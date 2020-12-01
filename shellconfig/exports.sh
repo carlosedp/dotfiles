@@ -48,13 +48,14 @@ export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export GOPATH=$HOME/go
 export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
 
-# Set JAVA home dir
-if [ -f /usr/libexec/java_home ] && [ /usr/libexec/java_home ]; then
-    export JAVA_HOME=$(/usr/libexec/java_home)
-fi
+# Add Java to path
+export PATH=$JAVA_HOME/bin:$PATH
 
 # Add Erlang shell history and unicode messages
 export ERL_AFLAGS="+pc unicode -kernel shell_history enabled"
+
+## Scala Coursier Path
+export PATH="/Users/cdepaula/Library/Application Support/Coursier/bin:$PATH"
 
 # Ripgrep config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc

@@ -31,3 +31,19 @@ if [ -x "$(command -v stern)" ] > /dev/null 2>&1; then
 fi
 
 curl -sL -o $HOME/.dotfiles/completion/_hub https://github.com/github/hub/raw/master/etc/hub.zsh_completion
+
+
+# bloop
+curl -s https://raw.githubusercontent.com/scalacenter/bloop/master/etc/zsh-completions -o $HOME/.dotfiles/completion/_bloop
+
+# cs
+cs --completions zsh > $HOME/.dotfiles/completion/_cs
+
+# gh
+# gh completion -s zsh > $HOME/.dotfiles/completion/_gh
+
+# scalafix
+scalafix --zsh > $HOME/.dotfiles/completion/_scalafix
+
+# scalafmt
+curl -s https://raw.githubusercontent.com/scalameta/scalafmt/master/bin/_scalafmt -o $HOME/.dotfiles/completion/_scalafmt

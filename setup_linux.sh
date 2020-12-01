@@ -33,19 +33,14 @@ elif [ $ID == "void" ]; then
     sudo xbps-install -Su -y $VOIDPACKAGES
 fi
 
-# Install Golang
-echo "Installing Golang..."
-source $DOTFILES/shellconfig/funcs.sh
-install_golang
-
-# Install Go applications
-bash -c $DOTFILES/go_apps.sh
-
 # Setup dotfiles
 bash -c $DOTFILES/setup_links.sh
 
 # Setup Zsh
 bash -c $DOTFILES/setup_zsh.sh
+
+# Install Development tools
+bash -c $DOTFILES/setup_development.sh
 
 # Setup Tmux
 bash -c $DOTFILES/setup_tmux.sh

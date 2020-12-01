@@ -1,9 +1,14 @@
+tap "homebrew/cask-fonts"
+
 # Golang
 brew "go"
 
 # Erlang
 brew "erlang"
 brew "rebar3"
+
+# Scala
+brew "coursier/formulas/coursier"
 
 # Python
 brew "python"
@@ -20,3 +25,4 @@ cask "open-in-code"
 cask "kdiff3"
 cask "font-firacode-nerd-font"
 cask "font-ibm-plex"
+cask "font-3270-nerd-font"

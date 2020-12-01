@@ -32,9 +32,6 @@ COMPLETION_WAITING_DOTS="true"
 # Autosuggest Async                                                                      │
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 
-# Only show targets on Makefile completion
-zstyle ':completion:*:*:make:*' tag-order 'targets'
-
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Syntax highlight should be loaded before history-substring-search
 plugins=(
@@ -56,23 +53,30 @@ plugins=(
     history-substring-search
     zsh-autosuggestions
     systemd
-    fzf
     dirhistory
     history
     common-aliases
     tig
     ripgrep
     zsh-completions
+    fzf-tab
+    fzf
 )
 
 source $ZSH/oh-my-zsh.sh
 
 # Enable zsh plugins
-source $HOME/.oh-my-zsh/custom/plugins/autoupdate-oh-my-zsh-plugins/autoupdate.plugin.zsh
-source $HOME/.oh-my-zsh/custom/plugins/zsh-you-should-use/you-should-use.plugin.zsh
-source $HOME/.oh-my-zsh/custom/plugins/forgit/forgit.plugin.zsh
-fpath=($ZSH/custom/plugins/zsh-completions/src $fpath)
+source $ZSH_CUSTOM/plugins/autoupdate-oh-my-zsh-plugins/autoupdate.plugin.zsh
+source $ZSH_CUSTOM/plugins/zsh-you-should-use/you-should-use.plugin.zsh
+source $ZSH_CUSTOM/plugins/forgit/forgit.plugin.zsh
+
+# Configure complations
+fpath=($ZSH_CUSTOM/plugins/zsh-completions/src $fpath)
+fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.dotfiles/completion $fpath)
+
+# Only show targets on Makefile completion
+zstyle ':completion:*:*:make:*' tag-order 'targets'
 
 # zmv
 autoload -U zmv
@@ -96,8 +100,15 @@ export HISTORY_SUBSTRING_SEARCH_FUZZY=true
 setopt appendhistory
 setopt SHARE_HISTORY
 
+# Override completions for other commands
+compdef _cs coursier
+
 # Load additional shell rc common to zsh and bash
 source ~/.dotfiles/shellconfig/shellrc.sh
+
+# Initialize completions
+autoload -Uz compinit
+compinit
 
 # Debug zsh startup. Check variable on top.
 [ ${ZSHDEBUG} ] && zprof

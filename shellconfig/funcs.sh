@@ -1,5 +1,33 @@
 # Functions when required functionality won't work with an alias
 
+function update() {
+    if [ $(uname -s) == "Linux" ]; then
+        if [ -f /etc/os-release ]; then
+            source /etc/os-release
+            # Update Linux packages
+            if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
+                sudo apt update && sudo apt upgrade -y && sudo apt autoclean -y && sudo apt autoremove -y
+            elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
+                sudo dnf update -y
+            elif [ $ID == "alpine" ]; then
+                sudo apk update
+            elif [ $ID == "void" ]; then
+                sudo xbps-install -Su -y
+            fi
+        else
+            echo "ERROR: I need the file /etc/os-release to determine the Linux distribution..."
+            exit 1
+        fi
+    elif [ $(uname -s) == "Darwin" ]; then
+        brew update && brew upgrade && brew upgrade --cask && brew cleanup
+    fi
+    # Update Zsh
+    $HOME/.dotfiles/setup_zsh.sh
+
+    # Update Development packages
+    $HOME/.dotfiles/setup_development.sh
+}
+
 # Generate a scp command to copy files between hosts
 function scppath () {
     echo $USER@$(hostname -I | awk '{print $1}'):$(readlink -f $1);
@@ -64,4 +92,21 @@ function ss() {
         echo "Remoting into: $target"
         ssh $target
     fi
+}
+
+# Coursier
+function csi() { # fzf coursier install
+  function csl() {
+    unzip -l "$(cs fetch "$1":latest.stable)" | grep json | sed -E 's/.*:[0-9]{2}\s*(.+)\.json$/\1/'
+  }
+
+    cs install --contrib "$(cat <(csl io.get-coursier:apps) <(csl io.get-coursier:apps-contrib) | sort -r | fzf)"
+}
+
+function csji() { # fzf coursier java install
+    cs java --jvm $(cs java --available | fzf) --setup
+}
+
+function csrt() { # fzf coursier resolve tree
+    $(cs resolve -t "$1" | fzf --reverse --ansi)
 }
