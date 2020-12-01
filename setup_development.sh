@@ -14,7 +14,7 @@ elif [ $(uname -s) == "Linux" ]; then
     # Scala
     echo "Install Scala Coursier"
     pushd /tmp &&
-    curl -fLo cs https://git.io/coursier-cli-linux &&
+    curl -fLos cs https://git.io/coursier-cli-linux &&
     chmod +x cs &&
     ./cs install cs
     rm ./cs
