@@ -1,4 +1,5 @@
 /.metals
+/*.lock.json
 /rc/config/.mono
 /rc/config/configstore
 /**/StardewValley/*

@@ -47,3 +47,6 @@ scalafix --zsh > $HOME/.dotfiles/completion/_scalafix
 
 # scalafmt
 curl -s https://raw.githubusercontent.com/scalameta/scalafmt/master/bin/_scalafmt -o $HOME/.dotfiles/completion/_scalafmt
+
+# Refresh completion
+rm -f ~/.zcompdump; compinit

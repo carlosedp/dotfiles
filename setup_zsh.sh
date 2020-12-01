@@ -207,6 +207,7 @@ popd
 echo ""
 log "Clean completion cache" $GREEN
 \rm -rf $home/.zcompdump*
+compinit
 
 echo ""
 log "ZSH Setup finished!" $GREEN
