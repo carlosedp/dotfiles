@@ -37,16 +37,20 @@ curl -sL -o $HOME/.dotfiles/completion/_hub https://github.com/github/hub/raw/ma
 curl -s https://raw.githubusercontent.com/scalacenter/bloop/master/etc/zsh-completions -o $HOME/.dotfiles/completion/_bloop
 
 # cs
-cs --completions zsh > $HOME/.dotfiles/completion/_cs
+if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
+        cs --completions zsh > $HOME/.dotfiles/completion/_cs
+fi
 
 # gh
 # gh completion -s zsh > $HOME/.dotfiles/completion/_gh
 
 # scalafix
-scalafix --zsh > $HOME/.dotfiles/completion/_scalafix
+if [ -x "$(command -v scalafix)" ] > /dev/null 2>&1; then
+        scalafix --zsh > $HOME/.dotfiles/completion/_scalafix
+fi
 
 # scalafmt
 curl -s https://raw.githubusercontent.com/scalameta/scalafmt/master/bin/_scalafmt -o $HOME/.dotfiles/completion/_scalafmt
 
 # Refresh completion
-rm -f ~/.zcompdump; compinit
+rm -f ~/.zcompdump

@@ -111,7 +111,7 @@ log "Install fzf plugin" $GREEN
 if [[ $(command -v go) != "" ]]; then
     # Install fzf - Command line fuzzy finder
     log "> Installing fzf" $YELLOW
-    go get -u github.com/junegunn/fzf
+    GO111MODULE=off go get -u github.com/junegunn/fzf
 else
     log "> You don't have Go installed, can't install fzf." $RED
 fi
@@ -192,6 +192,7 @@ containsElement () {
 echo ""
 log "Clean unused plugins" $GREEN
 pushd "$ZSH_CUSTOM/plugins/"
+plugin_names+=("example")
 for d in *; do
     if [ -d "$d" ]; then
         if containsElement $d "${plugin_names[@]}"; then
@@ -207,7 +208,6 @@ popd
 echo ""
 log "Clean completion cache" $GREEN
 \rm -rf $home/.zcompdump*
-compinit
 
 echo ""
 log "ZSH Setup finished!" $GREEN
