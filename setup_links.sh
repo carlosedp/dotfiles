@@ -62,7 +62,13 @@ done
 # Link SSH keys
 log "Linking .ssh directory" $GREEN
 if [[ -d "$SYNC_FOLDER/Configs/SSH_Keys" ]]; then
-    ln -sfn "$SYNC_FOLDER/Configs/SSH_Keys" $HOME/.ssh
+    create_link "$SYNC_FOLDER/Configs/SSH_Keys" $HOME/.ssh
+fi
+
+# Link 2fa keychain file
+log "Linking 2fa keychain" $GREEN
+if [[ -f "$SYNC_FOLDER/Configs/2fa/keychain" ]]; then
+  create_link "$SYNC_FOLDER/Configs/2fa/keychain" "$HOME/.2fa"
 fi
 
 # List of settings to be syncd between computers. Separated by spaces.
