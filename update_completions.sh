@@ -41,9 +41,6 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
         cs --completions zsh > $HOME/.dotfiles/completion/_cs
 fi
 
-# gh
-# gh completion -s zsh > $HOME/.dotfiles/completion/_gh
-
 # scalafix
 if [ -x "$(command -v scalafix)" ] > /dev/null 2>&1; then
         scalafix --zsh > $HOME/.dotfiles/completion/_scalafix

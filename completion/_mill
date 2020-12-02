@@ -8,20 +8,18 @@ __mill_zsh_main ()
 	local -a orig_words
 
 	orig_words=( ${words[@]} )
-  local state
+	local state
 
-  _arguments \
-    '1: :->target'\
+	_arguments \
+		'1: :->target'\
 
-  case $state in
-    (target) _arguments '1:profiles:($(mill --disable-ticker resolve _ 2> /dev/null))' ;;
-    (*) compadd $(mill --disable-ticker resolve $words[2]._ 2> /dev/null | cut -d. -f2) ;;
-  esac
+	case $state in
+		(target) _arguments '1:profiles:($(mill --disable-ticker resolve _ 2> /dev/null))' ;;
+		(*) compadd $(mill --disable-ticker resolve $words[2]._ 2> /dev/null | cut -d. -f2) ;;
+	esac
 }
 
 _mill() {
-
-
 	local _ret=1
 	local cur cword prev
 
@@ -29,11 +27,7 @@ _mill() {
 	prev=${words[CURRENT-1]}
 	let cword=CURRENT-1
 
-	if (( $+functions[__${service}_zsh_main] )); then
-		__${service}_zsh_main
-	else
-		emulate ksh -c __${service}_main
-	fi
+	__${service}_zsh_main
 
 	let _ret && _default && _ret=0
 	return _ret
