@@ -14,7 +14,7 @@ elif [ $(uname -s) == "Linux" ]; then
     # Scala
     echo "Install Scala Coursier"
     pushd /tmp &&
-    curl -fLos cs https://git.io/coursier-cli-linux &&
+    curl -fLso cs https://git.io/coursier-cli-linux &&
     chmod +x cs &&
     ./cs install cs
     rm ./cs
@@ -23,7 +23,7 @@ fi
 
 # Scala
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
-    echo "Install Scala Coursier applications"
+    echo "Install Scala Coursier applications";
     cs setup --yes \
         --jvm graalvm \
         --apps \
