@@ -3,7 +3,7 @@
 DOTFILES=$HOME/.dotfiles
 cd $HOME
 
-BASEPACKAGES="sudo curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux autojump neofetch lshw iotop ripgrep rsync tree"
+BASEPACKAGES="sudo curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux neofetch lshw iotop ripgrep rsync tree autojump"
 DEBIANPACKAGES="openssh-client openssh-server locales ack-grep nfs-common apt-utils build-essential lsb-release telnet xz-utils apt-rdepends"
 FEDORAPACKAGES="openssh-client openssh-server ack nfs-utils @development-tools which lsb-release telnet xz"
 ALPINEPACKAGES="openssh-client openssh-server ack nfs-utils build-base xz"
@@ -20,7 +20,9 @@ if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
     for i in $DEBIANPACKAGES; do
         sudo apt install -y --no-install-recommends $i
     done
-elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
+    apt autoclean -y
+    apt autoremove -y
+elif [ $ID == "fedora" ] || [ $ID == "centos" ] || [ $ID == "rhel" ]; then
     sudo dnf update -y
     sudo dnf install -y $BASEPACKAGES
     sudo dnf install -y $FEDORAPACKAGES

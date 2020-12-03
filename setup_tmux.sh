@@ -35,7 +35,7 @@ if [ ! "$(command -v $tmuxcommand )" ] 2> /dev/null 2>&1; then
         if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
             sudo apt update
             sudo apt install --no-install-recommends -y $tmuxcommand
-        elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
+        elif [ $ID == "fedora" ] || [ $ID == "centos" ] || [ $ID == "rhel" ]; then
             sudo dnf install -y $tmuxcommand
         elif [ $ID == "alpine" ]; then
             sudo apk add $tmuxcommand

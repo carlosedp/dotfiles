@@ -2,30 +2,10 @@
 
 function update() {
     if [ $(uname -s) == "Linux" ]; then
-        if [ -f /etc/os-release ]; then
-            source /etc/os-release
-            # Update Linux packages
-            if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
-                sudo apt update && sudo apt upgrade -y && sudo apt autoclean -y && sudo apt autoremove -y
-            elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
-                sudo dnf update -y
-            elif [ $ID == "alpine" ]; then
-                sudo apk update
-            elif [ $ID == "void" ]; then
-                sudo xbps-install -Su -y
-            fi
-        else
-            echo "ERROR: I need the file /etc/os-release to determine the Linux distribution..."
-            exit 1
-        fi
+        $HOME/.dotfiles/setup_linux.sh
     elif [ $(uname -s) == "Darwin" ]; then
-        brew update && brew upgrade && brew upgrade --cask && brew cleanup
+        $HOME/.dotfiles/setup_mac.sh
     fi
-    # Update Zsh
-    $HOME/.dotfiles/setup_zsh.sh
-
-    # Update Development packages
-    $HOME/.dotfiles/setup_development.sh
 }
 
 # Generate a scp command to copy files between hosts
