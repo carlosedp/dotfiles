@@ -31,4 +31,4 @@ alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo 
 alias clipdecode="pbpaste|base64 --decode"
 
 # Flush Directory Service cache
-alias flushdns="dscacheutil -flushcache && killall -HUP mDNSResponder"
+alias flushdns='dscacheutil -flushcache && ps aux|grep mDNSResponder |grep -v grep |awk '"'"'{print $2}'"'"' |xargs sudo kill -HUP'
