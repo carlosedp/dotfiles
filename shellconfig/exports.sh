@@ -54,8 +54,9 @@ export PATH=$JAVA_HOME/bin:$PATH
 # Add Erlang shell history and unicode messages
 export ERL_AFLAGS="+pc unicode -kernel shell_history enabled"
 
-## Scala Coursier Path
-export PATH="/Users/cdepaula/Library/Application Support/Coursier/bin:$PATH"
+## Scala Coursier Path for Mac and Linux
+export PATH="$HOME/Library/Application Support/Coursier/bin:$PATH"
+export PATH="$HOME/.local/share/coursier/bin:$PATH"
 
 # Ripgrep config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
