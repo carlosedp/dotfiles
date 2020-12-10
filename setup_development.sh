@@ -25,16 +25,14 @@ fi
 source ~/.dotfiles/shellconfig/exports.sh
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
     echo "Install Scala Coursier applications";
-    cs setup --yes \
-        --jvm graalvm \
-        --apps \
-            ammonite, \
-            bloop, \
-            cs, \
-            giter8, \
-            sbt, \
-            mill, \
-            scala, \
+    cs install --jvm graalvm \
+            ammonite \
+            bloop \
+            cs \
+            giter8 \
+            sbt \
+            mill \
+            scala \
             scalafmt
     cs update
 fi

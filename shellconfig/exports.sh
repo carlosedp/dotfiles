@@ -48,11 +48,12 @@ export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export GOPATH=$HOME/go
 export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
 
-# Add Java to path
-export PATH=$JAVA_HOME/bin:$PATH
-
 # Add Erlang shell history and unicode messages
 export ERL_AFLAGS="+pc unicode -kernel shell_history enabled"
+
+# Add Java to path
+export JAVA_HOME=$(cs java-home --jvm graalvm)
+export PATH=$JAVA_HOME/bin:$PATH
 
 ## Scala Coursier Path for Mac and Linux
 export PATH="$HOME/Library/Application Support/Coursier/bin:$PATH"

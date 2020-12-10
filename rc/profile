@@ -7,7 +7,3 @@ if [ "$BASH" ]; then
 fi
 
 mesg n || true
-
-# >>> JVM installed by coursier >>>
-export JAVA_HOME="/Users/cdepaula/Library/Caches/Coursier/jvm/graalvm@20.3.0/Contents/Home"
-# <<< JVM installed by coursier <<<
