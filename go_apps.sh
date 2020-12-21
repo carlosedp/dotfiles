@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+# Load utility functions
+source utils.sh
 
 # Install Go apps
 
 export PATH=/usr/local/go/bin:"$PATH"
-echo "Installing Go apps..."
+log "Installing Go apps..." $GREENUNDER
 echo ""
 
 modules=("github.com/github/hub"
@@ -21,11 +25,13 @@ if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
     # Install applications with module mode off to avoid
     # updating any project go.mod/go.sum if inside it's directories
     for m in ${modules[@]}; do
-        echo "Installing " $m
+        log "Installing $m" $GREEN
         GO111MODULE=off go get -u $m
     done
 
 else
-    echo "ERROR: You don't have Go installed."
+    log "ERROR: You don't have Go installed." $RED
     exit 1
 fi
+
+log "Go apps installed." $GREENUNDER

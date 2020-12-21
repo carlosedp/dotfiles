@@ -1,30 +1,36 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+# Load utility functions
+source utils.sh
+
+log "Setup development tools." $GREENUNDER
 
 # Install base
 if [ $(uname -s) == "Darwin" ]; then
     # Development Tools
-    echo "Install homebrew bundle for development"
+    log "Install homebrew bundle for development" $GREEN
     brew bundle install --file $HOME/.dotfiles/Brewfile-development
 elif [ $(uname -s) == "Linux" ]; then
     # Install Golang
-    echo "Installing Golang..."
+    log "Installing Golang..." $GREEN
     source $HOME/.dotfiles/shellconfig/funcs.sh
     install_golang
 
     # Scala
-    echo "Install Scala Coursier"
-    pushd /tmp &&
-    curl -fLso cs https://git.io/coursier-cli-linux &&
-    chmod +x cs &&
+    log "Install Scala Coursier" $GREEN
+    pushd /tmp >/dev/null
+    curl -fLso cs https://git.io/coursier-cli-linux
+    chmod +x cs
     ./cs install cs
     rm ./cs
-    popd
+    popd >/dev/null
 fi
 
 # Scala
 source ~/.dotfiles/shellconfig/exports.sh
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
-    echo "Install Scala Coursier applications";
+    log "Install Scala Coursier applications" $GREEN
     cs install --jvm graalvm \
             ammonite \
             bloop \
@@ -38,6 +44,7 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
 fi
 
 # Golang
-echo "Install Golang apps"
+log "Install Golang apps" $GREEN
 bash -c $HOME/.dotfiles/go_apps.sh
 
+log "Development tools setup finished." $GREENUNDER

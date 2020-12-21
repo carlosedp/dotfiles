@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+# Load utility functions
+source utils.sh
+
+log "Setup Linux..." $GREENUNDER
 
 DOTFILES=$HOME/.dotfiles
 cd $HOME
@@ -50,4 +56,6 @@ bash -c $DOTFILES/setup_tmux.sh
 # Add user to passwordless sudo
 #sudo sed -i "%admin    ALL = (ALL) NOPASSWD:ALL"
 
-echo "Setup finished!"
+echo ""
+log "Linux Setup finished!" $GREENUNDER
+echo ""

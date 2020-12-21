@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-echo "Starting Tmux setup"
+# Load utility functions
+source utils.sh
+
+log "Starting Tmux setup" $GREENUNDER
 echo ""
 DOTFILES=$HOME/.dotfiles
-pushd $HOME
+cd $HOME
 
 tmuxcommand=tmux
 
@@ -12,23 +16,23 @@ if [ $(uname -s) != "Darwin" ]; then
     if [ -f /etc/os-release ]; then
         source /etc/os-release
     else
-        log "ERROR: I need the file /etc/os-release to determine the Linux distribution..."
+        log "ERROR: I need the file /etc/os-release to determine the Linux distribution..." $RED
         exit 1
     fi
 fi
 
 if [ ! "$(command -v $tmuxcommand )" ] 2> /dev/null 2>&1; then
     if [ $(uname -s) == "Darwin" ]; then
-        echo "Checking if Homebrew is installed"
+        log "> Checking if Homebrew is installed" $GREEN
         echo ""
         if [[ $(command -v brew) == "" ]]; then
-            echo "Homebrew not installed, installing..."
+            log "Homebrew not installed, installing..." $YELLOW
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
             echo ""
         fi
 
         # Install tmux on Mac
-        echo "$tmuxcommand not installed, installing..."
+        log "$tmuxcommand not installed, installing..." YELLOW
         brew install $tmuxcommand
     else
         # Install tmux on Linux
@@ -42,28 +46,19 @@ if [ ! "$(command -v $tmuxcommand )" ] 2> /dev/null 2>&1; then
         elif [ $ID == "void" ]; then
             sudo xbps-install -Su $tmuxcommand
         else
-            echo "ERROR: Your distro is not supported, install tmux manually."
+            log "ERROR: Your distro is not supported, install tmux manually." $RED
             exit 1
         fi
     fi
 fi
 
-echo "Get dotfiles"
-if [[ ! -d "$DOTFILES" ]]; then
-    git clone https://github.com/carlosedp/dotfiles.git $DOTFILES
-else
-    echo "You already have the dotfiles, updating..."
-    pushd $DOTFILES; git pull; popd
-fi
+log "Get dotfiles" $GREEN
+cloneorpull https://github.com/carlosedp/dotfiles.git $DOTFILES
 
 # Link .rc files
 bash -c $DOTFILES/setup_links.sh
 
 echo "Install .tmux"
-if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
-    git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
-else
-    echo "You already have the .tmux, updating..."
-    pushd $HOME/.tmux/plugins/tpm; git pull; popd
-fi
+cloneorpull https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
+log "Tmux setup finished." $GREENUNDER

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
 # Minimal required packages: curl, bash, sudo
 # To install, run curl -Lks https://github.com/carlosedp/dotfiles/raw/master/kickstart.sh | bash
-
 # Load Linux distro info
 if [ $(uname -s) != "Darwin" ]; then
     if [ -f /etc/os-release ]; then

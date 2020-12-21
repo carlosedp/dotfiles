@@ -1,31 +1,20 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+# Load utility functions
+source utils.sh
+
+log "Setup home links..." $GREENUNDER
 
 # ------------------------------------------------------------------------------
 # Settings
 # ------------------------------------------------------------------------------
 SYNC_FOLDER="$HOME/Dropbox"
 
-# ------------------------------------------------------------------------------
-# Utility Funtions
-# ------------------------------------------------------------------------------
-RED="\e[31m"
-REDBOLD="\e[31m\e[1m"
-GREEN="\e[32m"
-YELLOW="\e[33m"
-RESET="\e[0m"
-
-log () {
-    if [ $2 ]; then
-        echo $(printf "$2$1 $RESET")
-    else
-        echo $(printf "$RESET$1 $RESET")
-    fi
-}
-
 create_link() {
   origin=$1
   dest=$2
-  log " > Linking origin file \"$origin\" to destination \"$dest\""
+  log " > Linking origin file \"$origin\" to destination \"$dest\"" $GREEN
   if [[ ! -e "$origin" ]]; then
     log " >> Origin $origin does not exist" $RED
     return 1
@@ -95,4 +84,4 @@ if [ $(uname -s) == "Darwin" ]; then
   done
 fi
 
-log "Setting links finished" $GREEN
+log "Setting links finished" $GREENUNDER

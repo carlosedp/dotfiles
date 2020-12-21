@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+# Load utility functions
+source utils.sh
+
+log "Updating ZSH completions" $GREENUNDER
 
 # BASH
 ## Generate kubectx and kubens completions
@@ -51,3 +57,5 @@ curl -s https://raw.githubusercontent.com/scalameta/scalafmt/master/bin/_scalafm
 
 # Refresh completion
 rm -f ~/.zcompdump
+
+log "ZSH completions update finished." $GREENUNDER

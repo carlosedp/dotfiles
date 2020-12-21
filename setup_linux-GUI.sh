@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+# Load utility functions
+source utils.sh
 
 DOTFILES=$HOME/.dotfiles
 cd $HOME
+
+log "Setup Linux with GUI..." $GREENUNDER
 
 BASEPACKAGES="terminator"
 
@@ -35,5 +41,4 @@ elif [ $ID == "fedora" ] || [ $ID == "centos" ]; then
 fi
 sudo ln -sf /usr/bin/code-oss /usr/local/bin/code
 
-
-echo "Setup finished!"
+log "Linux GUI setup finished." $GREENUNDER

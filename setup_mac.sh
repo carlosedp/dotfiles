@@ -1,42 +1,45 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+# Load utility functions
+source utils.sh
+
+log "Setup MacOS..." $GREENUNDER
 
 DOTFILES=$HOME/.dotfiles
 cd $HOME
 
-echo "Checking if macOS is up to date..."
+log "Checking if macOS is up to date..." $GREEN
 if [[ "$(sudo softwareupdate -l 2>&1)" != *"No new software available"* ]]; then
-echo "Updating macOS"
-sudo softwareupdate -i -a
-echo "Reboot your machine now and run this script again afterwards."
-exit 0
+    log "> Updating macOS" $GREEN
+    sudo softwareupdate -i -a
+    log "> Reboot your machine now and run this script again afterwards." $YELLOW
+    exit 0
 else
-echo "This macOS is up to date."
+    log "> This MacOS is up to date." $GREEN
 fi
 
-echo "Don't forget to install XCode or Developer tools"
-echo "======================================================="
-echo ""
-echo "Testing if you have XCode or Developer tools already installed"
+log "Testing if you have XCode or Developer tools already installed" $GREEN
 echo ""
 # Test for XCode install
 if [[ ! $(which gcc) ]]; then
-    echo "Xcode/Dev Tools not installed. Installing..."
+    log "> Xcode/Dev Tools not installed. Installing..." $YELLOW
     xcode-select --install
 else
-    echo "Dev Tools detected, installation will proceed in 2 seconds"
+    log "> Dev Tools detected, installation will proceed in 2 seconds" $GREEN
+    echo ""
 fi
-echo ""
 sleep 2
 
 # Test if homebrew is installed
-echo "Testing if you have Homebrew already installed"
+log "Testing if you have Homebrew already installed" $GREEN
 echo ""
 if [[ ! $(which brew) ]]; then
-    echo "Homebrew not installed, installing..."
+    log "> Homebrew not installed, installing..." $YELLOW
     echo ""
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 else
-    echo "Homebrew is installed, will update"
+    log "> Homebrew is installed, will update" $GREEN
     echo ""
     brew update
     brew upgrade
@@ -44,17 +47,17 @@ else
     brew cleanup
 fi
 brew analytics off
-sleep 3
+sleep 2
 
-echo "Install brews"
-echo "==================================="
+log "Install brews" $GREEN
+log "===================================" $GREEN
 echo ""
 # Command line apps
 brew bundle install --file $DOTFILES/Brewfile
 # Mac apps
 brew bundle install --file $DOTFILES/Brewfile-casks-store
 echo ""
-echo "done ..."
+log "Brew install finished..." $GREEN
 echo ""
 sleep 1
 
@@ -84,4 +87,4 @@ if [[ ! $(grep "pam_tid.so" /etc/pam.d/sudo) ]]; then
     echo -e "auth       sufficient     pam_tid.so\n$(cat /etc/pam.d/sudo)" |sudo tee /etc/pam.d/sudo;
 fi
 
-echo "Setup finished!"
+log "Setup finished!" $GREENUNDER

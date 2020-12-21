@@ -1,18 +1,11 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-RED="\e[31m"
-REDBOLD="\e[31m\e[1m"
-GREEN="\e[32m"
-YELLOW="\e[33m"
-RESET="\e[0m"
+# Load utility functions
+source utils.sh
 
-log () {
-    if [ $2 ]; then
-        echo $(printf "$2$1 $RESET")
-    else
-        echo $(printf "$RESET$1 $RESET")
-    fi
-}
+log "Starting ZSH setup" $GREENUNDER
+echo ""
 
 # Check pre-reqs
 EXIT=0
@@ -34,8 +27,6 @@ if [ $(uname -s) != "Darwin" ]; then
     fi
 fi
 
-log "Starting Zsh setup" $GREEN
-echo ""
 DOTFILES=$HOME/.dotfiles
 PATH=/usr/local/go/bin:$HOME/go/bin:"$PATH"
 
@@ -90,12 +81,7 @@ fi
 
 echo ""
 log "Update dotfiles" $GREEN
-if [[ ! -d "$DOTFILES" ]]; then
-    git clone --quiet https://github.com/carlosedp/dotfiles.git $DOTFILES
-else
-    log "> You already have the dotfiles, updating..." $YELLOW
-    pushd $DOTFILES; git pull; popd
-fi
+cloneorpull https://github.com/carlosedp/dotfiles.git $DOTFILES
 
 echo ""
 log "Install oh-my-zsh" $GREEN
@@ -103,7 +89,9 @@ if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 else
     log "> You already have the oh-my-zsh, updating..." $YELLOW
-    pushd $HOME/.oh-my-zsh; git pull --quiet; popd
+    pushd $HOME/.oh-my-zsh >/dev/null
+    git pull --quiet
+    popd >/dev/null
 fi
 
 echo ""
@@ -116,12 +104,7 @@ else
     log "> You don't have Go installed, can't install fzf." $RED
 fi
 
-if [[ ! -d "$HOME/.fzf" ]]; then
-    git clone --quiet https://github.com/junegunn/fzf $HOME/.fzf --depth=1
-else
-    log "> You already have the fzf config, updating..." $GREEN
-    pushd $HOME/.fzf; git pull --quiet --depth=1; popd
-fi
+cloneorpull https://github.com/junegunn/fzf $HOME/.fzf --depth=1
 
 if [[ $(command -v fzf) == "" ]]; then
     log "You don't have fzf installed, install thru go_apps.sh script..."$RED
@@ -147,13 +130,8 @@ for t in "${themes[@]}"
     do
     log "Installing $t prompt..." $GREEN
     theme_name=$(basename $t)
-    if [[ ! -d "$ZSH_CUSTOM/themes/$theme_name" ]]; then
-        log "> Installing $theme_name..." $YELLOW
-        git clone --quiet $t "$ZSH_CUSTOM/themes/$theme_name"
-    else
-        log "> You already have $theme_name, updating..." $YELLOW
-        pushd $ZSH_CUSTOM/themes/$theme_name; git pull --quiet; popd
-    fi
+
+    cloneorpull $t "$ZSH_CUSTOM/themes/$theme_name"
 done
 
 # Add plugins to the array below
@@ -173,25 +151,12 @@ for p in "${plugins[@]}"
     plugin_name=$(basename $p)
     plugin_names+=($plugin_name)
     log "Installing $plugin_name..." $GREEN
-    if [[ ! -d "$ZSH_CUSTOM/plugins/$plugin_name" ]]; then
-        git clone --quiet $p "$ZSH_CUSTOM/plugins/$plugin_name"
-    else
-        log "> You already have $plugin_name, updating..." $YELLOW
-        pushd $ZSH_CUSTOM/plugins/$plugin_name; git pull --quiet; popd
-    fi
+    cloneorpull $p "$ZSH_CUSTOM/plugins/$plugin_name"
 done
-
-# Check if array contains element
-containsElement () {
-  local e match="$1"
-  shift
-  for e; do [[ "$e" == "$match" ]] && return 0; done
-  return 1
-}
 
 echo ""
 log "Clean unused plugins" $GREEN
-pushd "$ZSH_CUSTOM/plugins/"
+pushd "$ZSH_CUSTOM/plugins/" >/dev/null
 plugin_names+=("example")
 for d in *; do
     if [ -d "$d" ]; then
@@ -203,12 +168,12 @@ for d in *; do
         fi
     fi
 done
-popd
+popd >/dev/null
 
 echo ""
 log "Clean completion cache" $GREEN
-\rm -rf $home/.zcompdump*
+\rm -rf $HOME/.zcompdump*
 
 echo ""
-log "ZSH Setup finished!" $GREEN
+log "ZSH Setup finished!" $GREENUNDER
 echo ""
