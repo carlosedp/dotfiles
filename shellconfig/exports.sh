@@ -51,9 +51,11 @@ export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
 # Add Erlang shell history and unicode messages
 export ERL_AFLAGS="+pc unicode -kernel shell_history enabled"
 
-# Add Java to path
-export JAVA_HOME=$(cs java-home --jvm graalvm)
-export PATH=$JAVA_HOME/bin:$PATH
+# Add Java to path (if coursier is installed)
+if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
+    export JAVA_HOME=$(cs java-home --jvm graalvm)
+    export PATH=$JAVA_HOME/bin:$PATH
+fi
 
 ## Scala Coursier Path for Mac and Linux
 export PATH="$HOME/Library/Application Support/Coursier/bin:$PATH"
@@ -61,8 +63,3 @@ export PATH="$HOME/.local/share/coursier/bin:$PATH"
 
 # Ripgrep config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
-
-# Use Secretive as SSH key storage on Mac
-#if [ $(uname -s) = 'Darwin' ]; then
-#    export SSH_AUTH_SOCK=/Users/cdepaula/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh
-#fi
