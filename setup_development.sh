@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Load utility functions
-source utils.sh
+source $HOME/.dotfiles/utils.sh
 
 log "Setup development tools." $GREENUNDER
 
