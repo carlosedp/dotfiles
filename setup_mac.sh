@@ -54,8 +54,8 @@ log "===================================" $GREEN
 echo ""
 # Command line apps
 brew bundle install --file $DOTFILES/Brewfile
-# Mac apps
-brew bundle install --file $DOTFILES/Brewfile-casks-store
+# Mac apps (do not fail)
+brew bundle install --file $DOTFILES/Brewfile-casks-store || true
 echo ""
 log "Brew install finished..." $GREEN
 echo ""

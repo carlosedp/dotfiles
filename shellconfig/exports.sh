@@ -27,7 +27,7 @@ export EDITOR="vim"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Highlight section titles in manual pages
-export LESS_TERMCAP_md="$ORANGE"
+export LESS_TERMCAP_md="$YELLOW"
 
 # Add alt-up/down keybinding to fzf preview window
 export FORGIT_FZF_DEFAULT_OPTS="
