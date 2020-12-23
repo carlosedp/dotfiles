@@ -30,8 +30,8 @@ if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
     apt autoremove -y
 elif [ $ID == "fedora" ] || [ $ID == "centos" ] || [ $ID == "rhel" ]; then
     sudo dnf update -y
-    sudo dnf install -y $BASEPACKAGES
-    sudo dnf install -y $FEDORAPACKAGES
+    sudo dnf install -y $BASEPACKAGES || true
+    sudo dnf install -y $FEDORAPACKAGES || true
 elif [ $ID == "alpine" ]; then
     sudo apk update
     sudo apk add $BASEPACKAGES
