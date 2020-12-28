@@ -26,7 +26,7 @@ if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
     # updating any project go.mod/go.sum if inside it's directories
     for m in ${modules[@]}; do
         log "Installing $m" $GREEN
-        GO111MODULE=off go get -u $m
+        GO111MODULE=off go get -u $m || true
     done
 
 else
