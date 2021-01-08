@@ -8,6 +8,6 @@
 --colors=match:fg:black
 --smart-case
 --hidden
---glob=!git/*
+--glob=!.git/*
 --glob=!vendor/*
 --glob=!node_modules/*

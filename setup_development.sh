@@ -17,14 +17,16 @@ elif [ $(uname -s) == "Linux" ]; then
     source $HOME/.dotfiles/shellconfig/funcs.sh
     install_golang
 
-    # Scala
-    log "Install Scala Coursier" $GREEN
-    pushd /tmp >/dev/null
-    curl -fLso cs https://git.io/coursier-cli-linux
-    chmod +x cs
-    ./cs install cs
-    rm ./cs
-    popd >/dev/null
+    # Scala (Only install on some archs)
+    if [ $(uname -m) == "x86_64"] || [ $(uname -m) == "aarch64"]; then
+        log "Install Scala Coursier" $GREEN
+        pushd /tmp >/dev/null
+        curl -fLso cs https://git.io/coursier-cli-linux
+        chmod +x cs
+        ./cs install cs
+        rm ./cs
+        popd >/dev/null
+    fi
 fi
 
 # Scala

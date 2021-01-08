@@ -26,8 +26,8 @@ if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
     for i in $DEBIANPACKAGES; do
         sudo apt install -y --no-install-recommends $i
     done
-    apt autoclean -y
-    apt autoremove -y
+    sudo apt autoclean -y
+    sudo apt autoremove -y
 elif [ $ID == "fedora" ] || [ $ID == "centos" ] || [ $ID == "rhel" ]; then
     sudo dnf update -y
     sudo dnf install -y $BASEPACKAGES || true
