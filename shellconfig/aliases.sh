@@ -57,7 +57,7 @@ alias gt='git log --tags -10 --simplify-by-decoration  --reverse --date=format:"
 alias gcns!='git commit -v --no-edit -s --amend'
 
 alias ansible-syntax='ansible-playbook --syntax-check -i "127.0.0.1,"'
-alias diskstat='sudo iostat -d -x -m -c -t 2'
+alias diskstat='watch -c -n 1 "sudo S_COLORS=always iostat -c -d -h -xy -m -t 1 1"'
 alias iotop='sudo iotop -oa'
 
 alias elasticindex='watch -n 5 "curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/nodes?v&s=name\"; echo \"\n\"; curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/indices?v&s=index:desc\"|head -30"'
