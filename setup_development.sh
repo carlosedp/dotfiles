@@ -10,7 +10,7 @@ log "Setup development tools." $GREENUNDER
 if [ $(uname -s) == "Darwin" ]; then
     # Development Tools
     log "Install homebrew bundle for development" $GREEN
-    brew bundle install --file $HOME/.dotfiles/Brewfile-development
+    brew bundle install --file $HOME/.dotfiles/mac/Brewfile-development
 elif [ $(uname -s) == "Linux" ]; then
     # Install Golang
     log "Installing Golang..." $GREEN

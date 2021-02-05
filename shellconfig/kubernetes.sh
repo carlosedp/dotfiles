@@ -122,7 +122,7 @@ kshell() {
 
 # Delete pod
 kdp() {
-    kubectl delete pod $@ &
+    kubectl delete pod $@ > /dev/null 2>&1 &
 }
 # Force delete pod
 kdpf() {

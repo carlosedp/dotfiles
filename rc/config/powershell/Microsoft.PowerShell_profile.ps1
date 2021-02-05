@@ -1,5 +1,8 @@
 # Powershell startup script
 
+# Set Path
+$env:PATH += ":/Users/cdepaula/go/bin/:/usr/local/bin/"
+
 # Install required modules
 $modules = @("VMware.PowerCLI", "PSFzf", "PSReadLine", "oh-my-posh", "posh-git", "git-aliases")
 foreach ($module in $modules) {

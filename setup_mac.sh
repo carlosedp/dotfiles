@@ -53,9 +53,9 @@ log "Install brews" $GREEN
 log "===================================" $GREEN
 echo ""
 # Command line apps
-brew bundle install --file $DOTFILES/Brewfile
+brew bundle install --file $DOTFILES/mac/Brewfile
 # Mac apps (do not fail)
-brew bundle install --file $DOTFILES/Brewfile-casks-store || true
+brew bundle install --file $DOTFILES/mac/Brewfile-casks-store || true
 echo ""
 log "Brew install finished..." $GREEN
 echo ""
@@ -77,7 +77,7 @@ bash -c $DOTFILES/setup_development.sh
 bash -c $DOTFILES/setup_tmux.sh
 
 # Setup OsX defaults
-bash -c $DOTFILES/osx_prefs.sh
+bash -c $DOTFILES/mac/osx_prefs.sh
 
 # Setup application specific configs
 bash -c $DOTFILES/setup_apps.sh

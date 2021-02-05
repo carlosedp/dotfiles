@@ -1,0 +1,177 @@
+{
+  "entries": {
+    "tap": {
+      "homebrew/cask-fonts": {
+        "revision": "7ce0f737993a3e881dac37243c5bd1acd7f63ce1"
+      }
+    },
+    "brew": {
+      "go": {
+        "version": "1.15.6",
+        "bottle": {
+          "cellar": "/usr/local/Cellar",
+          "prefix": "/usr/local",
+          "files": {
+            "big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/go-1.15.6.big_sur.bottle.tar.gz",
+              "sha256": "2107796e255869aae4a2b1bd5766182f38c87544f968750d78b7ba520d907b1a"
+            },
+            "arm64_big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/go-1.15.6.arm64_big_sur.bottle.tar.gz",
+              "sha256": "c2bd24b5a24c19bfdf97a8904aaa76c4db2a8f59096aade83310fee7af4b186c"
+            },
+            "catalina": {
+              "url": "https://homebrew.bintray.com/bottles/go-1.15.6.catalina.bottle.tar.gz",
+              "sha256": "9dac57ef268c5fee434ac7896fc77f16f16f34462822e216c9973ade6a768e0b"
+            },
+            "mojave": {
+              "url": "https://homebrew.bintray.com/bottles/go-1.15.6.mojave.bottle.tar.gz",
+              "sha256": "af0b8702944cde293206a5847bea8fb5aed66babed82fb202aff696ac5211691"
+            }
+          }
+        }
+      },
+      "erlang": {
+        "version": "23.2.1",
+        "bottle": {
+          "cellar": ":any",
+          "prefix": "/usr/local",
+          "files": {
+            "big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/erlang-23.2.1.big_sur.bottle.tar.gz",
+              "sha256": "e49148cb6434a84b44ff5bc063cb2afd8d9d4cc86a9fccadaf7ce793099753b2"
+            },
+            "arm64_big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/erlang-23.2.1.arm64_big_sur.bottle.tar.gz",
+              "sha256": "57a1d638d0edbba44001086d64fdd7cbf23436a1e88829f4d9794d5679e56daf"
+            },
+            "catalina": {
+              "url": "https://homebrew.bintray.com/bottles/erlang-23.2.1.catalina.bottle.tar.gz",
+              "sha256": "419e50fdbfbedfe40e902929253f1000595e1af58c030cc483df2b53d704b558"
+            },
+            "mojave": {
+              "url": "https://homebrew.bintray.com/bottles/erlang-23.2.1.mojave.bottle.tar.gz",
+              "sha256": "6a2b1b82f6e95307a01aa6c40813289b0d923a152bf30e921bff290ded7f7d4b"
+            }
+          }
+        }
+      },
+      "rebar3": {
+        "version": "3.14.3",
+        "bottle": {
+          "cellar": ":any_skip_relocation",
+          "prefix": "/usr/local",
+          "files": {
+            "big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/rebar3-3.14.3.big_sur.bottle.tar.gz",
+              "sha256": "39fe38be9b648ad395ae221e1cc6e36ea19e70f1bd36e96e2329f2985e23b2a2"
+            },
+            "arm64_big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/rebar3-3.14.3.arm64_big_sur.bottle.tar.gz",
+              "sha256": "9435773478bd827406624661c61bbd684915d0211fdfc4561534a71a35dc586b"
+            },
+            "catalina": {
+              "url": "https://homebrew.bintray.com/bottles/rebar3-3.14.3.catalina.bottle.tar.gz",
+              "sha256": "a05ca90daf365ebae8b5970613e1bfed5b95cf7ab5f37673bd17f8595dc277fc"
+            },
+            "mojave": {
+              "url": "https://homebrew.bintray.com/bottles/rebar3-3.14.3.mojave.bottle.tar.gz",
+              "sha256": "a3184b782e3ca3b814d6a75641272ad2737492bfdaa6bd63225b1a1655c937af"
+            }
+          }
+        }
+      },
+      "coursier/formulas/coursier": null,
+      "python": null,
+      "jsonnet": {
+        "version": "0.17.0",
+        "bottle": {
+          "cellar": ":any_skip_relocation",
+          "prefix": "/usr/local",
+          "files": {
+            "big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/jsonnet-0.17.0.big_sur.bottle.tar.gz",
+              "sha256": "dd84e7d6175e98b4839c009120569ece03b5b98db3f152f97ca05b5ae7169843"
+            },
+            "arm64_big_sur": {
+              "url": "https://homebrew.bintray.com/bottles/jsonnet-0.17.0.arm64_big_sur.bottle.tar.gz",
+              "sha256": "96cbd225f3a8d64bda895c4052b2af3a3e1d5bbe137ba017aa3d4c8127cf9d68"
+            },
+            "catalina": {
+              "url": "https://homebrew.bintray.com/bottles/jsonnet-0.17.0.catalina.bottle.tar.gz",
+              "sha256": "4e06530634324040a69a9f22018e154febc71467cadf2498806d9ba07b06a1b3"
+            },
+            "mojave": {
+              "url": "https://homebrew.bintray.com/bottles/jsonnet-0.17.0.mojave.bottle.tar.gz",
+              "sha256": "1e4faf2a09e9a233275d78ede532a0e757d3f8cc9b0ab152326ff9ea9d244dba"
+            }
+          }
+        }
+      }
+    },
+    "cask": {
+      "arduino": {
+        "version": "1.8.13",
+        "options": {
+          "full_name": "arduino"
+        }
+      },
+      "visual-studio-code": {
+        "version": "1.30.2,61122f88f0bf01e2ac16bdb9e1bc4571755f5bd8",
+        "options": {
+          "full_name": "visual-studio-code"
+        }
+      },
+      "open-in-code": {
+        "version": "1.0",
+        "options": {
+          "full_name": "open-in-code"
+        }
+      },
+      "kdiff3": {
+        "version": "1.8.4",
+        "options": {
+          "full_name": "kdiff3"
+        }
+      },
+      "font-firacode-nerd-font": {
+        "version": "2.1.0",
+        "options": {
+          "full_name": "font-firacode-nerd-font"
+        }
+      },
+      "font-ibm-plex": {
+        "version": "5.1.3",
+        "options": {
+          "full_name": "font-ibm-plex"
+        }
+      },
+      "font-3270-nerd-font": {
+        "version": "2.1.0",
+        "options": {
+          "full_name": "font-3270-nerd-font"
+        }
+      }
+    }
+  },
+  "system": {
+    "macos": {
+      "catalina": {
+        "HOMEBREW_VERSION": "2.6.1-23-gc7ef48a",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "09ebfecf4e890a5c57d06defd74f152d3b9712c5",
+        "CLT": "12.2.0.0.1.1604628099",
+        "Xcode": "12.0",
+        "macOS": "10.15.7"
+      },
+      "big_sur": {
+        "HOMEBREW_VERSION": "2.7.1-22-g20ff74a",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "6451063c7fd7eba2562e337bbe40a826f5faeddd",
+        "CLT": "12.0.32.28",
+        "Xcode": "12.0",
+        "macOS": "11.1"
+      }
+    }
+  }
+}
