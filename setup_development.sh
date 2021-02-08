@@ -18,7 +18,7 @@ elif [ $(uname -s) == "Linux" ]; then
     install_golang
 
     # Scala (Only install on some archs)
-    if [ $(uname -m) == "x86_64"] || [ $(uname -m) == "aarch64"]; then
+    if [ $(uname -m) == "x86_64" ] || [ $(uname -m) == "aarch64" ]; then
         log "Install Scala Coursier" $GREEN
         pushd /tmp >/dev/null
         curl -fLso cs https://git.io/coursier-cli-linux
