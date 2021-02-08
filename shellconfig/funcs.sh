@@ -13,6 +13,11 @@ function scppath () {
     echo $USER@$(hostname -I | awk '{print $1}'):$(readlink -f $1);
 }
 
+# Quickly find files by name
+function f () {
+    find . -name "$1"
+}
+
 # Call journalctl for process or all if no arguments
 function jo () {
     if [[ "$1" != "" ]]; then
@@ -90,3 +95,4 @@ function csji() { # fzf coursier java install
 function csrt() { # fzf coursier resolve tree
     $(cs resolve -t "$1" | fzf --reverse --ansi)
 }
+
