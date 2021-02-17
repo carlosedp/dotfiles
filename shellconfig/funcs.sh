@@ -15,7 +15,9 @@ function scppath () {
 
 # Quickly find files by name
 function f () {
-    find . -name "$1"
+    name=$1
+    shift
+    find . -name "$name" "$@"
 }
 
 # Call journalctl for process or all if no arguments
@@ -73,7 +75,7 @@ function install_golang() {
         fi
         declare -A ARCH=( [x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x )
         FILE=$(curl -sL https://golang.org/dl/?mode=json | grep -E 'go[0-9\.]+' | sed 's/.*\(go.*\.tar\.gz\).*/\1/' | sort -n | grep -i $(uname -s) | grep tar | grep ${ARCH[$(uname -m)]} | tail -1)
-         echo "Installing $FILE"
+        echo "Installing $FILE"
         curl -sL https://dl.google.com/go/$FILE -o $FILE
         sudo rm -rf /usr/local/go
         sudo tar xf $FILE -C /usr/local/ 2>/dev/null

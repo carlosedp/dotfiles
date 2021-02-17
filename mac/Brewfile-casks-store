@@ -9,7 +9,7 @@ cask "batchmod"
 cask "docker"
 cask "dropbox"
 cask "firefox"
-cask "franz"
+cask "ferdi"
 cask "google-backup-and-sync"
 cask "google-chrome"
 cask "go2shell"
@@ -40,11 +40,13 @@ cask "horndis"
 cask "tweetbot"
 cask "powershell"
 cask "nrlquaker-winbox"
+cask "1password"
+cask "1password-cli"
+
 
 mas "Amphetamine", id: 937984704
 mas "Disk Speed Test", id: 425264550
 mas "ForkLift", id: 412448059
-mas "LastPass", id: 926036361
 mas "LimeChat", id: 414030210
 mas "OTP Manager", id: 928941247
 mas "Pixelmator", id: 407963104
