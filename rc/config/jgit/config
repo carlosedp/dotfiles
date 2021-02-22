@@ -1,0 +1,3 @@
+[filesystem "GraalVM Community|1.8.0_272|/dev/disk1s1"]
+	timestampResolution = 1001 milliseconds
+	minRacyThreshold = 0 nanoseconds

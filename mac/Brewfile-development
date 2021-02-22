@@ -26,3 +26,7 @@ cask "kdiff3"
 cask "font-firacode-nerd-font"
 cask "font-ibm-plex"
 cask "font-3270-nerd-font"
+
+# FPGA Development
+cask "gtkwave"
+brew "verilator"
