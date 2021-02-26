@@ -10,11 +10,21 @@ function update() {
 
 # Generate a scp command to copy files between hosts
 function scppath () {
+    if [ "$#" -ne 1 ]; then
+        echo "Illegal number of parameters. Call function with file name."
+        echo "E.g. scppath myfile"
+        return
+    fi
     echo $USER@$(hostname -I | awk '{print $1}'):$(readlink -f $1);
 }
 
 # Quickly find files by name
 function f () {
+    if [ "$#" -ne 1 ]; then
+        echo "Illegal number of parameters. Call function with file name or wildcard."
+        echo "E.g. f *.pdf"
+        return
+    fi
     name=$1
     shift
     find . -name "$name" "$@"
@@ -51,7 +61,11 @@ function gsendpatch () {
 
 # Query Docker image manifest
 function qi () {
-    if [ -z $1 ]; then echo "Missing image parameter."; return 1; fi
+    if [ "$#" -lt 1 ]; then
+        echo "Illegal number of parameters. Call function with image name."
+        echo "E.g. qi repo/image"
+        return
+    fi
     echo "Querying image $1"
     OUT=$(docker manifest inspect $1 | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' 2> /dev/null | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$')
     if [ $? -eq 0 ]; then
