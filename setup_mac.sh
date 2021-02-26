@@ -79,7 +79,7 @@ bash -c $DOTFILES/setup_tmux.sh
 # Setup OsX defaults
 bash -c $DOTFILES/mac/osx_prefs.sh
 
-# Setup application specific configs
+# Setup and install additional applications
 bash -c $DOTFILES/setup_apps.sh
 
 # Add TouchID authentication to Sudo

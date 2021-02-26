@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Kubernetes functions and aliases
 
 ## Aliases
@@ -5,13 +6,12 @@ alias ksvc='kubectl get services -o wide --all-namespaces --sort-by="{.metadata.
 alias kpod='kubectl get pods -o wide --all-namespaces --sort-by="{.metadata.namespace}" |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
 alias kedp='kubectl get endpoints -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
 alias king='kubectl get ingress -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
-alias kns='kubens'
-alias kctx='kubectx'
+alias kns='kubectl ns'
+alias kctx='kubectl ctx'
 alias kaf='kubectl apply -f'
 
 alias k=kubectl
 alias kd='kubectl delete'
-alias kdf='kubectl delete --grace-period=0 --force'
 alias kc='kubectl create'
 alias kg='kubectl get all'
 alias kp='kubectl get pods -o wide'
@@ -21,11 +21,49 @@ alias ke='kubectl get endpoints'
 alias wp='watch -n 1 kubectl get pods -o wide'
 alias kt='stern --all-namespaces'
 
+alias krew='kubectl krew'
+
 # Approve OCP CSRs
 alias csrapprove="oc get csr -oname | xargs oc adm certificate approve"
 
+# Use multiple kubeconfig config files
+kubeloadenv() {
+    export KUBECONFIG=""
+    if test -f "$HOME/.kube/config"
+    then
+    export KUBECONFIG="$HOME/.kube/config"
+    fi
+    for kubeconfigFile in `find $HOME/.kube/ -type f -name "config-*"`
+    do
+        export KUBECONFIG="$kubeconfigFile:$KUBECONFIG"
+    done
+}
+kubeloadenv
+
+# Add and rename kubeconfig context for a cluster
+kubeconfigadd() {
+    if [ "$#" -ne 2 ]; then
+        echo "Illegal number of parameters. Call function with config file and new cluster name."
+        echo "E.g. kubeconfigadd newconfig prodcluster"
+        return
+    fi
+    kubefile=$1
+    clustername=$2
+    currentname=$(KUBECONFIG=$kubefile kubectl config get-contexts -o="name")
+    if [[ "$currentname" != "$clustername" ]]; then
+        KUBECONFIG=$kubefile kubectl config rename-context $currentname $clustername
+    fi
+    mv $kubefile $HOME/.kube/config-$clustername
+    kubeloadenv
+}
+
 ## Functions
 klog() {
+    if [ "$#" -lt 1 ]; then
+        echo "Illegal number of parameters. Call function pod name and optional container name."
+        echo "E.g. klog mypod [containerinpod]"
+        return
+    fi
     POD=$1
     CONTAINER_NAME=""
     shift
@@ -65,6 +103,11 @@ wpod() {
 }
 
 kexec() {
+    if [ "$#" -lt 1 ]; then
+        echo "Illegal number of parameters. Call function pod name and optional container name."
+        echo "E.g. kexec mypod [containerinpod]"
+        return
+    fi
     POD=$1
     INPUT_INDEX=$2
     INDEX="${INPUT_INDEX:-1}"
@@ -77,6 +120,11 @@ kexec() {
 }
 
 kdesc() {
+    if [ "$#" -lt 1 ]; then
+        echo "Illegal number of parameters. Call function pod name and optional container name."
+        echo "E.g. kdesc mypod [containerinpod]"
+        return
+    fi
     POD=$1
     INPUT_INDEX=$2
     INDEX="${INPUT_INDEX:-1}"
@@ -115,7 +163,11 @@ wn() {
 
 # Open shell in pod
 kshell() {
-  [[ $# -lt 1 ]] && echo "usage: kshell <pod_name>]" && return
+    if [ "$#" -lt 1 ]; then
+        echo "Illegal number of parameters. Call function pod name and optional container name."
+        echo "E.g. kshell mypod"
+        return
+    fi
   kubectl exec -ti $@ -- /bin/sh -c 'command -v bash &> /dev/null && bash || sh'
   #kubectl exec -ti $1 -- command -v bash &> /dev/null && kubectl exec -ti $1 -- bash || kubectl exec -ti $1 -- sh
 }
@@ -125,18 +177,18 @@ kdp() {
     kubectl delete pod $@ > /dev/null 2>&1 &
 }
 # Force delete pod
-kdpf() {
+kdp!() {
 kubectl delete --grace-period=0 --force pod $@ &
 }
 
 # Initialize and add custom completions
 _kubectl_startup () {
     _kubectl
-    complete -o default -o nospace -F __kubectl_get_resource_pod stern kt klog kdesc kexec kdp kdpf kshell
+    complete -o default -o nospace -F __kubectl_get_resource_pod stern kt klog kdesc kexec kdp kdp! kshell
 }
 
 if [ -n "${BASH}" ]; then
-    complete -o default -o nospace -F _kubectl_startup stern kt klog kdesc kexec kdp kdpf kshell
+    complete -o default -o nospace -F _kubectl_startup stern kt klog kdesc kexec kdp kdp! kshell
 elif [ -n "${ZSH_NAME}" ]; then
-    compdef _kubectl_startup stern kt klog kdesc kexec kdp kdpf kshell
+    compdef _kubectl_startup stern kt klog kdesc kexec kdp kdp! kshell
 fi

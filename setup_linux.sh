@@ -50,6 +50,9 @@ bash -c $DOTFILES/setup_zsh.sh
 # Install Development tools
 bash -c $DOTFILES/setup_development.sh
 
+# Setup and install additional applications
+bash -c $DOTFILES/setup_apps.sh
+
 # Setup Tmux
 bash -c $DOTFILES/setup_tmux.sh
 

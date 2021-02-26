@@ -107,7 +107,7 @@ fi
 cloneorpull https://github.com/junegunn/fzf $HOME/.fzf --depth=1
 
 if [[ $(command -v fzf) == "" ]]; then
-    log "You don't have fzf installed, install thru go_apps.sh script..."$RED
+    log "You don't have fzf installed, install thru setup_apps.sh script..."$RED
     echo ""
 fi
 

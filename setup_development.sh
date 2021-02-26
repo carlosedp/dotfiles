@@ -45,8 +45,4 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
     cs update
 fi
 
-# Golang
-log "Install Golang apps" $GREEN
-bash -c $HOME/.dotfiles/go_apps.sh
-
 log "Development tools setup finished." $GREENUNDER

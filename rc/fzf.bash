@@ -1,7 +1,7 @@
 # Setup fzf
 # ---------
 if [ ! -x "$(command -v fzf)" ] > /dev/null 2>&1; then
-    echo "Error: fzf binary not installed. Use go_apps.sh script to install."
+    echo "Error: fzf binary not installed. Use setup_apps.sh script to install."
     return
 fi
 

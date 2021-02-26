@@ -73,7 +73,7 @@ The dotfiles is structured as:
 * `.ignore` - Ignores some files that contain personal data and should not be in GitHub
 * `Brewfile` - Homebrew packages installed on Mac. Install by using `brew bundle install`. Called by `setup_mac.sh`.
 * `Brewfile-casks-store` - Homebrew cask packages installed on Mac. Install by using `brew bundle install --file Brewfile-casks-store`. Called by `setup_mac.sh`.
-* `go_apps.sh` - Installs Golang utility applications like Hub, fzf, etc by `go get -u [app]`.
+* `setup_apps.sh` - Installs additional utility applications like Hub, fzf kubectl, etc.
 * `kickstart.sh` - Initial script that can be called thru Curl to start the setup on any kind of host  (Linux or Mac).
 * `osx_prefs.sh` - Configures MacOS `default` settings. Called by `setup_mac.sh`.
 * `setup_links.sh` - Configures symbolic links to directories and rc files. Called by `setup_mac.sh`, `setup_tmux.sh` and `setup_zsh.sh`.
