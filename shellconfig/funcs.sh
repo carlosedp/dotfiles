@@ -12,7 +12,7 @@ function update() {
 function scppath () {
     if [ "$#" -ne 1 ]; then
         echo "Illegal number of parameters. Call function with file name."
-        echo "E.g. scppath myfile"
+        echo "E.g. $0 myfile"
         return
     fi
     echo $USER@$(hostname -I | awk '{print $1}'):$(readlink -f $1);
@@ -22,7 +22,7 @@ function scppath () {
 function f () {
     if [ "$#" -ne 1 ]; then
         echo "Illegal number of parameters. Call function with file name or wildcard."
-        echo "E.g. f *.pdf"
+        echo "E.g. $0 *.pdf"
         return
     fi
     name=$1
@@ -63,7 +63,7 @@ function gsendpatch () {
 function qi () {
     if [ "$#" -lt 1 ]; then
         echo "Illegal number of parameters. Call function with image name."
-        echo "E.g. qi repo/image"
+        echo "E.g. $0 repo/image"
         return
     fi
     echo "Querying image $1"
@@ -88,12 +88,14 @@ function install_golang() {
             return 1
         fi
         declare -A ARCH=( [x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x )
+        pushd /tmp >/dev/null
         FILE=$(curl -sL https://golang.org/dl/?mode=json | grep -E 'go[0-9\.]+' | sed 's/.*\(go.*\.tar\.gz\).*/\1/' | sort -n | grep -i $(uname -s) | grep tar | grep ${ARCH[$(uname -m)]} | tail -1)
         echo "Installing $FILE"
         curl -sL https://dl.google.com/go/$FILE -o $FILE
         sudo rm -rf /usr/local/go
         sudo tar xf $FILE -C /usr/local/ 2>/dev/null
-        yes | rm -rf $FILE
+        rm -rf $FILE
+        popd >/dev/null
     }
     install && echo "Installed $FILE" || echo "Error installing Go"
 }
@@ -125,3 +127,24 @@ function csrt() { # fzf coursier resolve tree
     $(cs resolve -t "$1" | fzf --reverse --ansi)
 }
 
+# Download Github release
+dlgr() {
+    if [ "$#" -lt 1 ]; then
+        echo "Illegal number of parameters. Call function with author/repo."
+        echo "E.g. $0 author/repository"
+        return
+    fi
+    repo=https://api.github.com/repos/{$1}/releases/latest
+
+    URL=`curl -s "${repo}" | grep "$(uname | tr LD ld)" |grep $(uname -m) | grep "browser_download_url" | cut -d '"' -f 4`
+
+    if [ "${URL}" ]; then
+        OUT=""
+        if [ -n "${2+set}" ]; then
+            OUT="-o $2"
+        fi
+        curl -s ${OUT} -OL ${URL}
+    else
+        return 1
+    fi
+}

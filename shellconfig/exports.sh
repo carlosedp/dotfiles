@@ -52,15 +52,20 @@ export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
 # Add Erlang shell history and unicode messages
 export ERL_AFLAGS="+pc unicode -kernel shell_history enabled"
 
-# Add Java to path (if coursier is installed)
-if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
-    export JAVA_HOME=$(cs java-home --jvm graalvm)
-    export PATH=$JAVA_HOME/bin:$PATH
-fi
-
 ## Scala Coursier Path for Mac and Linux
 export PATH="$HOME/Library/Application Support/Coursier/bin:$PATH"
 export PATH="$HOME/.local/share/coursier/bin:$PATH"
+
+# Add Java to path (if coursier is installed)
+if [ $(uname -m) == "x86_64" ]; then
+    export JVM=graalvm
+else
+    export JVM=8
+fi
+if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
+    export JAVA_HOME=$(cs java-home --jvm ${JVM})
+    export PATH=$JAVA_HOME/bin:$PATH
+fi
 
 # Ripgrep config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc

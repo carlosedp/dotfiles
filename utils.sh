@@ -17,7 +17,7 @@ WHITE="\e[37m"
 RESET="\e[0m"
 
 log () {
-    if [ -z ${2+x} ]; then
+    if [ -z ${2} ]; then
         echo $(printf "$2$1 $RESET")
     else
         echo $(printf "$RESET$1 $RESET")

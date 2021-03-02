@@ -3,6 +3,8 @@ set -euo pipefail
 
 # Load utility functions
 source $HOME/.dotfiles/utils.sh
+source ~/.dotfiles/shellconfig/exports.sh
+source $HOME/.dotfiles/shellconfig/funcs.sh
 
 log "Setup development tools." $GREENUNDER
 
@@ -14,28 +16,29 @@ if [ $(uname -s) == "Darwin" ]; then
 elif [ $(uname -s) == "Linux" ]; then
     # Install Golang
     log "Installing Golang..." $GREEN
-    source $HOME/.dotfiles/shellconfig/funcs.sh
-    install_golang
+    #install_golang
 
-    # Scala (Only install on some archs)
-    if [ $(uname -m) == "x86_64" ] || [ $(uname -m) == "aarch64" ]; then
+    # Scala Coursier
+    if [ ! -x "$(command -v cs)" ] > /dev/null 2>&1; then
         log "Install Scala Coursier" $GREEN
         pushd /tmp >/dev/null
-        curl -fLso cs https://git.io/coursier-cli-linux
-        chmod +x cs
-        ./cs install cs
-        rm ./cs
+        dlgr coursier/coursier cs
+        if test -f cs; then
+            chmod +x cs
+            ./cs install cs
+            rm ./cs
+        else
+            echo "No Coursier available for your platform"
+        fi
         popd >/dev/null
     fi
 fi
 
 # Scala
-source ~/.dotfiles/shellconfig/exports.sh
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
     log "Install Scala Coursier applications" $GREEN
-    cs install --jvm graalvm \
+    cs install --jvm ${JVM} \
             ammonite \
-            bloop \
             cs \
             giter8 \
             sbt \

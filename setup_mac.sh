@@ -67,11 +67,14 @@ for F in $HOME/.dotfiles/fonts/*.tar.gz; do sudo tar vxf $F -C /Library/Fonts; d
 # Setup dotfiles
 bash -c $DOTFILES/setup_links.sh
 
+# Install Development tools
+bash -c $DOTFILES/setup_development.sh
+
 # Setup Zsh
 bash -c $DOTFILES/setup_zsh.sh
 
-# Install Development tools
-bash -c $DOTFILES/setup_development.sh
+# Setup and install additional applications
+bash -c $DOTFILES/setup_apps.sh
 
 # Setup Tmux
 bash -c $DOTFILES/setup_tmux.sh
@@ -79,8 +82,6 @@ bash -c $DOTFILES/setup_tmux.sh
 # Setup OsX defaults
 bash -c $DOTFILES/mac/osx_prefs.sh
 
-# Setup and install additional applications
-bash -c $DOTFILES/setup_apps.sh
 
 # Add TouchID authentication to Sudo
 if [[ ! $(grep "pam_tid.so" /etc/pam.d/sudo) ]]; then
