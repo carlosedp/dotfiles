@@ -35,11 +35,6 @@ if [ -x "$(command -v kubectl)" ] > /dev/null 2>&1; then
   source ~/.dotfiles/shellconfig/kubernetes.sh
 fi
 
-# Load hub (https://github.com/github/hub)
-if [ -x "$(command -v hub)" ]; then
-  eval "$(hub alias -s)"
-fi
-
 # Load iTerm2 integration
 [ -f ${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell} ] && source ${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell}
 
@@ -58,6 +53,11 @@ source ~/.dotfiles/shellconfig/aliases.sh
 # Load Mac aliases
 if [ $(uname -s) = 'Darwin' ]; then
     source ~/.dotfiles/shellconfig/aliases_mac.sh
+fi
+
+# Load hub (https://github.com/github/hub)
+if [ -x "$(command -v hub)" ]; then
+  eval "$(hub alias -s)"
 fi
 
 #####

@@ -21,7 +21,7 @@
     cursor_blink = False
     cursor_shape = underline
     cursor_color = "#bbbbbb"
-    font = DankMono Nerd Font 12
+    font = 3270SemiNarrow Nerd Font Mono Medium 12
     foreground_color = "#f8f8f2"
     scrollbar_position = hidden
     scrollback_infinite = True
@@ -31,6 +31,7 @@
     copy_on_selection = True
   [[terminator_default]]
     background_color = "#282a36"
+    cursor_color = "#f8f8f2"
     foreground_color = "#f8f8f2"
     palette = "#44475a:#ff5555:#50fa7b:#ffb86c:#3465a4:#ff79c6:#f1fa8c:#44475a:#44475a:#ff5555:#50fa7b:#ffb86c:#729fcf:#ad7fa8:#f1fa8c:#44475a"
     copy_on_selection = True

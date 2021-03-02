@@ -29,14 +29,15 @@ alias csrapprove="oc get csr -oname | xargs oc adm certificate approve"
 # Use multiple kubeconfig config files
 kubeloadenv() {
     export KUBECONFIG=""
-    if test -f "$HOME/.kube/config"
-    then
-    export KUBECONFIG="$HOME/.kube/config"
+    if test -f "$HOME/.kube/config"; then
+        export KUBECONFIG="$HOME/.kube/config"
     fi
-    for kubeconfigFile in `find $HOME/.kube/ -type f -name "config-*"`
-    do
-        export KUBECONFIG="$kubeconfigFile:$KUBECONFIG"
-    done
+    if test -d "$HOME/.kube/"; then
+        for kubeconfigFile in `find $HOME/.kube/ -type f -name "config-*"`
+        do
+            export KUBECONFIG="$kubeconfigFile:$KUBECONFIG"
+        done
+    fi
 }
 kubeloadenv
 

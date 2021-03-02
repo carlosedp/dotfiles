@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 # Log to terminal with colors
 BLACK="\e[30m"
@@ -16,7 +17,7 @@ WHITE="\e[37m"
 RESET="\e[0m"
 
 log () {
-    if [ $2 ]; then
+    if [ -z ${2+x} ]; then
         echo $(printf "$2$1 $RESET")
     else
         echo $(printf "$RESET$1 $RESET")

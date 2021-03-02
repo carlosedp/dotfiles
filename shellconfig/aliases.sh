@@ -77,3 +77,4 @@ alias sniffapp="lsof -i 4tcp"
 alias ping='prettyping'
 alias fuck='sudo $(fc -ln -1)'
 alias aptupd='sudo apt update && sudo apt upgrade -y && sudo apt autoclean -y && sudo apt autoremove -y'
+alias jtop='sudo jtop'

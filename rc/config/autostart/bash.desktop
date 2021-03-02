@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=bash -c "/home/carlosedp/.local/bin/fix-font-size.sh"
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Fix icon
+Name=Fix icon
+Comment[en_US]=
+Comment=
