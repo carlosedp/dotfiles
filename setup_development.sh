@@ -41,7 +41,9 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
             ammonite \
             cs \
             giter8 \
+            bloop-jvm \
             sbt \
+            sbtn \
             mill \
             scala \
             scalafmt

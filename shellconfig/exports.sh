@@ -60,7 +60,7 @@ export PATH="$HOME/.local/share/coursier/bin:$PATH"
 if [ $(uname -m) == "x86_64" ]; then
     export JVM=graalvm
 else
-    export JVM=8
+    export JVM=adopt:1.8
 fi
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
     export JAVA_HOME=$(cs java-home --jvm ${JVM})

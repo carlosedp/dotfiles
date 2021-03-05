@@ -11,3 +11,7 @@
 --glob=!.git/*
 --glob=!vendor/*
 --glob=!node_modules/*
+--glob=!node_modules/*
+--glob=!.bloop/*
+--glob=!.metals/*
+--glob=!target/*

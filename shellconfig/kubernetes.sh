@@ -2,29 +2,41 @@
 # Kubernetes functions and aliases
 
 ## Aliases
-alias ksvc='kubectl get services -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
-alias kpod='kubectl get pods -o wide --all-namespaces --sort-by="{.metadata.namespace}" |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
-alias kedp='kubectl get endpoints -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
-alias king='kubectl get ingress -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
-alias kns='kubectl ns'
-alias kctx='kubectl ctx'
-alias kaf='kubectl apply -f'
-
 alias k=kubectl
-alias kd='kubectl delete'
+alias kctx='kubectl ctx'
+alias kns='kubectl ns'
+
+alias kpod='kubectl get pods -o wide --all-namespaces --sort-by="{.metadata.namespace}" |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
+alias kp='kubectl get pods -o wide |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $7'"'"'} | column -t'
+alias ksvc='kubectl get services -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
+alias ks='kubectl get services -o wide'
+alias kedp='kubectl get endpoints -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
+alias ke='kubectl get endpoints -o wide'
+alias king='kubectl get ingress -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
+
 alias kc='kubectl create'
+alias kaf='kubectl apply -f'
+alias kd='kubectl delete'
 alias kg='kubectl get all'
-alias kp='kubectl get pods -o wide'
-alias ks='kubectl get services'
-alias ke='kubectl get endpoints'
-
-alias wp='watch -n 1 kubectl get pods -o wide'
 alias kt='stern --all-namespaces'
-
 alias krew='kubectl krew'
 
 # Approve OCP CSRs
 alias csrapprove="oc get csr -oname | xargs oc adm certificate approve"
+
+# Watch Pods
+wpod() {
+    NS=$@
+    NAMESPACE=${NS:-"--all-namespaces"}
+    if [ "$NAMESPACE" != "--all-namespaces" ]
+      then
+      NAMESPACE="-n ${NS}"
+    fi
+    watch -n 1 "kubectl get pods $NAMESPACE -o wide |awk {'print substr(\$1,1,40)\" \" substr(\$2,1,45)\" \" \$3\" \" \$4\" \" \$5\" \" \$6\" \" \$8'} | column -t"
+}
+wp() {
+    watch -n 1 "kubectl get pods -o wide |awk {'print substr(\$1,1,40)\" \" substr(\$2,1,45)\" \" \$3\" \" \$4\" \" \$5\" \" \$6\" \" \$7'} | column -t"
+}
 
 # Use multiple kubeconfig config files
 kubeloadenv() {
@@ -90,17 +102,6 @@ klog() {
     echo
     NS=$(echo ${PODS} |awk '{print $1}')
     kubectl logs -f --namespace=${NS} ${PODNAME} ${CONTAINER_NAME}
-}
-
-wpod() {
-    NS=$@
-    NAMESPACE=${NS:-"--all-namespaces"}
-    if [ "$NAMESPACE" != "--all-namespaces" ]
-      then
-      NAMESPACE="-n ${NS}"
-    fi
-
-    watch -n 1 kubectl get pods $NAMESPACE -o wide
 }
 
 kexec() {
