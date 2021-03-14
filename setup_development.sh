@@ -13,10 +13,12 @@ if [ $(uname -s) == "Darwin" ]; then
     # Development Tools
     log "Install homebrew bundle for development" $GREEN
     brew bundle install --file $HOME/.dotfiles/mac/Brewfile-development
+    # Fix for GTKWave from command line
+    sudo cpan install Switch
 elif [ $(uname -s) == "Linux" ]; then
     # Install Golang
     log "Installing Golang..." $GREEN
-    #install_golang
+    install_golang
 
     # Scala Coursier
     if [ ! -x "$(command -v cs)" ] > /dev/null 2>&1; then
