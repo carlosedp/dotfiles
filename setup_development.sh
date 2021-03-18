@@ -6,7 +6,14 @@ source $HOME/.dotfiles/utils.sh
 source ~/.dotfiles/shellconfig/exports.sh
 source $HOME/.dotfiles/shellconfig/funcs.sh
 
-log "Setup development tools." $GREENUNDER
+SUPPORTED_ARCHS=(x86_64 aarch64 ppc64le)
+
+if containsElement $(uname -m) "${SUPPORTED_ARCHS[@]}"; then
+            log "Setup development tools on $(uname -m) architecture." $GREENUNDER
+        else
+            log "Architecture $(uname -m) not supported by development tools." $YELLOW
+            exit 0
+        fi
 
 # Install base
 if [ $(uname -s) == "Darwin" ]; then
@@ -51,5 +58,8 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
             scalafmt
     cs update
 fi
+
+# Install GraalVM native-image utility
+gu install native-image
 
 log "Development tools setup finished." $GREENUNDER

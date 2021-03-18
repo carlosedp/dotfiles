@@ -40,7 +40,9 @@ fi
       vcs                     # git status
       # =========================[ Line #2 ]=========================
       newline
+      time                    # current time
       prompt_char             # prompt symbol
+
   )
 
   # The list of segments shown on the right. Fill it with less important segments.
@@ -735,6 +737,7 @@ fi
 
 # Customize to your needs...
 export POWERLEVEL9K_CONTEXT_TEMPLATE="%n@%m"
-export POWERLEVEL9K_TRANSIENT_PROMPT=same-dir
+export POWERLEVEL9K_TRANSIENT_PROMPT=off
 export POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|istioctl'
-
+p10k-on-post-prompt() { p10k display '1'=hide '2/right/time'=show }
+p10k-on-pre-prompt()  { p10k display '1'=show '2/right/time'=hide }
