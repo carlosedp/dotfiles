@@ -82,3 +82,5 @@ alias jtop='sudo jtop'
 if [[ ! $(command -v batcat) ]]; then
   alias cat='batcat --italic-text=always -p --pager "less -rX"'
 fi
+
+alias ic='it2copy'

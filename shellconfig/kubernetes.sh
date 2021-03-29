@@ -62,11 +62,32 @@ kubeconfigadd() {
     fi
     kubefile=$1
     clustername=$2
+    if [ ! -f "$1" ]; then
+        echo "File \"$1\" does not exist."
+        return
+    fi
     currentname=$(KUBECONFIG=$kubefile kubectl config get-contexts -o="name")
     if [[ "$currentname" != "$clustername" ]]; then
         KUBECONFIG=$kubefile kubectl config rename-context $currentname $clustername
     fi
-    mv $kubefile $HOME/.kube/config-$clustername
+    echo "Current server IP/URL is: " $(cat $kubefile|grep "server: http")
+    echo -n "Do you want to change it? [y/n]: "
+    read
+    if [[ $REPLY = "y" || $REPLY = "Y" ]]
+    then
+        echo -n "Type new server IP/URL in the format https://[IP/URL]:PORT: "
+        read
+        IP=${REPLY}
+        echo -n "Is this correct: ${REPLY}? [y/n]: "
+        read
+        if [[ $REPLY = "y" || $REPLY = "Y" ]]; then
+            sed "s;\(\s*server:\s\)http.*\(.*\);\1${IP}\2;g" -i $kubefile
+            mv $kubefile $HOME/.kube/config-$clustername
+        fi
+    elif [[ $REPLY = "n" || $REPLY = "N" ]]; then
+        mv $kubefile $HOME/.kube/config-$clustername
+    fi
+
     kubeloadenv
 }
 

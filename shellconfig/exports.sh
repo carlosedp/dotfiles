@@ -59,9 +59,9 @@ export PATH="$HOME/.local/share/coursier/bin:$PATH"
 
 # Add Java to path (if coursier is installed)
 if [ $(uname -m) == "x86_64" ]; then
-    export JVM=graalvm
+    export JVM=graalvm-ce-java11
 else
-    export JVM=adopt:1.8
+    export JVM=adopt:1.11
 fi
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
     export JAVA_HOME=$(cs java-home --jvm ${JVM})
