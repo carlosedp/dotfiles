@@ -43,11 +43,12 @@ kubeloadenv() {
     export KUBECONFIG=""
     if test -f "$HOME/.kube/config"; then
         export KUBECONFIG="$HOME/.kube/config"
+        return
     fi
     if test -d "$HOME/.kube/"; then
-        for kubeconfigFile in `find $HOME/.kube/ -type f -name "config-*"`
+        for kubeconfigFile in `find $HOME/.kube -type f -name "config-*"`
         do
-            export KUBECONFIG="$kubeconfigFile:$KUBECONFIG"
+            export KUBECONFIG="$KUBECONFIG:$kubeconfigFile"
         done
     fi
 }
@@ -66,10 +67,7 @@ kubeconfigadd() {
         echo "File \"$1\" does not exist."
         return
     fi
-    currentname=$(KUBECONFIG=$kubefile kubectl config get-contexts -o="name")
-    if [[ "$currentname" != "$clustername" ]]; then
-        KUBECONFIG=$kubefile kubectl config rename-context $currentname $clustername
-    fi
+
     echo "Current server IP/URL is: " $(cat $kubefile|grep "server: http")
     echo -n "Do you want to change it? [y/n]: "
     read
@@ -87,6 +85,10 @@ kubeconfigadd() {
     elif [[ $REPLY = "n" || $REPLY = "N" ]]; then
         mv $kubefile $HOME/.kube/config-$clustername
     fi
+    # Rename user, cluster and context names
+    sed "s;\(^.*name:\s\).*;\1${clustername};g" -i $HOME/.kube/config-$clustername
+    sed "s;\(^.*cluster:\s\).*;\1${clustername};g" -i $HOME/.kube/config-$clustername
+    sed "s;\(^.*user:\s\).*;\1${clustername};g" -i $HOME/.kube/config-$clustername
 
     kubeloadenv
 }
