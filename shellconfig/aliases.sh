@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Generic Aliases
 
 # Override problematic aliases
@@ -20,7 +22,7 @@ fi
 alias ls='ls -hF ${colorflag}' # classify files in colour
 alias ll='ls -ltr'   # long list
 alias la='ls -lA'    # all but . and ..
-alias lsd="ls -lhF ${colorflag} | grep --color=never '^d'"
+alias lsd='ls -lhF ${colorflag} | grep --color=never "^d"'
 alias l='ls -CF'
 
 # Interactive operation...

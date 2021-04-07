@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # Load utility functions
-source $HOME/.dotfiles/utils.sh
+source "$HOME/.dotfiles/utils.sh"
 
-log "Setup home links..." $GREENUNDER
+log "Setup home links..." "$GREENUNDER"
 
 # ------------------------------------------------------------------------------
 # Settings
@@ -14,13 +14,13 @@ SYNC_FOLDER="$HOME/Dropbox"
 create_link() {
   origin=$1
   dest=$2
-  log " > Linking origin file \"$origin\" to destination \"$dest\"" $GREEN
+  log " > Linking origin file \"$origin\" to destination \"$dest\""
   if [[ ! -e "$origin" ]]; then
-    log " >> Origin $origin does not exist" $RED
+    log " >> Origin $origin does not exist" "$RED"
     return 1
   fi
   if [[ -f "$dest" || -d "$dest" ]] && [ ! -L "$dest" ]; then
-      log " > Destination ($dest) already exists. Renaming to $dest-old" $YELLOW
+      log " > Destination ($dest) already exists. Renaming to $dest-old" "$YELLOW"
       mv "$dest" "$dest-old"
   fi
   ln -sfn "$origin" "$dest"
@@ -30,40 +30,40 @@ create_link() {
 # Script start
 # ------------------------------------------------------------------------------
 
-if [ $(uname -s) == "Darwin" ] && [ ! -d "$SYNC_FOLDER" ]; then
-  log "----------------------------------------------------------------" $REDBOLD
-  log "Could not find the source for private files (Dropbox or GDrive)." $REDBOLD
-  log "Adjust the setup_links.sh script or sync your files first." $REDBOLD
-  log "Your source folder is currently set to $SYNC_FOLDER" $REDBOLD
-  log "----------------------------------------------------------------" $REDBOLD
+if [ "$(uname -s)" == "Darwin" ] && [ ! -d "$SYNC_FOLDER" ]; then
+  log "----------------------------------------------------------------" "$REDBOLD"
+  log "Could not find the source for private files (Dropbox or GDrive)." "$REDBOLD"
+  log "Adjust the setup_links.sh script or sync your files first." "$REDBOLD"
+  log "Your source folder is currently set to $SYNC_FOLDER" "$REDBOLD"
+  log "----------------------------------------------------------------" "$REDBOLD"
   echo ""
 fi
 
-log "Setting links to dotfiles on user home dir: $HOME" $GREEN
+log "Setting links to dotfiles on user home dir: $HOME" "$GREEN"
 
 # Link .rc files
-log "Linking .rc files" $GREEN
-for FILE in $HOME/.dotfiles/rc/*
+log "Linking .rc files" "$GREEN"
+for FILE in "$HOME"/.dotfiles/rc/*
 do
-  create_link $FILE ~/.$(basename $FILE)
+  create_link "$FILE" "${HOME}/.$(basename "$FILE")"
 done
 
 # Link SSH keys
-log "Linking .ssh directory" $GREEN
+log "Linking .ssh directory" "$GREEN"
 if [[ -d "$SYNC_FOLDER/Configs/SSH_Keys" ]]; then
-    create_link "$SYNC_FOLDER/Configs/SSH_Keys" $HOME/.ssh
+    create_link "$SYNC_FOLDER/Configs/SSH_Keys" "$HOME/.ssh"
 fi
 
 # Link 2fa keychain file
-log "Linking 2fa keychain" $GREEN
+log "Linking 2fa keychain" "$GREEN"
 if [[ -f "$SYNC_FOLDER/Configs/2fa/keychain" ]]; then
   create_link "$SYNC_FOLDER/Configs/2fa/keychain" "$HOME/.2fa"
 fi
 
 # List of settings to be syncd between computers. Separated by spaces.
-if [ $(uname -s) == "Darwin" ]; then
+if [ "$(uname -s)" == "Darwin" ]; then
   ## Settings from $HOME/Library/Application Support
-  log "Linking ~/Library/Application Support files" $GREEN
+  log "Linking ~/Library/Application Support files" "$GREEN"
   for X in $(ls "$SYNC_FOLDER/Configs/AppSupport/")
   do
     create_link "$SYNC_FOLDER/Configs/AppSupport/$X" "$HOME/Library/Application Support/$X"

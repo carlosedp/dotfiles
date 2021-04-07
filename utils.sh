@@ -17,27 +17,27 @@ WHITE="\e[37m"
 RESET="\e[0m"
 
 log () {
-    if [ -z ${2} ]; then
-        echo $(printf "$2$1 $RESET")
+    if [ "${2:-}" ]; then
+        printf "$2$1$RESET\n"
     else
-        echo $(printf "$RESET$1 $RESET")
+        printf "$RESET$1$RESET\n"
     fi
 }
 
 logtest () {
-    log "Test Black" $BLACK
-    log "Test Red" $RED
-    log "Test Red Bold" $REDBOLD
-    log "Test Red Underline" $REDUNDER
-    log "Test Green" $GREEN
-    log "Test Green Bold" $GREENBOLD
-    log "Test Green Underline" $GREENUNDER
-    log "Test Yellow" $YELLOW
-    log "Test Yellow Underline" $YELLOWUNDER
-    log "Test Blue" $BLUE
-    log "Test Magenta" $MAGENTA
-    log "Test Cyan" $CYAN
-    log "Test White" $WHITE
+    log "Test Black" "$BLACK"
+    log "Test Red" "$RED"
+    log "Test Red Bold" "$REDBOLD"
+    log "Test Red Underline" "$REDUNDER"
+    log "Test Green" "$GREEN"
+    log "Test Green Bold" "$GREENBOLD"
+    log "Test Green Underline" "$GREENUNDER"
+    log "Test Yellow" "$YELLOW"
+    log "Test Yellow Underline" "$YELLOWUNDER"
+    log "Test Blue" "$BLUE"
+    log "Test Magenta" "$MAGENTA"
+    log "Test Cyan" "$CYAN"
+    log "Test White" "$WHITE"
 }
 
 # Clone or pull git repository
@@ -49,16 +49,16 @@ function cloneorpull () {
     shift;shift;
 
     if [[ ! -d "$dest" ]]; then
-        log "> Cloning $repo... into $dest" $GREEN
-        git clone --quiet $repo "$dest" $@
+        log "> Cloning $repo... into $dest" "$GREEN"
+        git clone --quiet "$repo" "$dest" "$@"
     else
-        log "> You already have $repo, updating..." $GREEN
-        pushd $dest >/dev/null
-        if [[ ! -z $(git status --porcelain) ]]; then
-            log "> Your dir $dest has changes" $MAGENTA
+        log "> You already have $repo, updating..." "$GREEN"
+        pushd "$dest" >/dev/null || return
+        if [[ -n $(git status --porcelain) ]]; then
+            log "> Your dir $dest has changes" "$MAGENTA"
         fi
-        git pull --autostash --quiet $@
-        popd >/dev/null
+        git pull --autostash --quiet "$@"
+        popd >/dev/null || return
     fi
 }
 

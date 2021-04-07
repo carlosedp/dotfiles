@@ -2,12 +2,12 @@
 set -euo pipefail
 
 # Load utility functions
-source $HOME/.dotfiles/utils.sh
+source "$HOME/.dotfiles/utils.sh"
 
-log "Setup Linux..." $GREENUNDER
+log "Setup Linux..." "$GREENUNDER"
 
-DOTFILES=$HOME/.dotfiles
-cd $HOME
+DOTFILES="$HOME/.dotfiles"
+cd "$HOME"
 
 BASEPACKAGES="sudo curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux neofetch lshw iotop ripgrep rsync tree autojump bat"
 DEBIANPACKAGES="openssh-client openssh-server locales ack-grep nfs-common apt-utils build-essential lsb-release telnet xz-utils apt-rdepends"
@@ -17,48 +17,48 @@ VOIDPACKAGES="base-devel openssh inetutils-telnet xz"
 
 # Install Linux packages
 source /etc/os-release
-if [ $ID == "debian" ] || [ $ID == "ubuntu" ]; then
+if [ "$ID" == "debian" ] || [ "$ID" == "ubuntu" ]; then
     sudo apt update
     sudo apt upgrade -y
     for i in $BASEPACKAGES; do
-        sudo apt install -y --no-install-recommends $i
+        sudo apt install -y --no-install-recommends "$i"
     done
     for i in $DEBIANPACKAGES; do
-        sudo apt install -y --no-install-recommends $i
+        sudo apt install -y --no-install-recommends "$i"
     done
     sudo apt autoclean -y
     sudo apt autoremove -y
-elif [ $ID == "fedora" ] || [ $ID == "centos" ] || [ $ID == "rhel" ]; then
+elif [ "$ID" == "fedora" ] || [ "$ID" == "centos" ] || [ "$ID" == "rhel" ]; then
     sudo dnf update -y
-    sudo dnf install -y $BASEPACKAGES || true
-    sudo dnf install -y $FEDORAPACKAGES || true
-elif [ $ID == "alpine" ]; then
+    sudo dnf install -y "$BASEPACKAGES" || true
+    sudo dnf install -y "$FEDORAPACKAGES" || true
+elif [ "$ID" == "alpine" ]; then
     sudo apk update
-    sudo apk add $BASEPACKAGES
-    sudo apk add $ALPINEPACKAGES
-elif [ $ID == "void" ]; then
-    sudo xbps-install -Su -y $BASEPACKAGES
-    sudo xbps-install -Su -y $VOIDPACKAGES
+    sudo apk add "$BASEPACKAGES"
+    sudo apk add "$ALPINEPACKAGES"
+elif [ "$ID" == "void" ]; then
+    sudo xbps-install -Su -y "$BASEPACKAGES"
+    sudo xbps-install -Su -y "$VOIDPACKAGES"
 fi
 
 # Setup dotfiles
-bash -c $DOTFILES/setup_links.sh
+bash -c "$DOTFILES/setup_links.sh"
 
 # Install Development tools
-bash -c $DOTFILES/setup_development.sh
+bash -c "$DOTFILES/setup_development.sh"
 
 # Setup Zsh
-bash -c $DOTFILES/setup_zsh.sh
+bash -c "$DOTFILES/setup_zsh.sh"
 
 # Setup and install additional applications
-bash -c $DOTFILES/setup_apps.sh
+bash -c "$DOTFILES/setup_apps.sh"
 
 # Setup Tmux
-bash -c $DOTFILES/setup_tmux.sh
+bash -c "$DOTFILES/setup_tmux.sh"
 
 # Add user to passwordless sudo
 #sudo sed -i "%admin    ALL = (ALL) NOPASSWD:ALL"
 
 echo ""
-log "Linux Setup finished!" $GREENUNDER
+log "Linux Setup finished!" "$GREENUNDER"
 echo ""

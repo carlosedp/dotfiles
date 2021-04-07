@@ -2,11 +2,11 @@
 set -euo pipefail
 
 # Load utility functions
-source $HOME/.dotfiles/utils.sh
+source "$HOME/.dotfiles/utils.sh"
 
 # Install Go apps
 export PATH=/usr/local/go/bin:"$PATH"
-log "Installing Go apps..." $GREENUNDER
+log "Installing Go apps..." "$GREENUNDER"
 echo ""
 
 modules=("github.com/github/hub"
@@ -21,21 +21,21 @@ if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
 
     # Install applications with module mode off to avoid
     # updating any project go.mod/go.sum if inside it's directories
-    for m in ${modules[@]}; do
-        log "Installing $m" $GREEN
-        GO111MODULE=off go get -u $m || true
+    for m in "${modules[@]}"; do
+        log "Installing $m" "$GREEN"
+        GO111MODULE=off go get -u "$m" || true
     done
 
 else
-    log "ERROR: You don't have Go installed." $RED
+    log "ERROR: You don't have Go installed." "$RED"
     exit 1
 fi
 
-log "Go apps installed." $GREENUNDER
+log "Go apps installed." "$GREENUNDER"
 
 # Linux app install
-if [ $(uname -s) == "Linux" ]; then
-    log "Installing Linux apps..." $GREENUNDER
+if [ "$(uname -s)" == "Linux" ]; then
+    log "Installing Linux apps..." "$GREENUNDER"
     # Install Kubectl
     ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
     sudo curl -o /usr/local/bin/kubectl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${ARCH}/kubectl"
@@ -55,15 +55,15 @@ if [ $(uname -s) == "Linux" ]; then
     )
 fi
 
-log "Upgrade and install kubectl plugins." $GREENUNDER
+log "Upgrade and install kubectl plugins." "$GREENUNDER"
 kubectl krew upgrade
 for app in ctx ns restart; do
     kubectl krew install $app;
 done
 
 # Mac App configs
-if [ $(uname -s) == "Darwin" ]; then
+if [ "$(uname -s)" == "Darwin" ]; then
     ## Limechat settings
-    mkdir -p $HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes
-    cp $HOME/.dotfiles/themes/Limechat-Choco/* $HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes
+    mkdir -p "$HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes"
+    cp "$HOME/.dotfiles/themes/Limechat-Choco/*" "$HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes"
 fi

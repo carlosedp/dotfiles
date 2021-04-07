@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # Kubernetes functions and aliases
 
 ## Aliases
@@ -26,13 +27,13 @@ alias csrapprove="oc get csr -oname | xargs oc adm certificate approve"
 
 # Watch Pods
 wpod() {
-    NS=$@
+    NS=$*
     NAMESPACE=${NS:-"--all-namespaces"}
     if [ "$NAMESPACE" != "--all-namespaces" ]
       then
       NAMESPACE="-n ${NS}"
     fi
-    watch -n 1 "kubectl get pods $NAMESPACE -o wide |awk {'print substr(\$1,1,40)\" \" substr(\$2,1,45)\" \" \$3\" \" \$4\" \" \$5\" \" \$6\" \" \$8'} | column -t"
+    watch -n 1 "kubectl get pods $NAMESPACE -o wide --sort-by={.metadata.namespace} |awk {'print substr(\$1,1,40)\" \" substr(\$2,1,45)\" \" \$3\" \" \$4\" \" \$5\" \" \$6\" \" \$8'} | column -t"
 }
 wp() {
     watch -n 1 "kubectl get pods -o wide |awk {'print substr(\$1,1,40)\" \" substr(\$2,1,45)\" \" \$3\" \" \$4\" \" \$5\" \" \$6\" \" \$7'} | column -t"
@@ -46,7 +47,7 @@ kubeloadenv() {
         return
     fi
     if test -d "$HOME/.kube/"; then
-        for kubeconfigFile in `find $HOME/.kube -type f -name "config-*"`
+        for kubeconfigFile in $(find "$HOME/.kube" -type f -name "config-*")
         do
             export KUBECONFIG="$KUBECONFIG:$kubeconfigFile"
         done
@@ -68,27 +69,27 @@ kubeconfigadd() {
         return
     fi
 
-    echo "Current server IP/URL is: " $(cat $kubefile|grep "server: http")
+    echo "Current server IP/URL is: " $(grep "server: http" "$kubefile")
     echo -n "Do you want to change it? [y/n]: "
-    read
+    read -r
     if [[ $REPLY = "y" || $REPLY = "Y" ]]
     then
         echo -n "Type new server IP/URL in the format https://[IP/URL]:PORT: "
-        read
+        read -r
         IP=${REPLY}
         echo -n "Is this correct: ${REPLY}? [y/n]: "
-        read
+        read -r
         if [[ $REPLY = "y" || $REPLY = "Y" ]]; then
-            sed "s;\(\s*server:\s\)http.*\(.*\);\1${IP}\2;g" -i $kubefile
-            mv $kubefile $HOME/.kube/config-$clustername
+            sed "s;\(\s*server:\s\)http.*\(.*\);\1${IP}\2;g" -i "$kubefile"
+            cp "$kubefile" "$HOME/.kube/config-$clustername"
         fi
     elif [[ $REPLY = "n" || $REPLY = "N" ]]; then
-        mv $kubefile $HOME/.kube/config-$clustername
+        cp "$kubefile" "$HOME/.kube/config-$clustername"
     fi
     # Rename user, cluster and context names
-    sed "s;\(^.*name:\s\).*;\1${clustername};g" -i $HOME/.kube/config-$clustername
-    sed "s;\(^.*cluster:\s\).*;\1${clustername};g" -i $HOME/.kube/config-$clustername
-    sed "s;\(^.*user:\s\).*;\1${clustername};g" -i $HOME/.kube/config-$clustername
+    sed "s;\(^.*name:\s\).*;\1${clustername};g" -i "$HOME/.kube/config-$clustername"
+    sed "s;\(^.*cluster:\s\).*;\1${clustername};g" -i "$HOME/.kube/config-$clustername"
+    sed "s;\(^.*user:\s\).*;\1${clustername};g" -i "$HOME/.kube/config-$clustername"
 
     kubeloadenv
 }
@@ -119,12 +120,12 @@ klog() {
     esac
     done
     INDEX="${INPUT_INDEX:-1}"
-    PODS=$(kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1)
-    PODNAME=$(echo ${PODS} |awk '{print $2}')
+    PODS=$(kubectl get pods --all-namespaces|grep "${POD}" |head -"${INDEX}" |tail -1)
+    PODNAME=$(echo "${PODS}" |awk '{print $2}')
     echo "Pod: ${PODNAME}"
     echo
-    NS=$(echo ${PODS} |awk '{print $1}')
-    kubectl logs -f --namespace=${NS} ${PODNAME} ${CONTAINER_NAME}
+    NS=$(echo "${PODS}" |awk '{print $1}')
+    kubectl logs -f --namespace="${NS}" "${PODNAME}" "${CONTAINER_NAME}"
 }
 
 kexec() {
@@ -136,12 +137,12 @@ kexec() {
     POD=$1
     INPUT_INDEX=$2
     INDEX="${INPUT_INDEX:-1}"
-    PODS=$(kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1)
-    PODNAME=$(echo ${PODS} |awk '{print $2}')
+    PODS=$(kubectl get pods --all-namespaces|grep "${POD}" |head -"${INDEX}" |tail -1)
+    PODNAME=$(echo "${PODS}" |awk '{print $2}')
     echo "Pod: ${PODNAME}"
     echo
-    NS=$(echo ${PODS} |awk '{print $1}')
-    kubectl exec -it --namespace=${NS} ${PODNAME} /bin/sh
+    NS=$(echo "${PODS}" |awk '{print $1}')
+    kubectl exec -it --namespace="${NS}" "${PODNAME}" /bin/sh
 }
 
 kdesc() {
@@ -153,17 +154,17 @@ kdesc() {
     POD=$1
     INPUT_INDEX=$2
     INDEX="${INPUT_INDEX:-1}"
-    PODS=$(kubectl get pods --all-namespaces|grep ${POD} |head -${INDEX} |tail -1)
-    PODNAME=$(echo ${PODS} |awk '{print $2}')
+    PODS=$(kubectl get pods --all-namespaces|grep "${POD}" |head -"${INDEX}" |tail -1)
+    PODNAME=$(echo "${PODS}" |awk '{print $2}')
     echo "Pod: ${PODNAME}"
     echo
-    NS=$(echo ${PODS} |awk '{print $1}')
-    kubectl describe pod --namespace=${NS} ${PODNAME}
+    NS=$(echo "${PODS}" |awk '{print $1}')
+    kubectl describe pod --namespace="${NS}" "${PODNAME}"
 }
 
 # Kubectl command for all namespaces
 ka() {
-    kubectl $@ --all-namespaces
+    kubectl "$@" --all-namespaces
 }
 
 # Get not running pods
@@ -193,17 +194,17 @@ kshell() {
         echo "E.g. kshell mypod"
         return
     fi
-  kubectl exec -ti $@ -- /bin/sh -c 'command -v bash &> /dev/null && bash || sh'
+  kubectl exec -ti "$@" -- /bin/sh -c 'command -v bash &> /dev/null && bash || sh'
   #kubectl exec -ti $1 -- command -v bash &> /dev/null && kubectl exec -ti $1 -- bash || kubectl exec -ti $1 -- sh
 }
 
 # Delete pod
 kdp() {
-    kubectl delete pod $@ > /dev/null 2>&1 &
+    kubectl delete pod "$@" > /dev/null 2>&1 &
 }
 # Force delete pod
 kdp!() {
-kubectl delete --grace-period=0 --force pod $@ &
+kubectl delete --grace-period=0 --force pod "$@" &
 }
 
 # Initialize and add custom completions

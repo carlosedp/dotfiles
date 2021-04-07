@@ -1,10 +1,12 @@
+#!/usr/bin/env bash
+
 # Functions when required functionality won't work with an alias
 
 function update() {
-    if [ $(uname -s) == "Linux" ]; then
-        $HOME/.dotfiles/setup_linux.sh
-    elif [ $(uname -s) == "Darwin" ]; then
-        $HOME/.dotfiles/setup_mac.sh
+    if [ "$(uname -s)" == "Linux" ]; then
+        bash -c "$HOME/.dotfiles/setup_linux.sh"
+    elif [ "$(uname -s)" == "Darwin" ]; then
+        bash -c "$HOME/.dotfiles/setup_mac.sh"
     fi
 }
 
@@ -15,7 +17,13 @@ function scppath () {
         echo "E.g. $0 myfile"
         return
     fi
-    echo $USER@$(hostname -I | awk '{print $1}'):$(readlink -f $1);
+if [ "$(uname -s)" == "Linux" ]; then
+        IP=$(hostname -I | awk '{print $1}')
+    elif [ "$(uname -s)" == "Darwin" ]; then
+        IP=$(ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' |head -1)
+    fi
+
+    echo "$USER"@"$IP":"$(readlink -f "$1")"
 }
 
 # Quickly find files by name
@@ -33,7 +41,7 @@ function f () {
 # Call journalctl for process or all if no arguments
 function jo () {
     if [[ "$1" != "" ]]; then
-        sudo journalctl -xef -u $1;
+        sudo journalctl -xef -u "$1";
     else
         sudo journalctl -xef;
     fi
@@ -42,8 +50,8 @@ function jo () {
 
 # Generate a patch email from git commits
 function gpatch () {
-    if [[ $1 != "" ]]; then
-        git format-patch HEAD~$1
+    if [[ "$1" != "" ]]; then
+        git format-patch HEAD~"$1"
     else
         git format-patch HEAD~
     fi
@@ -56,7 +64,7 @@ function gsendpatch () {
   shift
   git send-email \
     --cc-cmd="./scripts/get_maintainer.pl --norolestats $patch" \
-    $@ $patch
+    "$@" "$patch"
 }
 
 # Query Docker image manifest
@@ -67,9 +75,9 @@ function qi () {
         return
     fi
     echo "Querying image $1"
-    OUT=$(docker manifest inspect $1 | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' 2> /dev/null | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$')
+    OUT=$(docker manifest inspect "$1" | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' 2> /dev/null | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$')
     if [ $? -eq 0 ]; then
-        echo $OUT
+        echo "$OUT"
     else
         echo "Image does not have a multiarch manifest."
     fi
@@ -88,14 +96,14 @@ function install_golang() {
             return 1
         fi
         declare -A ARCH=( [x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x )
-        pushd /tmp >/dev/null
-        FILE=$(curl -sL https://golang.org/dl/?mode=json | grep -E 'go[0-9\.]+' | sed 's/.*\(go.*\.tar\.gz\).*/\1/' | sort -n | grep -i $(uname -s) | grep tar | grep ${ARCH[$(uname -m)]} | tail -1)
+        pushd /tmp >/dev/null || return
+        FILE=$(curl -sL https://golang.org/dl/?mode=json | grep -E 'go[0-9\.]+' | sed 's/.*\(go.*\.tar\.gz\).*/\1/' | sort -n | grep -i "$(uname -s)" | grep tar | grep "${ARCH[$(uname -m)]}" | tail -1)
         echo "Installing $FILE"
-        curl -sL https://dl.google.com/go/$FILE -o $FILE
+        curl -sL https://dl.google.com/go/"$FILE" -o "$FILE"
         sudo rm -rf /usr/local/go
-        sudo tar xf $FILE -C /usr/local/ 2>/dev/null
-        rm -rf $FILE
-        popd >/dev/null
+        sudo tar xf "$FILE" -C /usr/local/ 2>/dev/null
+        rm -rf "$FILE"
+        popd >/dev/null || return
     }
     install && echo "Installed $FILE" || echo "Error installing Go"
 }
@@ -103,10 +111,10 @@ function install_golang() {
 # Searches SSH hosts thru fzf and connects to it
 function ss() {
     filter=${1:-"."}
-    target=$(egrep -o "Host (\b.+\b)" ~/.ssh/config | awk '{print $2}' | grep $filter | fzf -e)
-    if [ $target ]; then
+    target=$(grep -E -o "Host (\b.+\b)" ~/.ssh/config | awk '{print $2}' | grep "$filter" | fzf -e)
+    if [ "$target" ]; then
         echo "Remoting into: $target"
-        ssh $target
+        ssh "$target"
     fi
 }
 
@@ -120,11 +128,11 @@ function csi() { # fzf coursier install
 }
 
 function csji() { # fzf coursier java install
-    cs java --jvm $(cs java --available | fzf) --setup
+    cs java --jvm "$(cs java --available | fzf)" --setup
 }
 
 function csrt() { # fzf coursier resolve tree
-    $(cs resolve -t "$1" | fzf --reverse --ansi)
+    cs resolve -t "$1" | fzf --reverse --ansi
 }
 
 # Download Github release
@@ -134,16 +142,16 @@ dlgr() {
         echo "E.g. $0 author/repository"
         return
     fi
-    repo=https://api.github.com/repos/{$1}/releases/latest
+    repo=https://api.github.com/repos/${1}/releases/latest
 
-    URL=`curl -s "${repo}" | grep "$(uname | tr LD ld)" |grep $(uname -m) | grep "browser_download_url" | cut -d '"' -f 4`
+    URL=$(curl -s "${repo}" | grep "$(uname | tr LD ld)" |grep "$(uname -m)" | grep "browser_download_url" | cut -d '"' -f 4)
 
     if [ "${URL}" ]; then
         OUT=""
         if [ -n "${2+set}" ]; then
             OUT="-o $2"
         fi
-        curl -s ${OUT} -OL ${URL}
+        curl -s "${OUT}" -OL "${URL}"
     else
         return 1
     fi

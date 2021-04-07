@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Larger bash history (allow 32³ entries; default is 500)
 export HISTSIZE=50000000;
 export SAVEHIST=50000000;

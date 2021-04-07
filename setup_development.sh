@@ -2,34 +2,34 @@
 set -euo pipefail
 
 # Load utility functions
-source $HOME/.dotfiles/utils.sh
-source ~/.dotfiles/shellconfig/exports.sh
-source $HOME/.dotfiles/shellconfig/funcs.sh
+source "$HOME/.dotfiles/utils.sh"
+source "$HOME/.dotfiles/shellconfig/exports.sh"
+source "$HOME/.dotfiles/shellconfig/funcs.sh"
 
 SUPPORTED_ARCHS=(x86_64 aarch64 ppc64le)
 
-if containsElement $(uname -m) "${SUPPORTED_ARCHS[@]}"; then
-            log "Setup development tools on $(uname -m) architecture." $GREENUNDER
+if containsElement "$(uname -m)" "${SUPPORTED_ARCHS[@]}"; then
+            log "Setup development tools on $(uname -m) architecture." "$GREENUNDER"
         else
-            log "Architecture $(uname -m) not supported by development tools." $YELLOW
+            log "Architecture $(uname -m) not supported by development tools." "$YELLOW"
             exit 0
         fi
 
 # Install base
-if [ $(uname -s) == "Darwin" ]; then
+if [ "$(uname -s)" == "Darwin" ]; then
     # Development Tools
-    log "Install homebrew bundle for development" $GREEN
-    brew bundle install --file $HOME/.dotfiles/mac/Brewfile-development
+    log "Install homebrew bundle for development" "$GREEN"
+    brew bundle install --file "$HOME/.dotfiles/mac/Brewfile-development"
     # Fix for GTKWave from command line
     sudo cpan install Switch
-elif [ $(uname -s) == "Linux" ]; then
+elif [ "$(uname -s)" == "Linux" ]; then
     # Install Golang
-    log "Installing Golang..." $GREEN
+    log "Installing Golang..." "$GREEN"
     install_golang
 
     # Scala Coursier
     if [ ! -x "$(command -v cs)" ] > /dev/null 2>&1; then
-        log "Install Scala Coursier" $GREEN
+        log "Install Scala Coursier" "$GREEN"
         pushd /tmp >/dev/null
         dlgr coursier/coursier cs
         if test -f cs; then
@@ -45,8 +45,8 @@ fi
 
 # Scala
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
-    log "Install Scala Coursier applications" $GREEN
-    cs install --jvm ${JVM} \
+    log "Install Scala Coursier applications" "$GREEN"
+    cs install --jvm "${JVM}" \
             ammonite \
             cs \
             giter8 \
@@ -62,4 +62,4 @@ fi
 # Install GraalVM native-image utility
 gu install native-image
 
-log "Development tools setup finished." $GREENUNDER
+log "Development tools setup finished." "$GREENUNDER"

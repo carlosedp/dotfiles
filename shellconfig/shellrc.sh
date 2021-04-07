@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ###
 # Generic shellrc to be used by both zshrc and bashrc
 ###
