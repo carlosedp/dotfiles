@@ -72,3 +72,6 @@ fi
 
 # Ripgrep config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+
+# GPG
+export GPG_TTY=$(tty)

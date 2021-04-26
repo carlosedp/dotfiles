@@ -54,6 +54,12 @@ if [[ -d "$SYNC_FOLDER/Configs/SSH_Keys" ]]; then
     create_link "$SYNC_FOLDER/Configs/SSH_Keys" "$HOME/.ssh"
 fi
 
+# Link PGP keys
+log "Linking .ssh directory" "$GREEN"
+if [[ -d "$SYNC_FOLDER/Configs/pgp-keys" ]]; then
+    create_link "$SYNC_FOLDER/Configs/pgp-keys" "$HOME/.gnupg"
+fi
+
 # Link 2fa keychain file
 log "Linking 2fa keychain" "$GREEN"
 if [[ -f "$SYNC_FOLDER/Configs/2fa/keychain" ]]; then

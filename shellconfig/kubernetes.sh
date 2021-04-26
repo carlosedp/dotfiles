@@ -80,16 +80,16 @@ kubeconfigadd() {
         echo -n "Is this correct: ${REPLY}? [y/n]: "
         read -r
         if [[ $REPLY = "y" || $REPLY = "Y" ]]; then
-            sed "s;\(\s*server:\s\)http.*\(.*\);\1${IP}\2;g" -i "$kubefile"
+            sed "s;\(\s*server:\s\)http.*\(.*\);\1${IP}\2;g" -i "$(realpath $kubefile)"
             cp "$kubefile" "$HOME/.kube/config-$clustername"
         fi
     elif [[ $REPLY = "n" || $REPLY = "N" ]]; then
         cp "$kubefile" "$HOME/.kube/config-$clustername"
     fi
     # Rename user, cluster and context names
-    sed "s;\(^.*name:\s\).*;\1${clustername};g" -i "$HOME/.kube/config-$clustername"
-    sed "s;\(^.*cluster:\s\).*;\1${clustername};g" -i "$HOME/.kube/config-$clustername"
-    sed "s;\(^.*user:\s\).*;\1${clustername};g" -i "$HOME/.kube/config-$clustername"
+    sed "s;\(^.*name:\s\).*;\1${clustername};g" -i $(realpath "$HOME/.kube/config-$clustername")
+    sed "s;\(^.*cluster:\s\).*;\1${clustername};g" -i $(realpath "$HOME/.kube/config-$clustername")
+    sed "s;\(^.*user:\s\).*;\1${clustername};g" -i $(realpath "$HOME/.kube/config-$clustername")
 
     kubeloadenv
 }
