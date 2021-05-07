@@ -81,6 +81,18 @@ zstyle ':completion:*:*:make:*' tag-order 'targets'
 # zmv
 autoload -U zmv
 
+# Disable zsh-autocompletion on paste
+pasteinit() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+}
+
+pastefinish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
+zstyle :bracketed-paste-magic paste-init pasteinit
+zstyle :bracketed-paste-magic paste-finish pastefinish
+
 # Key binds
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
@@ -112,3 +124,4 @@ compinit
 
 # Debug zsh startup. Check variable on top.
 [ ${ZSHDEBUG} ] && zprof
+

@@ -16,9 +16,6 @@ brew "python"
 # Jsonnet
 brew "jsonnet"
 
-# Arduino
-cask "arduino"
-
 # Development Environment
 cask "visual-studio-code"
 cask "open-in-code"
