@@ -27,3 +27,6 @@ cask "font-3270-nerd-font"
 # FPGA Development
 cask "gtkwave"
 brew "verilator"
+
+# Misc
+cask arduino
