@@ -62,8 +62,8 @@ for app in ctx ns restart; do
 done
 
 # Mac App configs
-if [ "$(uname -s)" == "Darwin" ]; then
+# if [ "$(uname -s)" == "Darwin" ]; then
     ## Limechat settings
-    mkdir -p "$HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes"
-    cp "$HOME/.dotfiles/themes/Limechat-Choco/*" "$HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes"
-fi
+    # mkdir -p "$HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes"
+    # cp "$HOME/.dotfiles/themes/Limechat-Choco/*" "$HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes"
+# fi
