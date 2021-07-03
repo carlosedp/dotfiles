@@ -60,6 +60,8 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
 fi
 
 # Install GraalVM native-image utility
-gu install native-image
+if [ -x "$(command -v gu)" ] > /dev/null 2>&1; then
+    gu install native-image
+fi
 
 log "Development tools setup finished." "$GREENUNDER"
