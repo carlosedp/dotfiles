@@ -41,14 +41,11 @@ elif [ "$ID" == "void" ]; then
     sudo xbps-install -Su -y "$VOIDPACKAGES"
 fi
 
-# Setup dotfiles
-bash -c "$DOTFILES/setup_links.sh"
+# Setup Zsh
+bash -c "$DOTFILES/setup_zsh.sh"
 
 # Install Development tools
 bash -c "$DOTFILES/setup_development.sh"
-
-# Setup Zsh
-bash -c "$DOTFILES/setup_zsh.sh"
 
 # Setup and install additional applications
 bash -c "$DOTFILES/setup_apps.sh"

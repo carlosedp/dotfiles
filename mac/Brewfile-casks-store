@@ -2,7 +2,7 @@ cask_args appdir: "/Applications"
 
 brew "mas"
 
-cask "alfred"
+cask "raycast"
 cask "appcleaner"
 cask "betterzip"
 cask "batchmod"
@@ -52,3 +52,4 @@ mas "OTP Manager", id: 928941247
 mas "Pixelmator", id: 407963104
 mas "Slack", id: 803453959
 mas "Speedtest", id: 1153157709
+mas "Hidden Bar", id: 1452453066
