@@ -15,19 +15,38 @@ if containsElement "$(uname -m)" "${SUPPORTED_ARCHS[@]}"; then
             exit 0
         fi
 
-# Install base
+# Install MacOS Dev Tools
 if [ "$(uname -s)" == "Darwin" ]; then
     # Development Tools
     log "Install homebrew bundle for development" "$GREEN"
     brew bundle install --file "$HOME/.dotfiles/mac/Brewfile-development"
     # Fix for GTKWave from command line
     sudo cpan install Switch
+
+
+# Install Linux Dev Tools
 elif [ "$(uname -s)" == "Linux" ]; then
     # Install Golang
     log "Installing Golang..." "$GREEN"
     install_golang
 
-    # Scala Coursier
+    # Java / Scala / Coursier
+    # First install Java
+    log "Installing Java..." "$GREEN"
+    pushd /tmp >/dev/null
+    dlgr graalvm/graalvm-ce-builds java.tar.gz "${JVM}"
+    if test -f java.tar.gz; then
+        sudo mkdir -p /usr/local/java
+        sudo tar vxf java.tar.gz -C /usr/local/java --strip-components=1
+        rm -f java.tar.gz
+        popd >/dev/null
+        export JAVA_HOME=/usr/local/java
+        export PATH=${JAVA_HOME}/bin:${PATH}
+    else
+        echo "No Java available for your platform"
+    fi
+
+    # then install Coursier
     if [ ! -x "$(command -v cs)" ] > /dev/null 2>&1; then
         log "Install Scala Coursier" "$GREEN"
         pushd /tmp >/dev/null
@@ -45,23 +64,33 @@ fi
 
 # Scala
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
+    # Install JVM on MacOS using Coursier
+    if [ "$(uname -s)" == "Darwin" ]; then
+        cs install --jvm "${JVM}"
+    fi
+    export JAVA_HOME=$(cs java-home)
+    export PATH=$JAVA_HOME/bin:$PATH
     log "Install Scala Coursier applications" "$GREEN"
-    cs install --jvm "${JVM}" \
-            ammonite \
-            cs \
-            giter8 \
-            bloop-jvm \
-            sbt \
-            sbtn \
-            mill \
-            scala \
-            scalafmt
+    # Java version comes from JVM var in `shellconfig/exports.sh`
+    cs install \
+        ammonite \
+        cs \
+        giter8 \
+        bloop-jvm \
+        sbt \
+        mill \
+        scala \
+        scalafmt
     cs update
 fi
 
 # Install GraalVM native-image utility
 if [ -x "$(command -v gu)" ] > /dev/null 2>&1; then
-    gu install native-image
+    if [ "$(uname -s)" == "Darwin" ]; then
+        gu install native-image
+    elif [ "$(uname -s)" == "Linux" ]; then
+        sudo env PATH="$PATH" JAVA_HOME="$JAVA_HOME" gu install native-image
+    fi
 fi
 
 log "Development tools setup finished." "$GREENUNDER"

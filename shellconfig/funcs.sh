@@ -136,6 +136,7 @@ function csrt() { # fzf coursier resolve tree
 }
 
 # Download Github release
+# Usage: dlgr <owner/repo> <output_name> <additional_grep_filter>
 dlgr() {
     if [ "$#" -lt 1 ]; then
         echo "Illegal number of parameters. Call function with author/repo."
@@ -144,14 +145,19 @@ dlgr() {
     fi
     repo=https://api.github.com/repos/${1}/releases/latest
 
-    URL=$(curl -s "${repo}" | grep "$(uname | tr LD ld)" |grep "$(uname -m)" | grep "browser_download_url" | cut -d '"' -f 4)
+    # Additional grep filter
+    FILTER=""
+    if [ -n "${3+set}" ]; then
+        FILTER="$3"
+    fi
 
+    URL=$(curl -s "${repo}" | grep "$(uname | tr LD ld)" |grep "$(uname -m)" | grep "browser_download_url" | cut -d '"' -f 4 | grep "${FILTER}" |grep -v "\(sha256\|md5\|sha1\)")
     if [ "${URL}" ]; then
         OUT=""
         if [ -n "${2+set}" ]; then
-            OUT="-o $2"
+            OUT=$(echo "$2" | awk '{$1=$1};1')
         fi
-        curl -s "${OUT}" -OL "${URL}"
+        curl -s -o "${OUT}" -OL "${URL}"
     else
         return 1
     fi
