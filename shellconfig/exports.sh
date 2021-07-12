@@ -61,9 +61,12 @@ export PATH="$HOME/.local/share/coursier/bin:$PATH"
 
 # Add Java to path (if coursier is installed)
 export JVM=graalvm-ce-java11
-
+JAVA_HOME=/usr/local/java
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
-    export JAVA_HOME=$(cs java-home)
+    if [ "$(cs java-home --jvm ${JVM} > /dev/null 2>&1)" -eq 0 ]; then
+        JAVA_HOME=$(cs java-home --jvm ${JVM})
+    fi
+    export JAVA_HOME
     export PATH=$JAVA_HOME/bin:$PATH
 fi
 
@@ -71,4 +74,5 @@ fi
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # GPG
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
