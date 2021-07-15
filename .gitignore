@@ -1,4 +1,5 @@
 /.metals
+/.vscode
 /*.lock.json
 /rc/config/.mono
 /rc/config/configstore

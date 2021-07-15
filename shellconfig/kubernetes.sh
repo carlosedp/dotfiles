@@ -87,10 +87,9 @@ kubeconfigadd() {
         cp "$kubefile" "$HOME/.kube/config-$clustername"
     fi
     # Rename user, cluster and context names
-    sed "s;\(^.*name:\s\).*;\1${clustername};g" -i $(realpath "$HOME/.kube/config-$clustername")
-    sed "s;\(^.*cluster:\s\).*;\1${clustername};g" -i $(realpath "$HOME/.kube/config-$clustername")
-    sed "s;\(^.*user:\s\).*;\1${clustername};g" -i $(realpath "$HOME/.kube/config-$clustername")
-
+    sed "s;\(^.*name:\s\).*;\1${clustername};g" -i "$(realpath $HOME/.kube/config-$clustername)"
+    sed "s;\(^.*cluster:\s\).*;\1${clustername};g" -i "$(realpath $HOME/.kube/config-$clustername)"
+    sed "s;\(^.*user:\s\).*;\1${clustername};g" -i "$(realpath $HOME/.kube/config-$clustername)"
     kubeloadenv
 }
 
