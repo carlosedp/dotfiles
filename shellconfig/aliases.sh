@@ -41,7 +41,7 @@ alias whence='type -a'                        # where, of a sort
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 alias top='top -c'
-alias screen='screen -RR'
+#alias screen='screen -RR'
 alias grep='grep --color=auto '
 alias sudo='sudo '
 alias p='ps aux | grep -v ]$'
