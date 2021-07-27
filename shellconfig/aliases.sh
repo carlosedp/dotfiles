@@ -81,7 +81,7 @@ alias fuck='sudo $(fc -ln -1)'
 alias aptupd='sudo apt update && sudo apt upgrade -y && sudo apt autoclean -y && sudo apt autoremove -y'
 alias jtop='sudo jtop'
 
-if [[ ! $(command -v batcat) ]]; then
+if [[ $(command -v batcat) ]]; then
   alias cat='batcat --italic-text=always -p --pager "less -rX"'
 fi
 
