@@ -25,3 +25,4 @@
 /rc/config/xbuild*
 /rc/config/Code
 /rc/config/jgit
+rc/config/bpytop/error.log
