@@ -199,11 +199,15 @@ kshell() {
 
 # Delete pod
 kdp() {
+    (
     kubectl delete pod "$@" > /dev/null 2>&1 &
+    ) > /dev/null 2>&1
 }
 # Force delete pod
 kdp!() {
-kubectl delete --grace-period=0 --force pod "$@" &
+    (
+    kubectl delete --grace-period=0 --force pod "$@" &
+    ) > /dev/null 2>&1
 }
 
 # Initialize and add custom completions

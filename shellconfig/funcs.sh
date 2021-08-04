@@ -162,3 +162,9 @@ dlgr() {
         return 1
     fi
 }
+
+# Checkout last tag
+gcolast() {
+    LASTTAG=git describe --tags "$(git rev-list --tags --max-count=1)"
+    git checkout "$LASTTAG"
+}
