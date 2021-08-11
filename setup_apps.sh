@@ -40,6 +40,7 @@ if [ "$(uname -s)" == "Linux" ]; then
     ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
     sudo curl -o /usr/local/bin/kubectl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${ARCH}/kubectl"
     sudo chmod +x /usr/local/bin/kubectl
+    export PATH="/usr/local/bin/:$PATH"
 
     # Install Kubernetes Krew
     (
@@ -49,13 +50,12 @@ if [ "$(uname -s)" == "Linux" ]; then
     curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz" &&
     tar zxvf krew.tar.gz &&
     KREW=./krew-"${OS}_${ARCH}" &&
-    "$KREW" install krew &&
-    kubectl krew update
-    export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+    "$KREW" install krew
     )
 fi
 
 log "Upgrade and install kubectl plugins." "$GREENUNDER"
+export PATH="/usr/local/bin/:${HOME}/.krew/bin:${PATH}"
 kubectl krew upgrade
 for app in ctx ns restart; do
     kubectl krew install $app;

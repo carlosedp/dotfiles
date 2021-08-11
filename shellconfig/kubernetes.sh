@@ -203,8 +203,9 @@ kdp() {
     kubectl delete pod "$@" > /dev/null 2>&1 &
     ) > /dev/null 2>&1
 }
+
 # Force delete pod
-kdp!() {
+kdpf() {
     (
     kubectl delete --grace-period=0 --force pod "$@" &
     ) > /dev/null 2>&1

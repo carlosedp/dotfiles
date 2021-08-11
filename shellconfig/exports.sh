@@ -33,7 +33,7 @@ export LESS_TERMCAP_md="$YELLOW"
 
 # Add alt-up/down keybinding to fzf preview window
 export FORGIT_FZF_DEFAULT_OPTS="
-$FORGIT_FZF_DEFAULT_OPTS
+${FORGIT_FZF_DEFAULT_OPTS:-""}
 --bind='alt-up:preview-up'
 --bind='alt-down:preview-down'
 --no-mouse
