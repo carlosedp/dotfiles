@@ -8,11 +8,11 @@ alias kctx='kubectl ctx'
 alias kns='kubectl ns'
 
 alias kpod='kubectl get pods -o wide --all-namespaces --sort-by="{.metadata.namespace}" |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
-alias kp='kubectl get pods -o wide |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $7'"'"'} | column -t'
+alias kp='kubectl get pods -o wide --sort-by=.metadata.name|awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $7'"'"'} | column -t'
 alias ksvc='kubectl get services -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
-alias ks='kubectl get services -o wide'
+alias ks='kubectl get services -o wide --sort-by=.metadata.name'
 alias kedp='kubectl get endpoints -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
-alias ke='kubectl get endpoints -o wide'
+alias ke='kubectl get endpoints -o wide --sort-by=.metadata.name'
 alias king='kubectl get ingress -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
 
 alias kc='kubectl create'
@@ -36,7 +36,7 @@ wpod() {
     watch -n 1 "kubectl get pods $NAMESPACE -o wide --sort-by={.metadata.namespace} |awk {'print substr(\$1,1,40)\" \" substr(\$2,1,45)\" \" \$3\" \" \$4\" \" \$5\" \" \$6\" \" \$8'} | column -t"
 }
 wp() {
-    watch -n 1 "kubectl get pods -o wide |awk {'print substr(\$1,1,40)\" \" substr(\$2,1,45)\" \" \$3\" \" \$4\" \" \$5\" \" \$6\" \" \$7'} | column -t"
+    watch -n 1 "kubectl get pods -o wide --sort-by=.metadata.name|awk {'print substr(\$1,1,40)\" \" substr(\$2,1,45)\" \" \$3\" \" \$4\" \" \$5\" \" \$6\" \" \$7'} | column -t"
 }
 
 # Use multiple kubeconfig config files
