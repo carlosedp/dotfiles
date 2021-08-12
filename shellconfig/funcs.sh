@@ -135,6 +135,26 @@ function csrt() { # fzf coursier resolve tree
     cs resolve -t "$1" | fzf --reverse --ansi
 }
 
+# Return latest Github release
+# Usage: lgr <owner/repo> <additional_grep_filter>
+lgr() {
+    if [ "$#" -lt 1 ]; then
+        echo "Illegal number of parameters. Call function with author/repo."
+        echo "E.g. $0 author/repository"
+        return
+    fi
+    repo=https://api.github.com/repos/${1}/releases/latest
+
+    # Additional grep filter
+    FILTER=""
+    if [ -n "${3+set}" ]; then
+        FILTER="$3"
+    fi
+
+    VERSION=$(curl -s "${repo}" | grep "tag_name" | cut -d '"' -f 4 | grep "${FILTER}")
+    echo "${VERSION}"
+}
+
 # Download Github release
 # Usage: dlgr <owner/repo> <output_name> <additional_grep_filter>
 dlgr() {
