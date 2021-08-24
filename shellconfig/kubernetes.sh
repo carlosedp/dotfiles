@@ -69,18 +69,20 @@ kubeconfigadd() {
         return
     fi
 
-    echo "Current server IP/URL is: " $(grep "server: http" "$kubefile")
-    echo -n "Do you want to change it? [y/n]: "
+    CONNURL=$(grep server "$kubefile" | cut -d: -f2,3,4 | xargs)
+    echo "Current server connection URL is:" "$CONNURL"
+    echo -n "Do you want to change the IP? [y/n]: "
     read -r
     if [[ $REPLY = "y" || $REPLY = "Y" ]]
     then
-        echo -n "Type new server IP/URL in the format https://[IP/URL]:PORT: "
+        echo -n "Type new server IP/URL: "
         read -r
         IP=${REPLY}
-        echo -n "Is this correct: ${REPLY}? [y/n]: "
+        NEWURL=$(grep server "$kubefile" |  sed -e "s/\(.*server:\shttps\):\/\/[0-9.]*:\([0-9]*$\)/\1:\/\/${IP}:\2/g" | cut -d: -f2,3,4 |xargs)
+        echo -n "Is this correct: ${NEWURL}? [y/n]: "
         read -r
         if [[ $REPLY = "y" || $REPLY = "Y" ]]; then
-            sed "s;\(\s*server:\s\)http.*\(.*\);\1${IP}\2;g" -i "$(realpath $kubefile)"
+            sed -e "s;\(\s*server:\s\).*;\1${NEWURL};g" -i "$(realpath $kubefile)"
             cp "$kubefile" "$HOME/.kube/config-$clustername"
         fi
     elif [[ $REPLY = "n" || $REPLY = "N" ]]; then

@@ -26,3 +26,4 @@
 /rc/config/Code
 /rc/config/jgit
 rc/config/bpytop/error.log
+rc/config/containers/auth.json
