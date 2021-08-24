@@ -70,7 +70,8 @@ kubeconfigadd() {
     fi
 
     CONNURL=$(grep server "$kubefile" | cut -d: -f2,3,4 | xargs)
-    echo "Current server connection URL is:" "$CONNURL"
+    CHANGEIP=0
+    echo "Current server connection URL is: $CONNURL"
     echo -n "Do you want to change the IP? [y/n]: "
     read -r
     if [[ $REPLY = "y" || $REPLY = "Y" ]]
@@ -82,16 +83,18 @@ kubeconfigadd() {
         echo -n "Is this correct: ${NEWURL}? [y/n]: "
         read -r
         if [[ $REPLY = "y" || $REPLY = "Y" ]]; then
-            sed -e "s;\(\s*server:\s\).*;\1${NEWURL};g" -i "$(realpath $kubefile)"
-            cp "$kubefile" "$HOME/.kube/config-$clustername"
+            CHANGEIP=1
         fi
-    elif [[ $REPLY = "n" || $REPLY = "N" ]]; then
-        cp "$kubefile" "$HOME/.kube/config-$clustername"
     fi
+    cp "$kubefile" "$HOME/.kube/config-$clustername"
     # Rename user, cluster and context names
     sed "s;\(^.*name:\s\).*;\1${clustername};g" -i "$(realpath $HOME/.kube/config-$clustername)"
     sed "s;\(^.*cluster:\s\).*;\1${clustername};g" -i "$(realpath $HOME/.kube/config-$clustername)"
     sed "s;\(^.*user:\s\).*;\1${clustername};g" -i "$(realpath $HOME/.kube/config-$clustername)"
+    # Change IP if needed
+    if [ $CHANGEIP -eq 1 ]; then
+        sed -e "s;\(\s*server:\s\).*;\1${NEWURL};g" -i "$(realpath $HOME/.kube/config-$clustername)"
+    fi
     kubeloadenv
 }
 
