@@ -7,7 +7,7 @@ alias k=kubectl
 alias kctx='kubectl ctx'
 alias kns='kubectl ns'
 
-alias kpod='kubectl get pods -o wide --all-namespaces --sort-by="{.metadata.namespace}" |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
+alias kpod='kubectl get pods -o wide --all-namespaces --sort-by={.metadata.namespace} |awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $8'"'"'} | column -t'
 alias kp='kubectl get pods -o wide --sort-by=.metadata.name|awk {'"'"'print substr($1,1,40)" " substr($2,1,45)" " $3" " $4" " $5" " $6" " $7'"'"'} | column -t'
 alias ksvc='kubectl get services -o wide --all-namespaces --sort-by="{.metadata.namespace}"'
 alias ks='kubectl get services -o wide --sort-by=.metadata.name'
@@ -217,13 +217,12 @@ kdpf() {
 }
 
 # Initialize and add custom completions
-_kubectl_startup () {
-    _kubectl
-    complete -o default -o nospace -F __kubectl_get_resource_pod stern kt klog kdesc kexec kdp kdp! kshell
+_kubectl_pods () {
+    compadd $(kubectl get pods -o name | sed 's/^pod\///')
 }
 
 if [ -n "${BASH}" ]; then
-    complete -o default -o nospace -F _kubectl_startup stern kt klog kdesc kexec kdp kdp! kshell
+    complete -o default -o nospace -F _kubectl_pods stern kt klog kdesc kexec kdp kdpf kshell
 elif [ -n "${ZSH_NAME}" ]; then
-    compdef _kubectl_startup stern kt klog kdesc kexec kdp kdp! kshell
+    compdef _kubectl_pods stern kt klog kdesc kexec kdp kdpf kshell
 fi

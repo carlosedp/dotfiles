@@ -353,69 +353,6 @@ __stern_handle_word()
     __stern_handle_word
 }
 
-
-__is_kubectl_installed=true
-if ! which kubectl >/dev/null 2>&1; then
-	__is_kubectl_installed=false
-fi
-
-__stern_kubectl_override_flag_list=(kubeconfig context namespace)
-__stern_kubectl_override_flags()
-{
-    local ${__stern_kubectl_override_flag_list[*]} two_word_of of
-    for w in "${words[@]}"; do
-        if [ -n "${two_word_of}" ]; then
-            eval "${two_word_of}=\"--${two_word_of}=\${w}\""
-            two_word_of=
-            continue
-        fi
-        for of in "${__stern_kubectl_override_flag_list[@]}"; do
-            case "${w}" in
-                --${of}=*)
-                    eval "${of}=\"${w}\""
-                    ;;
-                --${of})
-                    two_word_of="${of}"
-                    ;;
-            esac
-        done
-        if [ "${w}" == "--all-namespaces" ]; then
-            namespace="--all-namespaces"
-        fi
-    done
-    for of in "${__stern_kubectl_override_flag_list[@]}"; do
-        if eval "test -n \"\$${of}\""; then
-            eval "echo \${${of}}"
-        fi
-    done
-}
-
-__stern_kubectl_get_namespaces()
-{
-    local template kubectl_out
-
-    if ! $__is_kubectl_installed; then
-        return 1
-    fi
-    template="{{ range .items  }}{{ .metadata.name }} {{ end }}"
-    if kubectl_out=$(kubectl get -o template --template="${template}" namespace 2>/dev/null); then
-        COMPREPLY=( $( compgen -W "${kubectl_out[*]}" -- "$cur" ) )
-    fi
-}
-
-__stern_kubectl_config_get_contexts()
-{
-    local template kubectl_out
-
-    if ! $__is_kubectl_installed; then
-        return 1
-    fi
-    template="{{ range .contexts  }}{{ .name }} {{ end }}"
-    if kubectl_out=$(kubectl config $(__stern_kubectl_override_flags) -o template --template="${template}" view 2>/dev/null); then
-        COMPREPLY=( $( compgen -W "${kubectl_out[*]}" -- "$cur" ) )
-    fi
-}
-
 _stern_root_command()
 {
     last_command="stern"
@@ -455,7 +392,7 @@ _stern_root_command()
     flags+=("--context=")
     two_word_flags+=("--context")
     flags_with_completion+=("--context")
-    flags_completion+=("__stern_kubectl_config_get_contexts")
+    flags_completion+=("__stern_handle_go_custom_completion")
     local_nonpersistent_flags+=("--context")
     local_nonpersistent_flags+=("--context=")
     flags+=("--ephemeral-containers")
@@ -499,10 +436,10 @@ _stern_root_command()
     flags+=("--namespace=")
     two_word_flags+=("--namespace")
     flags_with_completion+=("--namespace")
-    flags_completion+=("__stern_kubectl_get_namespaces")
+    flags_completion+=("__stern_handle_go_custom_completion")
     two_word_flags+=("-n")
     flags_with_completion+=("-n")
-    flags_completion+=("__stern_kubectl_get_namespaces")
+    flags_completion+=("__stern_handle_go_custom_completion")
     local_nonpersistent_flags+=("--namespace")
     local_nonpersistent_flags+=("--namespace=")
     local_nonpersistent_flags+=("-n")
@@ -556,7 +493,7 @@ _stern_root_command()
 
 __start_stern()
 {
-    local cur prev words cword
+    local cur prev words cword split
     declare -A flaghash 2>/dev/null || :
     declare -A aliashash 2>/dev/null || :
     if declare -F _init_completion >/dev/null 2>&1; then
@@ -572,11 +509,13 @@ __start_stern()
     local flags_with_completion=()
     local flags_completion=()
     local commands=("stern")
+    local command_aliases=()
     local must_have_one_flag=()
     local must_have_one_noun=()
     local has_completion_function
     local last_command
     local nouns=()
+    local noun_aliases=()
 
     __stern_handle_word
 }
