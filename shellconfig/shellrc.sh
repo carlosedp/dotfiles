@@ -15,6 +15,17 @@ fi
 # Load plugins and utilities
 #####
 
+# Load exports
+source ~/.dotfiles/shellconfig/exports.sh
+# start=$(date +%s.%N)
+
+# Neofetch
+if [ -x "$(command -v neofetch)" ] > /dev/null 2>&1; then
+    set +m
+    neofetch --disable packages term > /tmp/neofetch_output.txt &
+    NEOFETCH_PID=$!
+fi
+
 # Enable autojump
 [ -f /usr/local/etc/profile.d/autojump.sh ] && source /usr/local/etc/profile.d/autojump.sh # Mac
 [ -f /usr/share/autojump/autojump.sh ] && source /usr/share/autojump/autojump.sh # Linux
@@ -25,7 +36,7 @@ export WASMER_DIR="$HOME/.wasmer"
 
 # Use gitstatusd built locally if exists
 # To build, run `zsh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/gitstatus/master/build.zsh)"`
-if [ -f $HOME/.dotfiles/bin/gitstatusd-linux-$(uname -m) ]; then
+if [ -f "$HOME"/.dotfiles/bin/gitstatusd-linux-$(uname -m) ]; then
     export GITSTATUS_DAEMON=$HOME/.dotfiles/bin/gitstatusd-linux-$(uname -m)
 fi
 
@@ -38,13 +49,10 @@ if [ -x "$(command -v kubectl)" ] > /dev/null 2>&1; then
 fi
 
 # Load iTerm2 integration
-[ -f ${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell} ] && source ${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell}
-
-# Load exports
-source ~/.dotfiles/shellconfig/exports.sh
+[ -f "${HOME}"/.dotfiles/shellconfig/iterm2_shell_integration.${shell} ] && source "${HOME}"/.dotfiles/shellconfig/iterm2_shell_integration."${shell}"
 
 # Load private exports
-[ -f ${HOME}/Dropbox/Configs/exports-private.sh ] && source ${HOME}/Dropbox/Configs/exports-private.sh
+[ -f "${HOME}"/Dropbox/Configs/exports-private.sh ] && source "${HOME}"/Dropbox/Configs/exports-private.sh
 
 # Functions
 source ~/.dotfiles/shellconfig/funcs.sh
@@ -56,20 +64,30 @@ source ~/.dotfiles/shellconfig/aliases.sh
 if [ $(uname -s) = 'Darwin' ]; then
     source ~/.dotfiles/shellconfig/aliases_mac.sh
 fi
-
 # Load hub (https://github.com/github/hub)
 if [ -x "$(command -v hub)" ]; then
   eval "$(hub alias -s)"
+fi
+
+# Initialize and add custom completions
+_ssh_config () {
+    compadd $(cat ~/.ssh/config|grep "Host " |grep -v "Host \*" |sed -e "s/^Host //g")
+}
+
+if [ -n "${BASH}" ]; then
+    complete -o default -o nospace -F _ssh_config ssh
+    complete -o default -o nospace -F _cs coursier
+elif [ -n "${ZSH_NAME}" ]; then
+    compdef _ssh_config ssh
+    compdef _cs coursier
 fi
 
 #####
 # These are at the end to print on user login
 #####
 
-# Neofetch
-if [ -x "$(command -v neofetch)" ] > /dev/null 2>&1; then
-    neofetch --disable packages
-fi
+wait $NEOFETCH_PID
+\cat /tmp/neofetch_output.txt
 
 if tmux list-sessions > /dev/null 2>&1; then
     echo ""
@@ -78,3 +96,6 @@ if tmux list-sessions > /dev/null 2>&1; then
     tmux list-sessions
     echo ""
 fi
+# end="$(date +%s.%N)"
+# runtime=$( echo "$end - $start" | bc -l )
+# echo "Shellrc took $runtime seconds to load."

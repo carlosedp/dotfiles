@@ -3,7 +3,7 @@
 ###
 
 # Debug zsh startup. Uncomment to enable
-# ZSHDEBUG=on
+#ZSHDEBUG=on
 [ ${ZSHDEBUG} ] && zmodload zsh/zprof
 
 : ${ZSH_DISABLE_COMPFIX:=true}
@@ -16,6 +16,16 @@ ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="powerlevel10k/powerlevel10k"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# P10K Customization overrides
+typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND=120
+typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION='${P9K_KUBECONTEXT_NAMESPACE}<-->${P9K_KUBECONTEXT_CLOUD_CLUSTER:-${P9K_KUBECONTEXT_NAME}}@${P9K_KUBECONTEXT_CLUSTER}'
+export POWERLEVEL9K_CONTEXT_TEMPLATE="%n@%m"
+export POWERLEVEL9K_TRANSIENT_PROMPT=off
+export POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|istioctl'
+p10k-on-post-prompt() { p10k display '1'=hide '2/right/time'=show }
+p10k-on-pre-prompt()  { p10k display '1'=show '2/right/time'=hide }
+
 
 # Automatically quote globs in URL and remote references
 __remote_commands=(scp rsync)
@@ -71,7 +81,7 @@ source $ZSH_CUSTOM/plugins/autoupdate-oh-my-zsh-plugins/autoupdate.plugin.zsh
 source $ZSH_CUSTOM/plugins/zsh-you-should-use/you-should-use.plugin.zsh
 source $ZSH_CUSTOM/plugins/forgit/forgit.plugin.zsh
 
-# Configure complations
+# Configure completions
 fpath=($ZSH_CUSTOM/plugins/zsh-completions/src $fpath)
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.dotfiles/completion $fpath)
@@ -113,15 +123,21 @@ export HISTORY_SUBSTRING_SEARCH_FUZZY=true
 setopt appendhistory
 setopt SHARE_HISTORY
 
-# Override completions for other commands
-compdef _cs coursier
+# Initialize completions
+autoload -Uz compinit
+setopt EXTENDEDGLOB
+for dump in $ZSH_COMPDUMP(#qN.m1); do
+  compinit
+  if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
+    zcompile "$dump"
+  fi
+  echo "Initializing Completions..."
+done
+unsetopt EXTENDEDGLOB
+compinit -C
 
 # Load additional shell rc common to zsh and bash
 source ~/.dotfiles/shellconfig/shellrc.sh
-
-# Initialize completions
-autoload -Uz compinit
-compinit
 
 # Debug zsh startup. Check variable on top.
 [ ${ZSHDEBUG} ] && zprof

@@ -47,7 +47,7 @@ kubeloadenv() {
         return
     fi
     if test -d "$HOME/.kube/"; then
-        for kubeconfigFile in $(find "$HOME/.kube" -type f -name "config-*")
+        for kubeconfigFile in "$HOME"/.kube/config-*
         do
             export KUBECONFIG="$KUBECONFIG:$kubeconfigFile"
         done
