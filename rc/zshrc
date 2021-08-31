@@ -131,7 +131,7 @@ for dump in $ZSH_COMPDUMP(#qN.m1); do
   if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
     zcompile "$dump"
   fi
-  echo "Initializing Completions..."
+  #echo "Initializing Completions..."
 done
 unsetopt EXTENDEDGLOB
 compinit -C

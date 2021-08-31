@@ -111,11 +111,6 @@ if [[ $(command -v fzf) == "" ]]; then
     echo ""
 fi
 
-echo ""
-log "Add/Update completion scripts" "$GREEN"
-bash -c "$DOTFILES/update_completions.sh"
-
-
 log "Create dotfiles links" "$GREEN"
 # Link .rc files
 bash -c "$DOTFILES/setup_links.sh"

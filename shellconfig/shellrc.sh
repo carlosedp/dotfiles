@@ -60,6 +60,9 @@ source ~/.dotfiles/shellconfig/funcs.sh
 # Load generic aliases
 source ~/.dotfiles/shellconfig/aliases.sh
 
+# Source some utilities
+source "$HOME/.dotfiles/utils.sh"
+
 # Load Mac aliases
 if [ $(uname -s) = 'Darwin' ]; then
     source ~/.dotfiles/shellconfig/aliases_mac.sh
