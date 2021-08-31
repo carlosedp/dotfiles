@@ -12,8 +12,10 @@ echo ""
 modules=("github.com/github/hub"
         "rsc.io/2fa"
         "golang.org/x/tools/cmd/benchcmp"
-        "github.com/containous/yaegi/cmd/yaegi"
+        "github.com/traefik/yaegi/cmd/yaegi"
         "github.com/rakyll/hey"
+        "github.com/junegunn/fzf"
+        "github.com/brancz/gojsontoyaml"
 )
 
 # Only run if Go is present
@@ -23,7 +25,7 @@ if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
     # updating any project go.mod/go.sum if inside it's directories
     for m in "${modules[@]}"; do
         log "Installing $m" "$GREEN"
-        GO111MODULE=off go get -u "$m" || true
+        go install "$m"@latest || true
     done
 
 else

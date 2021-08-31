@@ -99,7 +99,7 @@ log "Install fzf plugin" "$GREEN"
 if [[ $(command -v go) != "" ]]; then
     # Install fzf - Command line fuzzy finder
     log "> Installing fzf" "$YELLOW"
-    GO111MODULE=off go get -u github.com/junegunn/fzf
+    go install github.com/junegunn/fzf@latest
 else
     log "> You don't have Go installed, can't install fzf." "$RED"
 fi

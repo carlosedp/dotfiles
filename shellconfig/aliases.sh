@@ -86,3 +86,4 @@ if [[ $(command -v batcat) ]]; then
 fi
 
 alias ic='it2copy'
+alias ytdl='youtube-dl -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"'
