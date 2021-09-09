@@ -49,6 +49,7 @@ elif [ "$(uname -s)" == "Linux" ]; then
 fi
 
 # Scala
+# The [JVM](./shellconfig/exports.sh) env is defined in exports.sh
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
     # Install JVM using Coursier if supported
     if [ "$(uname -s)" == "Darwin" ] || containsElement "$(uname -m)" "${GRAALVM_ARCHS[@]}"; then
