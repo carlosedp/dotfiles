@@ -5,8 +5,6 @@
 /rc/config/configstore
 /**/StardewValley/*
 /rc/docker
-/rc/config/hub
-/rc/config/rebar3/hex.config
 /rc/config/renode/*
 /rc/config/chromium/*
 /rc/config/pulse

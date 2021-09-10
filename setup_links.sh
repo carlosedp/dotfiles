@@ -48,6 +48,17 @@ do
   create_link "$FILE" "${HOME}/.$(basename "$FILE")"
 done
 
+# Link private .config files
+log "Linking private .config files" "$GREEN"
+if [[ -d "$SYNC_FOLDER/Configs/rc/config" ]]; then
+    for FILE in "$SYNC_FOLDER"/Configs/rc/config/*
+    do
+      create_link "$FILE" "${HOME}/.config/$(basename "$FILE")"
+    done
+fi
+
+
+
 # Link SSH keys
 log "Linking .ssh directory" "$GREEN"
 if [[ -d "$SYNC_FOLDER/Configs/SSH_Keys" ]]; then
