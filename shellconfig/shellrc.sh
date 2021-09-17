@@ -67,6 +67,7 @@ source "$HOME/.dotfiles/utils.sh"
 if [ $(uname -s) = 'Darwin' ]; then
     source ~/.dotfiles/shellconfig/aliases_mac.sh
 fi
+
 # Load hub (https://github.com/github/hub)
 if [ -x "$(command -v hub)" ]; then
   eval "$(hub alias -s)"

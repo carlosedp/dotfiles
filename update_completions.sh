@@ -4,7 +4,7 @@ set -euo pipefail
 # Load utility functions
 source "$HOME/.dotfiles/utils.sh"
 
-log "Updating ZSH completions" "$GREENUNDER"
+log "Updating shell completions" "$GREENUNDER"
 
 # BASH
 ## Generate kubectx and kubens completions
@@ -22,6 +22,11 @@ fi
 
 curl -sL -o "$HOME"/.dotfiles/completion/hub.bash https://github.com/github/hub/raw/master/etc/hub.bash_completion.sh
 
+# gh (Github command line client)
+if [ -x "$(command -v gh)" ] > /dev/null 2>&1; then
+        gh completion -s bash > "$HOME"/.dotfiles/completion/gh.bash
+fi
+
 # ZSH
 ## Generate kubectx and kubens completions
 for X in kubectx kubens; do
@@ -38,6 +43,10 @@ fi
 
 curl -sL -o "$HOME"/.dotfiles/completion/_hub https://github.com/github/hub/raw/master/etc/hub.zsh_completion
 
+# gh (Github command line client)
+if [ -x "$(command -v gh)" ] > /dev/null 2>&1; then
+        gh completion -s zsh > "$HOME"/.dotfiles/completion/_gh
+fi
 
 # bloop
 curl -s https://raw.githubusercontent.com/scalacenter/bloop/master/etc/zsh-completions -o "$HOME"/.dotfiles/completion/_bloop
