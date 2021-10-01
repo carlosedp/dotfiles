@@ -34,5 +34,3 @@ alias clipdecode="pbpaste|base64 --decode"
 
 # Flush Directory Service cache
 alias flushdns='dscacheutil -flushcache && ps aux|grep mDNSResponder |grep -v grep |awk '"'"'{print $2}'"'"' |xargs sudo kill -HUP'
-
-alias gtkwave='/Applications/gtkwave.app/Contents/Resources/bin/gtkwave'

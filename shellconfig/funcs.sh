@@ -188,3 +188,13 @@ gcolast() {
     LASTTAG=git describe --tags "$(git rev-list --tags --max-count=1)"
     git checkout "$LASTTAG"
 }
+
+# Load GTKWave in the background
+gtkwave() {
+    BIN=/Applications/gtkwave.app/Contents/Resources/bin/gtkwave
+    if test -f "$HOME/.dotfiles/rc/gtkwave.tcl"; then
+        $BIN -S "$HOME/.dotfiles/rc/gtkwave.tcl" "$@" &
+    else
+        $BIN "$@" &
+    fi
+}
