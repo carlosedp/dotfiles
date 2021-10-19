@@ -192,7 +192,9 @@ gcolast() {
 # Load GTKWave in the background
 gtkwave() {
     BIN=/Applications/gtkwave.app/Contents/Resources/bin/gtkwave
-    if test -f "$HOME/.dotfiles/rc/gtkwave.tcl"; then
+    if test -f "./GTKwave/gtkwave.tcl"; then
+        $BIN -S "./GTKwave/gtkwave.tcl" "$@" &
+    elif test -f "$HOME/.dotfiles/rc/gtkwave.tcl"; then
         $BIN -S "$HOME/.dotfiles/rc/gtkwave.tcl" "$@" &
     else
         $BIN "$@" &

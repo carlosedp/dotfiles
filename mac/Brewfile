@@ -39,6 +39,7 @@ brew "wdiff"
 brew "wget"
 brew "xz"
 brew "zsh"
+brew "gpg"
 
 brew "ansible"
 brew "openssl"

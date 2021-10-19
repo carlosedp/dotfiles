@@ -9,10 +9,10 @@
 
 # Customize this section as needed
 ## Add TOPLevel clock and reset signals
-set top [list CPU.clock CPU.reset ]
+set top [list TOP.clock TOP.reset ]
 
 ## This adds the signals based on a list of {"signal_name_filter" Color}
-set signals_to_add {{"CPU.stateReg" Orange} {"PC.io_pcPort" Green} {"memory.io_dualPort" Red} {"decoder.io_DecoderPort" Violet}}
+set signals_to_add {{"PC.io_pcPort" Green ""} {"instructionMemory.io_dualPort" Red ""} {"decoder.io_DecoderPort" Violet ""} {"ALU.io_ALUPort" Orange ""} {"registerBank.io_regPort" Green ""} {"registerBank.regs_" Green "regs_0_"} {"memoryIOManager.io_MemoryIOPort_" Red ""} {"memory.io_dualPort_" Orange ""}}
 
 ## For mapping values, add the translate files and the signals to map file
 # Format file as: "signal_value mapped_value" (one per line)
@@ -32,7 +32,7 @@ set sigs [list]
 
 # Customize view settings
 gtkwave::nop
-gtkwave::/Edit/Set_Trace_Max_Hier 0
+gtkwave::/Edit/Set_Trace_Max_Hier 1
 gtkwave::/View/Show_Filled_High_Values 1
 gtkwave::/View/Show_Wave_Highlight 1
 gtkwave::/View/Show_Mouseover 1
@@ -59,7 +59,7 @@ proc translate {element_list element mapping_file} {
     # return $iselement
 }
 
-proc add_signals { filter color} {
+proc add_signals { filter color filterOut} {
     global nsigs
     global instructions
     global registers
@@ -67,12 +67,11 @@ proc add_signals { filter color} {
     global insts
 
     set filterKeyword $filter
-    set filterCondition "_hi_"
     set monitorSignals [list]
     for {set i 0} {$i < $nsigs } {incr i} {
         set facname [ gtkwave::getFacName $i ]
         set index [ string first $filterKeyword $facname  ]
-        set index2 [ string first $filterCondition $facname  ]
+        set index2 [ string first $filterOut $facname  ]
 
         if {$index != -1 && $index2 == -1} {
             lappend monitorSignals "$facname"
@@ -97,6 +96,16 @@ proc add_signals { filter color} {
             translate $insts $v $instructions
         }
     }
+    ## This sets the register signal names to be aliased to the register name
+    foreach v $monitorSignals {
+        if {[string first regs_ $v] != -1} {
+        set name [string range [lsearch -inline [split $v .] {regs_*}] 5 end]
+        gtkwave::highlightSignalsFromList "$v"
+        gtkwave::/Edit/Alias_Highlighted_Trace x$name
+        gtkwave::/Edit/UnHighlight_All
+
+        }
+    }
 }
 
 # Zoom all
@@ -104,5 +113,5 @@ gtkwave::/Time/Zoom/Zoom_Full
 
 # Add signals thru filters
 foreach s $signals_to_add {
-    add_signals [lindex $s 0] [lindex $s 1]
+    add_signals [lindex $s 0] [lindex $s 1] [lindex $s 2]
 }
