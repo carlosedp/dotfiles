@@ -86,6 +86,7 @@ kubeconfigadd() {
             CHANGEIP=1
         fi
     fi
+    rm -rf "$HOME/.kube/config-$clustername"
     cp "$kubefile" "$HOME/.kube/config-$clustername"
     # Rename user, cluster and context names
     sed "s;\(^.*name:\s\).*;\1${clustername};g" -i "$(realpath $HOME/.kube/config-$clustername)"

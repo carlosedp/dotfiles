@@ -46,7 +46,7 @@ ZSH_AUTOSUGGEST_USE_ASYNC=true
 # Syntax highlight should be loaded before history-substring-search
 plugins=(
     git
-    osx
+    macos
     colorize
     python
     brew

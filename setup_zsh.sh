@@ -133,7 +133,7 @@ done
 plugins=("https://github.com/carlosedp/zsh-iterm-touchbar" \
          "https://github.com/TamCore/autoupdate-oh-my-zsh-plugins" \
          "https://github.com/zsh-users/zsh-autosuggestions" \
-         "https://github.com/zdharma/fast-syntax-highlighting" \
+         "https://github.com/zdharma-continuum/fast-syntax-highlighting" \
          "https://github.com/zsh-users/zsh-completions" \
          "https://github.com/zsh-users/zsh-history-substring-search" \
          "https://github.com/MichaelAquilina/zsh-you-should-use" \
