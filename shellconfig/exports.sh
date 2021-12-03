@@ -60,7 +60,7 @@ export PATH="$HOME/Library/Application Support/Coursier/bin:$PATH"
 export PATH="$HOME/.local/share/coursier/bin:$PATH"
 
 # Add Java to path (if coursier is installed)
-export JVM=graalvm-ce-java11
+export JVM=adopt:11
 JAVA_HOME=/usr/local/java
 if [ -x "$(command -v cs)" ] ; then
     if [ "$(cs java-home --jvm ${JVM} > /dev/null 2>&1)" -eq 0 ]; then

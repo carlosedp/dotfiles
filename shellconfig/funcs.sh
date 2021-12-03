@@ -171,6 +171,7 @@ dlgr() {
         FILTER="$3"
     fi
 
+echo ${repo}
     URL=$(curl -s "${repo}" | grep "$(uname | tr LD ld)" |grep "$(uname -m)" | grep "browser_download_url" | cut -d '"' -f 4 | grep "${FILTER}" |grep -v "\(sha256\|md5\|sha1\)")
     if [ "${URL}" ]; then
         OUT=""
@@ -190,12 +191,21 @@ gcolast() {
 }
 
 # Load GTKWave in the background
-gtkwave() {
+gtkw() {
     BIN=/Applications/gtkwave.app/Contents/Resources/bin/gtkwave
     if test -f "./GTKwave/gtkwave.tcl"; then
         $BIN -S "./GTKwave/gtkwave.tcl" "$@" &
     elif test -f "$HOME/.dotfiles/rc/gtkwave.tcl"; then
         $BIN -S "$HOME/.dotfiles/rc/gtkwave.tcl" "$@" &
+    else
+        $BIN "$@" &
+    fi
+}
+
+gtkwave() {
+    BIN=/Applications/gtkwave.app/Contents/Resources/bin/gtkwave
+    if test -f "./GTKwave/GTKWave.gtkw"; then
+        $BIN $@ "./GTKwave/GTKWave.gtkw" &
     else
         $BIN "$@" &
     fi

@@ -23,8 +23,8 @@ alias ls='ls -hF ${colorflag}' # classify files in colour
 alias ll='ls -ltr'   # long list
 alias la='ls -lA'    # all but . and ..
 alias lsd='ls -lhF ${colorflag} | grep --color=never "^d"'
-alias l='ls -CF'
 
+alias l='ls -CF'
 # Interactive operation...
 alias rm='rm -i'
 alias cp='cp -i'
@@ -64,6 +64,7 @@ alias glo='git l'
 alias gcs='git commit -v -s'
 alias gt='git log --tags -10 --simplify-by-decoration  --reverse --date=format:"%Y-%m-%d %H:%I:%S" --format=format:"%C(03)%>|(10)%h%C(reset)  %C(04)%ad%C(reset)  %C(green)%<(16,trunc)%an%C(reset)  %C(bold 1)%d%C(reset)"'
 alias gcns!='git commit -v --no-edit -s --amend'
+alias gstu='git stash --include-untracked'
 
 alias ansible-syntax='ansible-playbook --syntax-check -i "127.0.0.1,"'
 alias elasticindex='watch -n 5 "curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/nodes?v&s=name\"; echo \"\n\"; curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/indices?v&s=index:desc\"|head -30"'
