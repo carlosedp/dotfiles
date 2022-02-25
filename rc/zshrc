@@ -18,13 +18,12 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 # P10K Customization overrides
-typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND=120
 typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_CONTENT_EXPANSION='${P9K_KUBECONTEXT_NAMESPACE}<-->${P9K_KUBECONTEXT_CLOUD_CLUSTER:-${P9K_KUBECONTEXT_NAME}}@${P9K_KUBECONTEXT_CLUSTER}'
 export POWERLEVEL9K_CONTEXT_TEMPLATE="%n@%m"
-export POWERLEVEL9K_TRANSIENT_PROMPT=off
+# export POWERLEVEL9K_TRANSIENT_PROMPT=off
 export POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|istioctl'
-p10k-on-post-prompt() { p10k display '1'=hide '2/right/time'=show }
-p10k-on-pre-prompt()  { p10k display '1'=show '2/right/time'=hide }
+# p10k-on-post-prompt() { p10k display '1'=hide '2/right/time'=show }
+# p10k-on-pre-prompt()  { p10k display '1'=show '2/right/time'=hide }
 
 
 # Automatically quote globs in URL and remote references

@@ -1,6 +1,6 @@
 # Beware! This file is rewritten by htop when settings are changed in the interface.
 # The parser is also very primitive, and not human-friendly.
-htop_version=3.1.1
+htop_version=3.1.2
 config_reader_min_version=2
 fields=0 48 17 18 38 39 2 46 47 49 1
 sort_key=46
@@ -36,7 +36,7 @@ enable_mouse=1
 delay=15
 hide_function_bar=0
 header_layout=two_50_50
-column_meters_0=Hostname Tasks LeftCPUs LoadAverage CPU Blank
-column_meter_modes_0=2 2 1 2 1 2
-column_meters_1=Clock Uptime RightCPUs Memory Memory Swap
+column_meters_0=Hostname Tasks LeftCPUs2 LoadAverage CPU Load
+column_meter_modes_0=2 2 1 2 1 1
+column_meters_1=DateTime Uptime RightCPUs2 Memory Memory Swap
 column_meter_modes_1=2 2 1 2 1 1

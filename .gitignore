@@ -25,3 +25,4 @@
 /rc/config/jgit
 rc/config/bpytop/error.log
 rc/config/containers/auth.json
+rc/config/raycast

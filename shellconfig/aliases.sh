@@ -77,7 +77,7 @@ alias tma='tmate new -A -s mySession'
 alias yaegi='rlwrap yaegi'
 alias dot='cd $HOME/.dotfiles'
 alias query-manifest='qi'
-alias tree='tree -I "out|node_modules|vendor|build"'
+alias tree='tree -sh --du -F -A -C -I "out|node_modules|vendor|build"'
 
 alias ping='prettyping'
 alias fuck='sudo $(fc -ln -1)'
