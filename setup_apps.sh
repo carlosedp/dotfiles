@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SUPPORTED_ARCHS=(x86_64 aarch64)
+
 # Load utility functions
 source "$HOME/.dotfiles/utils.sh"
 
@@ -45,15 +47,17 @@ if [ "$(uname -s)" == "Linux" ]; then
     export PATH="/usr/local/bin/:$PATH"
 
     # Install Kubernetes Krew
-    (
-    set -x; cd "$(mktemp -d)" &&
-    OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
-    ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
-    curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz" &&
-    tar zxvf krew.tar.gz &&
-    KREW=./krew-"${OS}_${ARCH}" &&
-    "$KREW" install krew
-    )
+    if containsElement "$(uname -m)" "${SUPPORTED_ARCHS[@]}"; then
+        (
+        set -x; cd "$(mktemp -d)" &&
+        OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+        ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+        curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH}.tar.gz" &&
+        tar zxvf "./krew-${OS}_${ARCH}.tar.gz" &&
+        KREW=./krew-"${OS}_${ARCH}" &&
+        "$KREW" install krew
+        )
+    fi
 fi
 
 log "Upgrade and install kubectl plugins." "$GREENUNDER"
