@@ -135,6 +135,9 @@ done
 unsetopt EXTENDEDGLOB
 compinit -C
 
+# Make pushd/popd silent
+setopt PUSHDSILENT
+
 # Load additional shell rc common to zsh and bash
 source ~/.dotfiles/shellconfig/shellrc.sh
 

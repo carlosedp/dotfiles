@@ -161,3 +161,6 @@
 	defaultBranch = main
 [hub]
 	protocol = https
+[submodule]
+	recurse = true
+	stickyRecursiveClone = true
