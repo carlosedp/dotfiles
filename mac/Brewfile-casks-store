@@ -44,6 +44,7 @@ cask "1password-cli"
 cask "maccy"
 cask "contexts"
 cask "lulu"
+cask "tweeten"
 
 mas "Amphetamine", id: 937984704
 mas "Disk Speed Test", id: 425264550
