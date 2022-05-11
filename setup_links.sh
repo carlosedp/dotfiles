@@ -19,6 +19,10 @@ create_link() {
     log " >> Origin $origin does not exist" "$RED"
     return 1
   fi
+  if [[ ! -e "$(dirname "$dest")" ]]; then
+    log " >> Destination $dest does not exist, creating" "$YELLOW"
+    mkdir -p "$(dirname "$dest")"
+  fi
   if [[ -f "$dest" || -d "$dest" ]] && [ ! -L "$dest" ]; then
       log " > Destination ($dest) already exists. Renaming to $dest-old" "$YELLOW"
       mv "$dest" "$dest-old"
@@ -57,8 +61,6 @@ if [[ -d "$SYNC_FOLDER/Configs/rc/config" ]]; then
     done
 fi
 
-
-
 # Link SSH keys
 log "Linking .ssh directory" "$GREEN"
 if [[ -d "$SYNC_FOLDER/Configs/SSH_Keys" ]]; then
@@ -87,14 +89,14 @@ if [ "$(uname -s)" == "Darwin" ]; then
   done
 
   ## Link preferences from ~/Library/Preferences/
-  log "Linking ~/Library/Preferences files" $GREEN
+  log "Linking ~/Library/Preferences files" "$GREEN"
   for X in $(ls "$SYNC_FOLDER/Configs/Preferences/")
   do
     create_link "$SYNC_FOLDER/Configs/Preferences/$X" "$HOME/Library/Preferences/$X"
   done
 
   ## Link workflows from ~/Library/Services/
-  log "Linking ~/Library/Services (automator) files" $GREEN
+  log "Linking ~/Library/Services (automator) files" "$GREEN"
   for X in $(ls "$SYNC_FOLDER/Configs/automator/")
   do
     create_link "$SYNC_FOLDER/Configs/automator/"$X "$HOME/Library/Services/$X"

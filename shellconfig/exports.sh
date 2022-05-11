@@ -63,7 +63,7 @@ export PATH="$HOME/.local/share/coursier/bin:$PATH"
 export JVM=adopt:11
 JAVA_HOME=/usr/local/java
 if [ -x "$(command -v cs)" ] ; then
-    if [ "$(cs java-home --jvm ${JVM} > /dev/null 2>&1)" -eq 0 ]; then
+    if [[ "$(cs java-home --jvm ${JVM} > /dev/null 2>&1)" -eq 0 ]]; then
         JAVA_HOME=$(cs java-home --jvm ${JVM})
     fi
     export JAVA_HOME

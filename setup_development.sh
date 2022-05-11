@@ -23,6 +23,9 @@ if [ "$(uname -s)" == "Darwin" ]; then
     brew bundle install --file "$HOME/.dotfiles/mac/Brewfile-development"
     # Fix for GTKWave from command line
     sudo cpan install Switch
+    # Link Erlang Language Server config file
+    mkdir -p "$HOME/Library/Application\ Support/erlang_ls"
+    ln -sf "$HOME/.dotfiles/rc/config/erlang_ls/erlang_ls.config" "$HOME/Library/Application\ Support/erlang_ls/erlang-ls.config"
 
 
 # Install Linux Dev Tools
