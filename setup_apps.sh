@@ -11,23 +11,20 @@ export PATH=/usr/local/go/bin:"$PATH"
 log "Installing Go apps..." "$GREENUNDER"
 echo ""
 
-modules=("github.com/github/hub"
-        "rsc.io/2fa"
-        "golang.org/x/tools/cmd/benchcmp"
-        "github.com/traefik/yaegi/cmd/yaegi"
-        "github.com/rakyll/hey"
-        "github.com/junegunn/fzf"
-        "github.com/brancz/gojsontoyaml"
+apps=("github.com/github/hub/v2@latest"
+        "rsc.io/2fa@latest"
+        "golang.org/x/tools/cmd/benchcmp@latest"
+        "github.com/traefik/yaegi/cmd/yaegi@latest"
+        "github.com/rakyll/hey@latest"
+        "github.com/junegunn/fzf@latest"
+        "github.com/brancz/gojsontoyaml@master"
 )
 
 # Only run if Go is present
 if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
-
-    # Install applications with module mode off to avoid
-    # updating any project go.mod/go.sum if inside it's directories
-    for m in "${modules[@]}"; do
+    for m in "${apps[@]}"; do
         log "Installing $m" "$GREEN"
-        GO111MODULE=off go get -u "$m"
+        go install "$m"
     done
 
 else
