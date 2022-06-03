@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 set -euo pipefail
 
 # Load utility functions
@@ -11,6 +12,7 @@ log "Setup Linux with GUI..." "$GREENUNDER"
 BASEPACKAGES="terminator"
 
 # Install Linux packages
+# shellcheck source=/dev/null
 source /etc/os-release
 if [ "$ID" == "debian" ] || [ "$ID" == "ubuntu" ]; then
     sudo apt update

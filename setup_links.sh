@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 set -euo pipefail
 
 # Load utility functions
@@ -83,24 +84,27 @@ fi
 if [ "$(uname -s)" == "Darwin" ]; then
   ## Settings from $HOME/Library/Application Support
   log "Linking ~/Library/Application Support files" "$GREEN"
-  for X in $(ls "$SYNC_FOLDER/Configs/AppSupport/")
+  for X in "$SYNC_FOLDER"/Configs/AppSupport/*
   do
-    create_link "$SYNC_FOLDER/Configs/AppSupport/$X" "$HOME/Library/Application Support/$X"
+    D=$(basename "$X")
+    create_link "$SYNC_FOLDER/Configs/AppSupport/$D" "$HOME/Library/Application Support/$D"
   done
 
   ## Link preferences from ~/Library/Preferences/
   log "Linking ~/Library/Preferences files" "$GREEN"
-  for X in $(ls "$SYNC_FOLDER/Configs/Preferences/")
+  for X in "$SYNC_FOLDER"/Configs/Preferences/*
   do
-    create_link "$SYNC_FOLDER/Configs/Preferences/$X" "$HOME/Library/Preferences/$X"
+    D=$(basename "$X")
+    create_link "$SYNC_FOLDER/Configs/Preferences/$D" "$HOME/Library/Preferences/$$"
   done
 
   ## Link workflows from ~/Library/Services/
   log "Linking ~/Library/Services (automator) files" "$GREEN"
-  for X in $(ls "$SYNC_FOLDER/Configs/automator/")
+  for X in "$SYNC_FOLDER"/Configs/automator/*
   do
-    create_link "$SYNC_FOLDER/Configs/automator/"$X "$HOME/Library/Services/$X"
+    D=$(basename "$X")
+    create_link "$SYNC_FOLDER/Configs/automator/$D" "$HOME/Library/Services/$D"
   done
 fi
 
-log "Setting links finished" $GREENUNDER
+log "Setting links finished" "$GREENUNDER"

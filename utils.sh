@@ -18,9 +18,9 @@ RESET="\e[0m"
 
 log () {
     if [ "${2:-}" ]; then
-        printf "$2$1$RESET\n"
+        printf "%b%b%b\n" "$2" "$1" "$RESET"
     else
-        printf "$RESET$1$RESET\n"
+        printf "%b%b%b\n" "$RESET" "$1" "$RESET"
     fi
 }
 

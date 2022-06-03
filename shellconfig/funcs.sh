@@ -75,8 +75,7 @@ function qi () {
         return
     fi
     echo "Querying image $1"
-    OUT=$(docker manifest inspect "$1" | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' 2> /dev/null | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$')
-    if [ $? -eq 0 ]; then
+    if docker manifest inspect "$1" | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' 2> /dev/null | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$'; then
         echo "$OUT"
     else
         echo "Image does not have a multiarch manifest."
@@ -91,7 +90,7 @@ function rg() {
 # Install latest Golang. Replaces current one on /usr/local/go
 function install_golang() {
     function install() {
-        if $(ldd --version 2>&1 | grep -i musl > /dev/null); then
+        if ldd --version 2>&1 | grep -i musl > /dev/null; then
             echo "ERROR: Distro not supported for Go."
             return 1
         fi
@@ -171,7 +170,6 @@ dlgr() {
         FILTER="$3"
     fi
 
-echo ${repo}
     URL=$(curl -s "${repo}" | grep "$(uname | tr LD ld)" |grep "$(uname -m)" | grep "browser_download_url" | cut -d '"' -f 4 | grep "${FILTER}" |grep -v "\(sha256\|md5\|sha1\)")
     if [ "${URL}" ]; then
         OUT=""
@@ -205,7 +203,7 @@ gtkw() {
 gtkwave() {
     BIN=/Applications/gtkwave.app/Contents/Resources/bin/gtkwave
     if test -f "./GTKwave/GTKWave.gtkw"; then
-        $BIN $@ "./GTKwave/GTKWave.gtkw" &
+        $BIN "$@" "./GTKwave/GTKWave.gtkw" &
     else
         $BIN "$@" &
     fi

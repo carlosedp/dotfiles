@@ -150,3 +150,6 @@ source ~/.dotfiles/shellconfig/shellrc.sh
 # Debug zsh startup. Check variable on top.
 [ ${ZSHDEBUG} ] && zprof
 
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+

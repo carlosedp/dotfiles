@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090,SC1091
 
 ###
 # Generic shellrc to be used by both zshrc and bashrc
@@ -36,8 +37,9 @@ export WASMER_DIR="$HOME/.wasmer"
 
 # Use gitstatusd built locally if exists
 # To build, run `zsh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/gitstatus/master/build.zsh)"`
-if [ -f "$HOME"/.dotfiles/bin/gitstatusd-linux-$(uname -m) ]; then
-    export GITSTATUS_DAEMON=$HOME/.dotfiles/bin/gitstatusd-linux-$(uname -m)
+if [ -f "$HOME"/.dotfiles/bin/gitstatusd-linux-"$(uname -m)" ]; then
+    GITSTATUS_DAEMON=$HOME/.dotfiles/bin/gitstatusd-linux-$(uname -m)
+    export GITSTATUS_DAEMON
 fi
 
 # Load fzf plugin. Installed thru setup_zsh.sh
@@ -64,7 +66,7 @@ source ~/.dotfiles/shellconfig/aliases.sh
 source "$HOME/.dotfiles/utils.sh"
 
 # Load Mac aliases
-if [ $(uname -s) = 'Darwin' ]; then
+if [ "$(uname -s)" = 'Darwin' ]; then
     source ~/.dotfiles/shellconfig/aliases_mac.sh
 fi
 
@@ -75,7 +77,9 @@ fi
 
 # Initialize and add custom completions
 _ssh_config () {
-    compadd $(cat ~/.ssh/config|grep "Host " |grep -v "Host \*" |sed -e "s/^Host //g")
+    # shellcheck disable=SC2046
+    # Here we want to split the output of ssh-config
+    compadd $(grep "Host " "$HOME"/.ssh/config | grep -v "Host \*" |sed -e "s/^Host //g")
 }
 
 if [ -n "${BASH}" ]; then
@@ -91,7 +95,7 @@ fi
 #####
 
 wait $NEOFETCH_PID
-\cat /tmp/neofetch_output.txt
+"cat" /tmp/neofetch_output.txt
 
 if tmux list-sessions > /dev/null 2>&1; then
     echo ""

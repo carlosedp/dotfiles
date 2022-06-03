@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 set -euo pipefail
 
 SUPPORTED_ARCHS=(x86_64 aarch64)

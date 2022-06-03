@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 set -euo pipefail
 
 # Load utility functions
@@ -84,7 +85,7 @@ bash -c "$DOTFILES/mac/osx_prefs.sh"
 
 
 # Add TouchID authentication to Sudo
-if [[ ! $(grep "pam_tid.so" /etc/pam.d/sudo) ]]; then
+if ! grep -q "pam_tid.so" /etc/pam.d/sudo; then
     echo -e "auth       sufficient     pam_tid.so\n$(cat /etc/pam.d/sudo)" |sudo tee /etc/pam.d/sudo;
 fi
 

@@ -219,6 +219,7 @@ kdpf() {
 
 # Initialize and add custom completions
 _kubectl_pods () {
+    # shellcheck disable=SC2046
     compadd $(kubectl get pods -o name | sed 's/^pod\///')
 }
 
