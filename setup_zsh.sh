@@ -139,7 +139,8 @@ plugins=("https://github.com/carlosedp/zsh-iterm-touchbar" \
          "https://github.com/zsh-users/zsh-history-substring-search" \
          "https://github.com/MichaelAquilina/zsh-you-should-use" \
          "https://github.com/Aloxaf/fzf-tab" \
-         "https://github.com/wfxr/forgit"
+         "https://github.com/wfxr/forgit" \
+         "https://github.com/zpm-zsh/clipboard"
         )
 plugin_names=()
 for p in "${plugins[@]}"

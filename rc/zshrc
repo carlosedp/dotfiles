@@ -44,33 +44,36 @@ ZSH_AUTOSUGGEST_USE_ASYNC=true
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Syntax highlight should be loaded before history-substring-search
 plugins=(
-    git
-    macos
-    colorize
-    python
-    brew
-    extract
-    history-substring-search
+    aliases
     autojump
-    sudo
-    vscode
-    zsh-iterm-touchbar
-    docker
-    tmux
-    golang
-    fast-syntax-highlighting
-    history-substring-search
-    zsh-autosuggestions
-    systemd
-    dirhistory
-    history
+    brew
+    clipboard
+    command-not-found
     common-aliases
-    tig
-    ripgrep
-    zsh-completions
-    fzf-tab
+    dirhistory
+    docker
+    extract
+    fast-syntax-highlighting
     fzf
+    fzf-tab
+    git
+    gnu-utils
+    golang
+    history
+    history-substring-search
+    macos
+    python
+    ripgrep
+    rsync
+    sbt
     screen
+    sudo
+    systemd
+    tmux
+    vscode
+    zsh-autosuggestions
+    zsh-completions
+    zsh-iterm-touchbar
 )
 
 source $ZSH/oh-my-zsh.sh

@@ -7,13 +7,6 @@
 alias brewupd='brew update && brew upgrade && brew upgrade --cask && brew cleanup'
 alias brewdeps='brew list --formula -1 | while read cask; do echo -ne "\x1B[1;34m $cask \x1B[0m"; brew uses $cask --installed | awk '"'"'{printf(" %s ", $0)}'"'"'; echo ""; done'
 
-# Use GNU utils as default
-alias indent='gindent'
-alias sed='gsed'
-alias tar='gtar'
-alias make='gmake'
-alias grep='ggrep'
-alias which='gwhich'
 alias oping='sudo oping'
 alias noping='sudo noping'
 

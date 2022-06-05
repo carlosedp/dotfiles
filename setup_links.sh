@@ -12,25 +12,6 @@ log "Setup home links..." "$GREENUNDER"
 # ------------------------------------------------------------------------------
 SYNC_FOLDER="$HOME/Dropbox"
 
-create_link() {
-  origin=$1
-  dest=$2
-  log " > Linking origin file \"$origin\" to destination \"$dest\""
-  if [[ ! -e "$origin" ]]; then
-    log " >> Origin $origin does not exist" "$RED"
-    return 1
-  fi
-  if [[ ! -e "$(dirname "$dest")" ]]; then
-    log " >> Destination $dest does not exist, creating" "$YELLOW"
-    mkdir -p "$(dirname "$dest")"
-  fi
-  if [[ -f "$dest" || -d "$dest" ]] && [ ! -L "$dest" ]; then
-      log " > Destination ($dest) already exists. Renaming to $dest-old" "$YELLOW"
-      mv "$dest" "$dest-old"
-  fi
-  ln -sfn "$origin" "$dest"
-}
-
 #-------------------------------------------------------------------------------
 # Script start
 # ------------------------------------------------------------------------------
@@ -50,61 +31,38 @@ log "Setting links to dotfiles on user home dir: $HOME" "$GREEN"
 log "Linking .rc files" "$GREEN"
 for FILE in "$HOME"/.dotfiles/rc/*
 do
-  create_link "$FILE" "${HOME}/.$(basename "$FILE")"
+  createLink "$FILE" "${HOME}/.$(basename "$FILE")"
 done
 
 # Link private .config files
 log "Linking private .config files" "$GREEN"
-if [[ -d "$SYNC_FOLDER/Configs/rc/config" ]]; then
-    for FILE in "$SYNC_FOLDER"/Configs/rc/config/*
-    do
-      create_link "$FILE" "${HOME}/.config/$(basename "$FILE")"
-    done
-fi
+linkAll "$SYNC_FOLDER"/Configs/rc/config "$HOME"/.config
 
 # Link SSH keys
 log "Linking .ssh directory" "$GREEN"
-if [[ -d "$SYNC_FOLDER/Configs/SSH_Keys" ]]; then
-    create_link "$SYNC_FOLDER/Configs/SSH_Keys" "$HOME/.ssh"
-fi
+    createLink "$SYNC_FOLDER/Configs/SSH_Keys" "$HOME/.ssh"
 
 # Link PGP keys
 log "Linking .ssh directory" "$GREEN"
-if [[ -d "$SYNC_FOLDER/Configs/pgp-keys" ]]; then
-    create_link "$SYNC_FOLDER/Configs/pgp-keys" "$HOME/.gnupg"
-fi
+    createLink "$SYNC_FOLDER/Configs/pgp-keys" "$HOME/.gnupg"
 
 # Link 2fa keychain file
 log "Linking 2fa keychain" "$GREEN"
-if [[ -f "$SYNC_FOLDER/Configs/2fa/keychain" ]]; then
-  create_link "$SYNC_FOLDER/Configs/2fa/keychain" "$HOME/.2fa"
-fi
+createLink "$SYNC_FOLDER/Configs/2fa/keychain" "$HOME/.2fa"
 
 # List of settings to be syncd between computers. Separated by spaces.
 if [ "$(uname -s)" == "Darwin" ]; then
   ## Settings from $HOME/Library/Application Support
   log "Linking ~/Library/Application Support files" "$GREEN"
-  for X in "$SYNC_FOLDER"/Configs/AppSupport/*
-  do
-    D=$(basename "$X")
-    create_link "$SYNC_FOLDER/Configs/AppSupport/$D" "$HOME/Library/Application Support/$D"
-  done
+  linkAll "$SYNC_FOLDER"/Configs/AppSupport "$HOME/Library/Application Support"
 
   ## Link preferences from ~/Library/Preferences/
   log "Linking ~/Library/Preferences files" "$GREEN"
-  for X in "$SYNC_FOLDER"/Configs/Preferences/*
-  do
-    D=$(basename "$X")
-    create_link "$SYNC_FOLDER/Configs/Preferences/$D" "$HOME/Library/Preferences/$$"
-  done
+  linkAll "$SYNC_FOLDER"/Configs/Preferences "$HOME/Library/Preferences"
 
   ## Link workflows from ~/Library/Services/
   log "Linking ~/Library/Services (automator) files" "$GREEN"
-  for X in "$SYNC_FOLDER"/Configs/automator/*
-  do
-    D=$(basename "$X")
-    create_link "$SYNC_FOLDER/Configs/automator/$D" "$HOME/Library/Services/$D"
-  done
+  linkAll "$SYNC_FOLDER"/Configs/automator "$HOME/Library/Services"
 fi
 
 log "Setting links finished" "$GREENUNDER"

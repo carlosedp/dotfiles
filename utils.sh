@@ -16,6 +16,8 @@ CYAN="\e[36m"
 WHITE="\e[37m"
 RESET="\e[0m"
 
+# Log message to console
+# Usage: log <message> <color>
 log () {
     if [ "${2:-}" ]; then
         printf "%b%b%b\n" "$2" "$1" "$RESET"
@@ -24,7 +26,8 @@ log () {
     fi
 }
 
-logtest () {
+# Test all log colors
+logTest () {
     log "Test Black" "$BLACK"
     log "Test Red" "$RED"
     log "Test Red Bold" "$REDBOLD"
@@ -41,7 +44,8 @@ logtest () {
 }
 
 # Clone or pull git repository
-function cloneorpull () {
+# Usage: cloneorpull <user/repo> <destination_dir>
+cloneorpull () {
     # $1 is the repository
     # $2 is the destination dir
     repo=$1
@@ -63,9 +67,44 @@ function cloneorpull () {
 }
 
 # Check if array contains element
+# Usage: containsElement <array> <element>
 containsElement () {
   local e match="$1"
   shift
   for e; do [[ "$e" == "$match" ]] && return 0; done
   return 1
+}
+
+# Create link from source to destination checking if it exists
+# Usage: createLink <source> <destination>
+createLink() {
+  origin=$1
+  dest=$2
+  log " > Linking origin file \"$origin\" to destination \"$dest\""
+  if [[ ! -e "$origin" ]]; then
+    log " >> Origin $origin does not exist" "$RED"
+    return
+  fi
+  if [[ ! -e "$(dirname "$dest")" ]]; then
+    log " >> Destination $dest does not exist, creating" "$YELLOW"
+    mkdir -p "$(dirname "$dest")"
+  fi
+  if [[ -f "$dest" || -d "$dest" ]] && [ ! -L "$dest" ]; then
+      log " > Destination ($dest) already exists. Renaming to $dest-old" "$YELLOW"
+      mv "$dest" "$dest-old"
+  fi
+  ln -sfn "$origin" "$dest"
+}
+
+# Link all files or directories from source to destination
+# Usage: linkAll <source> <destination>
+linkAll() {
+  log " > Linking all files from origin \"$1\" to destination \"$2\""
+  if [[ -e $1 ]]; then
+    for FILE in "$1"/*
+    do
+      if ! [ -e "$FILE" ];then break; fi
+      createLink "$FILE" "${2}/$(basename "$FILE")"
+    done
+  fi
 }
