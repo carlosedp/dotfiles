@@ -55,15 +55,15 @@ if [ "$(uname -s)" == "Linux" ]; then
         KREW=./krew-"${OS}_${ARCH}" &&
         "$KREW" install krew
         )
+        log "Upgrade and install kubectl plugins." "$GREENUNDER"
+        export PATH="/usr/local/bin/:${HOME}/.krew/bin:${PATH}"
+        kubectl krew upgrade
+        for app in ctx ns restart; do
+            kubectl krew install $app;
+        done
     fi
 fi
 
-log "Upgrade and install kubectl plugins." "$GREENUNDER"
-export PATH="/usr/local/bin/:${HOME}/.krew/bin:${PATH}"
-kubectl krew upgrade
-for app in ctx ns restart; do
-    kubectl krew install $app;
-done
 
 # Mac App configs
 # if [ "$(uname -s)" == "Darwin" ]; then
