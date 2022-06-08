@@ -12,7 +12,7 @@ export PATH=/usr/local/go/bin:"$PATH"
 log "Installing Go apps..." "$GREENUNDER"
 echo ""
 
-apps=("github.com/github/hub/v2@latest"
+apps=("github.com/github/hub/v2@master"
         "rsc.io/2fa@latest"
         "golang.org/x/tools/cmd/benchcmp@latest"
         "github.com/traefik/yaegi/cmd/yaegi@latest"
