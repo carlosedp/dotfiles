@@ -97,6 +97,12 @@ function install_golang() {
         declare -A ARCH=( [x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x )
         pushd /tmp >/dev/null || return
         FILE=$(curl -sL https://golang.org/dl/?mode=json | grep -E 'go[0-9\.]+' | sed 's/.*\(go.*\.tar\.gz\).*/\1/' | sort -n | grep -i "$(uname -s)" | grep tar | grep "${ARCH[$(uname -m)]}" | tail -1)
+        CURRENT_VERSION=$(go version | grep -Po "go[0-9]\.[0-9]+\.[0-9]+")
+        NEW_VERSION=$(echo "$FILE" | grep -Po "go[0-9]\.[0-9]+\.[0-9]+")
+        if [ "$CURRENT_VERSION" == "$NEW_VERSION" ]; then
+            echo "Go version $CURRENT_VERSION already installed."
+            return 0
+        fi
         echo "Installing $FILE"
         curl -sL https://dl.google.com/go/"$FILE" -o "$FILE"
         sudo rm -rf /usr/local/go
