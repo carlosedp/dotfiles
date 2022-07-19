@@ -214,3 +214,8 @@ gtkwave() {
         $BIN "$@" &
     fi
 }
+
+# Find the completion function
+completion() {
+    functions $_comps[${1}]
+}

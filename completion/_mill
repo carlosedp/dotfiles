@@ -1,37 +1,38 @@
 #compdef mill
 
-
-__mill_zsh_main ()
+__mill_debug()
 {
-	local curcontext="$curcontext" state state_descr line
-	typeset -A opt_args
-	local -a orig_words
-
-	orig_words=( ${words[@]} )
-	local state
-
-	_arguments \
-		'1: :->target'\
-
-	case $state in
-		(target) _arguments '1:profiles:($(mill --disable-ticker resolve _ 2> /dev/null))' ;;
-		(*) compadd $(mill --disable-ticker resolve $words[2]._ 2> /dev/null | cut -d. -f2) ;;
-	esac
+	local file="$BASH_COMP_DEBUG_FILE"
+	if [[ -n ${file} ]]; then
+		echo "$*" >> "${file}"
+	fi
 }
 
 _mill() {
-	local _ret=1
-	local cur cword prev
+	local lastParam lastChar
+	__mill_debug "\n========= starting completion logic =========="
+	__mill_debug "CURRENT: ${CURRENT}, words[*]: ${words[*]}"
 
-	cur=${words[CURRENT]}
-	prev=${words[CURRENT-1]}
-	let cword=CURRENT-1
+	# The user could have moved the cursor backwards on the command-line.
+	# We need to trigger completion from the $CURRENT location, so we need
+	# to truncate the command-line ($words) up to the $CURRENT location.
+	# (We cannot use $CURSOR as its value does not work when a command is an alias.)
+	words=("${=words[1,CURRENT]}")
+	__mill_debug "Truncated words[*]: ${words[*]},"
 
-	__${service}_zsh_main
+	lastParam=${words[-1]}
+	lastChar=${lastParam[-1]}
+	__mill_debug "lastParam: ${lastParam}, lastChar: ${lastChar}"
 
-	let _ret && _default && _ret=0
-	return _ret
+	if [[ ${lastParam} == "" ]]; then
+		__mill_debug "searching completion for root commands"
+		_alternative -C dataout \
+			"args:custom:($(mill --disable-ticker resolve _ 2> /dev/null))"
+	else
+		__mill_debug "searching for tasks to ${lastParam}"
+		_alternative \
+			"1:profiles:($(mill --disable-ticker resolve "${lastParam}"_ 2> /dev/null))"
+	fi
 }
-
 
 _mill

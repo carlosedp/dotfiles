@@ -72,7 +72,8 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
         sbt \
         mill \
         scala \
-        scalafmt
+        scalafmt \
+        scalafix
     cs update
 fi
 
