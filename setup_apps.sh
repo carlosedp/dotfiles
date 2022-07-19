@@ -19,6 +19,7 @@ apps=("github.com/github/hub/v2@master"
         "github.com/rakyll/hey@latest"
         "github.com/junegunn/fzf@latest"
         "github.com/brancz/gojsontoyaml@master"
+        "mvdan.cc/sh/v3/cmd/shfmt@latest"
 )
 
 # Only run if Go is present

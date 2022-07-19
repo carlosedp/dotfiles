@@ -219,3 +219,8 @@ gtkwave() {
 completion() {
     functions $_comps[${1}]
 }
+
+# Reload completion for command
+relcompletion() {
+    unfunction _${1} && autoload -U _${1}
+}

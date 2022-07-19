@@ -50,12 +50,14 @@ plugins=(
     clipboard
     command-not-found
     common-aliases
+    copydir
+    copyfile
     dirhistory
     docker
     extract
+    fzf-tab # Needs to be loaded before fast-syntax-highlighting  and auto-suggestions
     fast-syntax-highlighting
     fzf
-    fzf-tab
     git
     gnu-utils
     golang

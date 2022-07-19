@@ -1,38 +1,74 @@
 #compdef mill
 
-__mill_debug()
-{
+# Install this file somewhere in your $FPATH (Zsh completion path)
+
+# shellcheck disable=SC2207
+# shellcheck disable=SC2148
+
+__mill_debug() {
+	# To enable debug, export in the shell the BASH_COMP_DEBUG_FILE variable to a file.
+	# Eg. BASH_COMP_DEBUG_FILE="/tmp/mill_debug.txt"
 	local file="$BASH_COMP_DEBUG_FILE"
 	if [[ -n ${file} ]]; then
-		echo "$*" >> "${file}"
+		echo "$*" >>"${file}"
 	fi
 }
 
 _mill() {
-	local lastParam lastChar
-	__mill_debug "\n========= starting completion logic =========="
-	__mill_debug "CURRENT: ${CURRENT}, words[*]: ${words[*]}"
+	local state line lastParam lastChar
 
-	# The user could have moved the cursor backwards on the command-line.
-	# We need to trigger completion from the $CURRENT location, so we need
-	# to truncate the command-line ($words) up to the $CURRENT location.
-	# (We cannot use $CURSOR as its value does not work when a command is an alias.)
-	words=("${=words[1,CURRENT]}")
-	__mill_debug "Truncated words[*]: ${words[*]},"
+	local -a opts
+	opts+=(
+		"--no-default-predef[Disable the default predef and run Ammonite with the minimal predef possible]"
+		{-s,--silent}"[Make ivy logs go silent instead of printing though failures will still throw exception]"
+		{-w,--watch}"[Watch and re-run your scripts when they change]"
+		"-bsp[Run a BSP server against the passed scripts]"
+		{-c,--code}"[Pass in code to be run immediately in the REPL]"
+		{-h,--home}"[The home directory of the REPL; where it looks for config and caches]"
+		{-p,--predef}"[Lets you load your predef from a custom location, rather than the 'default' location in your Ammonite home]"
+		"--color[Enable or disable colored output; by default colors are enabled in both REPL and scripts if the console is interactive, and disabled otherwise]"
+		"--thin[Hide parts of the core of Ammonite and some of its dependencies. By default, the core of Ammonite and all of its dependencies can be seen by users from the Ammonite session. This option mitigates that via class loader isolation.]"
+		"--help[Print the help message]"
+		"--repl[Run Mill in interactive mode and start a build REPL. In this mode, no mill server will be used. Must be the first argument.]"
+		"--no-server[Run Mill in interactive mode, suitable for opening REPLs and taking user input. In this mode, no mill server will be used. Must be the first argument.]"
+		{-i,--interactive}"[Run Mill in interactive mode, suitable for opening REPLs and taking user input. In this mode, no mill server will be used. Must be the first argument.]"
+		{-v,--version}"[Show mill version and exit]"
+		{-b,--bell}"[Ring the bell once if the run completes successfully, twice if it fails.]"
+		"--disable-ticker[Disable ticker log (e.g. short-lived prints of stages and progress bars)]"
+		{-d,--debug}"[Show debug output on STDOUT]"
+		{-k,--keep-going}"[Continue build, even after build failures]"
+		{-D,--define}"[Define (or overwrite) a system property]"
+		{-j,--jobs}"[Allow processing N targets in parallel. Use 1 to disable parallel and 0 to use as much threads as available processors.]"
+		"--import[Additional ivy dependencies to load into mill, e.g. plugins.]"
+	)
 
-	lastParam=${words[-1]}
+	_arguments -C \
+		"1: :->cmds" \
+		"*::arg:->args"
+
+	local -a millcmds=($(mill --disable-ticker resolve _ 2>/dev/null))
+	lastParam=${line[-1]}
 	lastChar=${lastParam[-1]}
-	__mill_debug "lastParam: ${lastParam}, lastChar: ${lastChar}"
 
-	if [[ ${lastParam} == "" ]]; then
-		__mill_debug "searching completion for root commands"
-		_alternative -C dataout \
-			"args:custom:($(mill --disable-ticker resolve _ 2> /dev/null))"
+	__mill_debug "\n========= starting completion logic =========="
+	__mill_debug "Vars: state: ${state} / line: ${line} / lastParam: ${lastParam} / lastChar: ${lastChar}"
+
+	if [[ ${lastChar} == '.' ]]; then
+		__mill_debug "Query tasks for ${lastParam}"
+		_querytgt "${lastParam}"
 	else
-		__mill_debug "searching for tasks to ${lastParam}"
-		_alternative \
-			"1:profiles:($(mill --disable-ticker resolve "${lastParam}"_ 2> /dev/null))"
+		__mill_debug "Query root commands"
+		compadd -S . -q \
+			"${millcmds[@]}"
+		_arguments -C "${opts[@]}"
 	fi
+}
+
+_querytgt() {
+	__mill_debug "Query target: ${1}"
+	local -a milltargetcmds=($(mill --disable-ticker resolve "${1}"_ 2>/dev/null))
+	__mill_debug "Target args: " "${milltargetcmds[@]}"
+	compadd "${milltargetcmds[@]}"
 }
 
 _mill
