@@ -107,7 +107,7 @@ _querytgt() {
 		milltargetcmds=($(mill --disable-ticker resolve "${target}"_ 2>/dev/null))
 	fi
 	__mill_debug "Target args: " "${milltargetcmds[@]}"
-	compadd "${milltargetcmds[@]}"
+	compadd -S . -q "${milltargetcmds[@]}"
 }
 
 _mill
