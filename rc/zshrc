@@ -50,7 +50,7 @@ plugins=(
     clipboard
     command-not-found
     common-aliases
-    copydir
+    copypath
     copyfile
     dirhistory
     docker
@@ -148,6 +148,11 @@ zstyle ':completion:*' completer _complete _match _approximate
 zstyle ':completion:*:match:*' original only
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
 zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
+
+# Cache zsh completions
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
 
 # Load additional shell rc common to zsh and bash
 source ~/.dotfiles/shellconfig/shellrc.sh
