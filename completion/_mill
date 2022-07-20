@@ -26,48 +26,33 @@ _mill() {
 
 	local -a opts
 	opts+=(
-		"--no-default-predef[Disable the default predef and run Ammonite with the minimal predef possible]"
-		{-s,--silent}"[Make ivy logs go silent instead of printing though failures will still throw exception]"
-		{-w,--watch}"[Watch and re-run your scripts when they change]"
-		"-bsp[Run a BSP server against the passed scripts]"
-		{-c,--code}"[Pass in code to be run immediately in the REPL]"
-		{-h,--home}"[The home directory of the REPL; where it looks for config and caches]"
-		{-p,--predef}"[Lets you load your predef from a custom location, rather than the 'default' location in your Ammonite home]"
-		"--color[Enable or disable colored output; by default colors are enabled in both REPL and scripts if the console is interactive, and disabled otherwise]"
-		"--thin[Hide parts of the core of Ammonite and some of its dependencies. By default, the core of Ammonite and all of its dependencies can be seen by users from the Ammonite session. This option mitigates that via class loader isolation.]"
-		"--help[Print the help message]"
-		"--repl[Run Mill in interactive mode and start a build REPL. In this mode, no mill server will be used. Must be the first argument.]"
-		"--no-server[Run Mill in interactive mode, suitable for opening REPLs and taking user input. In this mode, no mill server will be used. Must be the first argument.]"
-		{-i,--interactive}"[Run Mill in interactive mode, suitable for opening REPLs and taking user input. In this mode, no mill server will be used. Must be the first argument.]"
-		{-v,--version}"[Show mill version and exit]"
-		{-b,--bell}"[Ring the bell once if the run completes successfully, twice if it fails.]"
-		"--disable-ticker[Disable ticker log (e.g. short-lived prints of stages and progress bars)]"
-		{-d,--debug}"[Show debug output on STDOUT]"
-		{-k,--keep-going}"[Continue build, even after build failures]"
-		{-D,--define}"[Define (or overwrite) a system property]"
-		{-j,--jobs}"[Allow processing N targets in parallel. Use 1 to disable parallel and 0 to use as much threads as available processors.]"
-		"--import[Additional ivy dependencies to load into mill, e.g. plugins.]"
+		'--no-default-predef[Disable the default predef and run Ammonite with the minimal predef possible]'
+		{-s,--silent}'[Make ivy logs go silent instead of printing though failures will still throw exception]'
+		{-w,--watch}'[Watch and re-run your scripts when they change]'
+		'-bsp[Run a BSP server against the passed scripts]'
+		{-c,--code}'[Pass in code to be run immediately in the REPL]:value:'
+		{-h,--home}'[The home directory of the REPL; where it looks for config and caches]:value:'
+		{-p,--predef}'[Lets you load your predef from a custom location, rather than the 'default' location in your Ammonite home]:value:'
+		'--color[Enable or disable colored output; by default colors are enabled in both REPL and scripts if the console is interactive, and disabled otherwise]:value:'
+		'--thin[Hide parts of the core of Ammonite and some of its dependencies. By default, the core of Ammonite and all of its dependencies can be seen by users from the Ammonite session. This option mitigates that via class loader isolation.]'
+		'--help[Print the help message]'
+		'--repl[Run Mill in interactive mode and start a build REPL. In this mode, no mill server will be used. Must be the first argument.]'
+		'--no-server[Run Mill in interactive mode, suitable for opening REPLs and taking user input. In this mode, no mill server will be used. Must be the first argument.]'
+		{-i,--interactive}'[Run Mill in interactive mode, suitable for opening REPLs and taking user input. In this mode, no mill server will be used. Must be the first argument.]'
+		{-v,--version}'[Show mill version and exit]'
+		{-b,--bell}'[Ring the bell once if the run completes successfully, twice if it fails.]'
+		'--disable-ticker[Disable ticker log (e.g. short-lived prints of stages and progress bars)]'
+		{-d,--debug}'[Show debug output on STDOUT]'
+		{-k,--keep-going}'[Continue build, even after build failures]'
+		{-D,--define}'[Define (or overwrite) a system property]:value:'
+		{-j,--jobs}'[Allow processing N targets in parallel. Use 1 to disable parallel and 0 to use as much threads as available processors.]:value:'
+		'--import[Additional ivy dependencies to load into mill, e.g. plugins.]'
 	)
 
 	_arguments -C \
 		"1: :->cmds" \
 		"*::arg:->args"
 
-	local -a millcmds
-	if [ ${cachedata} == "true" ]; then
-		# Cache the mill commands
-		if test "$(find ${cachepath}/ -name "${cachefile}-root" -mmin -${cachetime} 2>/dev/null)" && [[ "${cachepath}/${cachefile}-root" -nt build.sc ]]; then
-			__mill_debug "Cache file ${cachepath}/${cachefile}-root exists and is newer than ${cachetime} mins and build.sc file not changed."
-			millcmds=($(cat "${cachepath}/${cachefile}-root"))
-		else
-			__mill_debug "Cache file ${cachepath}/${cachefile}-root does not exist or is older than ${cachetime} mins or build.sc file changed."
-			millcmds=($(mill --disable-ticker resolve _ 2>/dev/null))
-			echo "${millcmds[@]}" >"${cachepath}/${cachefile}-root"
-		fi
-	else
-		__mill_debug "No cache used"
-		millcmds=($(mill --disable-ticker resolve _ 2>/dev/null))
-	fi
 	lastParam=${line[-1]}
 	lastChar=${lastParam[-1]}
 
@@ -75,39 +60,41 @@ _mill() {
 
 	if [[ ${lastChar} == '.' ]]; then # Query target
 		__mill_debug "Query tasks for ${lastParam}"
-		_querytgt "${lastParam}"
+		_query_with_cache "${lastParam}"
 	elif [[ ${lastParam} == *"."* ]]; then # Query task for the target
 		IFS='.' read -rA tgt <<<"${lastParam}"
 		__mill_debug "Query tasks for pre-typed ${tgt[1]}"
-		_querytgt "${tgt[1]}."
+		_query_with_cache "${tgt[1]}."
 	else # Query mill commands or options
 		__mill_debug "Query root commands"
-		compadd -S . -q \
-			"${millcmds[@]}"
+		_query_with_cache "root"
 		_arguments -C "${opts[@]}"
 	fi
 }
 
-_querytgt() {
-	target="$1"
+_query_with_cache() {
+	local target
+	local -a milltargetcmds
+	[ "${1}" == "root" ] && target="_" || target="${1}_"
+
+	__mill_debug "Query cache param: ${1}"
 	__mill_debug "Query target: ${target}"
 	if [ ${cachedata} == "true" ]; then
 		# Cache the mill tasks
-		local -a milltargetcmds
 		if test "$(find ${cachepath}/ -name "${cachefile}-${target}" -mmin -${cachetime} 2>/dev/null)" && [[ "${cachepath}/${cachefile}-${target}" -nt build.sc ]]; then
 			__mill_debug "Cache file ${cachepath}/${cachefile}-${target} exists and is newer than ${cachetime} mins and build.sc file not changed."
 			milltargetcmds=($(cat "${cachepath}/${cachefile}-${target}"))
 		else
 			__mill_debug "Cache file ${cachepath}/${cachefile}-${target} does not exist or is older than ${cachetime} or build.sc file changed."
-			milltargetcmds=($(mill --disable-ticker resolve "${target}"_ 2>/dev/null))
+			milltargetcmds=($(mill --disable-ticker resolve "${target}" 2>/dev/null))
 			echo "${milltargetcmds[@]}" >"${cachepath}/${cachefile}-${target}"
 		fi
 	else
 		__mill_debug "No cache used"
-		milltargetcmds=($(mill --disable-ticker resolve "${target}"_ 2>/dev/null))
+		milltargetcmds=($(mill --disable-ticker resolve "${target}" 2>/dev/null))
 	fi
 	__mill_debug "Target args: " "${milltargetcmds[@]}"
 	compadd -S . -q "${milltargetcmds[@]}"
 }
 
-_mill
+_mill "$@"
