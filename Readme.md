@@ -51,6 +51,18 @@ popd
 
 Now close the current terminal and reopen.
 
+## Setup scripts calling order
+
+```sh
+setup_mac.sh -> setup_links.sh -> setup_development.sh -> setup_zsh.sh -> setup_apps.sh -> setup_tmux.sh -> mac/osx_prefs.sh
+
+setup_linux.sh -> setup_zsh.sh -> setup_development.sh -> setup_apps.sh -> setup_tmux.sh
+
+setup_tmux.sh -> setup_links.sh
+
+setup_zsh.sh -> setup_links.sh
+```
+
 ## File/Dir Structure
 
 The dotfiles is structured as:
