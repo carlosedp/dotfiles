@@ -1,103 +1,32 @@
-#compdef cs
+Usage: [1m/Users/cdepaula/Library/Application Support/Coursier/bin/.cs.aux[0m <COMMAND>
+Coursier is the Scala application and artifact manager.
+It can install Scala applications and setup your Scala development environment.
+It can also download and cache artifacts from the web.
 
-function _cs() {
-  local -a cmds
-  
-  cmds=(
-    'bootstrap:generates tiny bootstrap launchers'
-    'fetch:fetches a set of dependencies'
-    'install:installs launchers for JVM-based applications'
-    'java:calls java (fetching it before if needed)'
-    'java-home:prints java home'
-    'launch:fetches a set of dependencies and launches the `main` class'
-    'list:lists all the installed applications'
-    'publish:publishes'
-    'resolve:resolves dependencies'
-    'setup:installs JVM and creates launchers for the most common Scala CLI tools'
-    'uninstall:uninstalls launchers for JVM-based applications'
-    'update:updates launchers if new version is available'
-  )
 
-  _arguments "1: :{_describe 'command' cmds}" '*:: :->args'
 
-  local artifactType=( {--artifact-type,-A}'[artifact types that should be retained, e.g. jar, src, doc, etc.; defaults to jar,bundle]:values:' )
-  local assemblyDependencies=( '--assembly-dependencies[assembly dependencies]:value:' )
-  local benchmark=( {--benchmark,-B}'[print the duration of each iteration of the resolution]:value:' )
-  local cache=( {--cache,-C}'[cache directory; defaults to environment variable COURSIER_CACHE or ~/.coursier/cache/v1]:value:' )
-  local checksum=( '--checksum[Checksums]:checksums:' )
-  local classifier=( {--classifier,-C}'[classifiers that should be fetched]:classifiers:' )
-  local classpath=( {--classpath,-p}'[print java -cp compatible output]' )
-  local defaultAssemblyDependencies=( '--default-assembly-dependencies[include default dependencies in Spark Yarn assembly or jars]:value:' )
-  local defaultConfiguration=( {--default-configuration,-c}'[default configuration]:configuration:' )
-  local dropInfoAttr=( '--drop-info-attr[drop module attributes starting with `info.` - these are sometimes used by projects built with sbt]' )
-  local exclude=( {--exclude,-E}'[exclude module]:organization-name:' )
-  local extraJars=( {--extra-jars,-J}'[extra JARs to be added in the classpath of the job]:value:_files' )
-  local force=( {--force,-f}'[fetch artifacts even if the resolution is errored]' )
-  local forceVersion=( {--force-version,-V}'[force module version]:organisation-name-version:' )
-  local intransitive=( '--intransitive[add intransitive dependencies]:value:' )
-  local isolated=( {--isolated,-I}'[isolated]:target-dependency:' )
-  local isolateTarget=( {--isolate-target,-i}'[comma-separated isolation targets]:value:' )
-  local javadoc=( {--javadoc,-D}'[fetch javadoc artifacts]' )
-  local javaOpt=( {--java-opt,-J}'[set Java command-line options in the generated launcher]:option:' )
-  local keepOptional=( '--keep-optional[keep optional dependencies]' )
-  local keepTarget=( '--keep-target[do not wipe native compilation target directory]' )
-  local mainClass=( {--main-class,-M}'[main class to be launched; optional if in manifest]:value:' )
-  local maxIterations=( {--max-iterations,-N}'[maximum number of resolution iterations; specify a negative value for unlimited, default: 100]:value:' )
-  local mode=( {--mode,-m}'[download mode; default: missing, that is fetch things missing from cache]:mode:_modeOpts' )
-  local native=( {--native,-S}'[generate native launcher]' )
-  local noDefault=( '--no-default[do not add default repositories]' )
-  local noDefaultSubmitDependencies=( '--no-default-submit-dependencies[no default submit dependencies]' )
-  local output=( {--output,-o}'[output]:value:' )
-  local parallel=( {--parallel,-n}'[maximum number of parallel downloads; default 6]:value:' )
-  local profile=( {--profile,-F}'[enable profile]:profile:' )
-  local progress=( {--progress,-P}'[force display of progress bars]:progress:' )
-  local property=( {--property,-D}'[set Java properties in the generated launcher]:key-value:' )
-  local quiet=( {--quiet,-q}'[quiet output]' )
-  local repository=( {--repository,-r}'[repository; for multiple repositories, separate with comma and/or add this option multiple times]:repository:' )
-  local reverseTree=( {--reverse-tree,-T}'[print dependencies as a reversed tree; dependees as children]' )
-  local sbtPluginHack=( '--sbt-plugin-hack[modify names in Maven repository paths for sbt plugins]' )
-  local scalaVersion=( {--scala-version,-e}'[default Scala version]:version:' )
-  local sourcesR=( {--sources,-R}'[source repository; for multiple repositories, separate with comma and/or add this option multiple times]:value:' )
-  local sourcesS=( {--sources,-S}'[fetch source artifacts]' )
-  local standalone=( {--standalone,-s}'[generate a standalone launcher, with all JARs included, instead of one downloading its dependencies on startup]' )
-  local submitDependencies=( '--submit-dependencies[submit dependencies]:value:' )
-  local target=( {--target,-d}'[native compilation target directory]:value:' )
-  local tree=( {--tree,-t}'[print dependencies as a tree]' )
-  local ttl=( {--ttl,-l}'[TTL duration, e.g. "24 hours"]:duration:' )
-  local typelevel=( '--typelevel[swap the mainline Scala JARs by Typelevel ones]' )
-  local verbose=( {--verbose,-v}'[increase verbosity; specify several times to increase more]' )
+Install application commands:
+  [1minstall[0m    Install an application from its descriptor.
+  [1mlist[0m       List all currently installed applications.
+  [1msetup[0m      Setup a machine for Scala development.
+  [1muninstall[0m  Uninstall one or more applications.
+  [1mupdate[0m     Update one or more applications.
 
-  case $words[1] in
-    bootstrap)
-      _arguments -C $artifactType $force $mainClass $utput $force $standalone $property $javaOpt $native $target $keepTarget $isolated $isolateTarget $keepOptional $mode $ttl $quiet $verbose $progress $maxIterations $repository $sourcesR $noDefault $sbtPluginHack $dropInfoAttr $forceVersion $exclude $scalaVersion $intransitive $classifier $defaultConfiguration $parallel $checksum $benchmark $tree $reverseTree $profile $typelevel $cache
-      ;;
+Application channel commands:
+  [1mchannel[0m  Manage additional channels, used by coursier to resolve application descriptors.
+  [1msearch[0m   Search application names from known channels.
 
-    fetch)
-      _arguments -C $sourcesS $javadoc $classpath $artifactType $force $keepOptional $mode $ttl $quiet $verbose $progress $maxIterations $repository $sources $noDefault $sbtPluginHack $dropInfoAttr $forceVersion $exclude $scalaVersion $intransitive $classifier $defaultConfiguration $parallel $checksum $benchmark $tree $reverseTree $profile $typelevel $cache
-      ;;
+Java commands:
+  [1mjava[0m       Manage installed JVMs and run java.
+  [1mjava-home[0m  Print the home directory of a particular JVM.
 
-    install)
-      _arguments -C $force $mode $ttl $quiet $verbose $progress $repository $parallel $checksum $cache
-      ;;
+Launcher commands:
+  [1mbootstrap[0m  Create a binary launcher from a dependency or an application descriptor.
+  [1mlaunch[0m     Launch an application from a dependency or an application descriptor.
 
-    launch)
-      _arguments -C $mainClass $extraJars $isolated $isolateTarget $keepOptional $mode $ttl $quiet $verbose $progress $maxIterations $repository $sourcesR $noDefault $sbtPluginHack $dropInfoAttr $forceVersion $exclude $scalaVersion $intransitive $classifier $defaultConfiguration $parallel $checksum $benchmark $tree $reverseTree $profile $typelevel $cache
-      ;;
-    
-    resolve)
-      _arguments -C $keepOptional $mode $ttl $quiet $verbose $progress $maxIterations $repository $sourcesR $noDefault $sbtPluginHack $dropInfoAttr $forceVersion $exclude $scalaVersion $intransitive $classifier $defaultConfiguration $parallel $checksum $benchmark $tree $reverseTree $profile $typelevel $cache
-      ;;
-    
-    *)
-      ;;
+Resolution commands:
+  [1mfetch[0m    Transitively fetch the JARs of one or more dependencies or an application.
+  [1mresolve[0m  Resolve and print the transitive dependencies of one or more dependencies or an application.
 
-  esac
-
-}
-
-_modeOpts() {
-  local options=( 'offline' 'update-changing' 'update' 'missing' 'force' )
-  _describe 'values' options
-}
-
-_cs "$@"
+Other commands:
+  [1mversion[0m  Prints the coursier version

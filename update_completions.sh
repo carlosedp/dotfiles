@@ -29,11 +29,6 @@ if [ -x "$(command -v gh)" ] > /dev/null 2>&1; then
 fi
 
 # ZSH
-## Generate kubectx and kubens completions
-for X in kubectx kubens; do
-    curl -sL -o "$HOME"/.dotfiles/completion/_$X https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/$X.zsh
-done
-
 if [ -x "$(command -v kubectl)" ] > /dev/null 2>&1; then
         kubectl completion zsh > "$HOME"/.dotfiles/completion/_kubectl
 fi
