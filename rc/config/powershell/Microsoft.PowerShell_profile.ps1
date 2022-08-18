@@ -1,7 +1,7 @@
 # Powershell startup script
 
 # Set Path
-$env:PATH += ":/Users/cdepaula/go/bin/:/usr/local/bin/"
+$env:PATH += ":$Env:HOME/go/bin/:/usr/local/bin/"
 
 # Install required modules
 $modules = @("VMware.PowerCLI", "PSFzf", "PSReadLine", "oh-my-posh", "posh-git", "git-aliases")
@@ -29,7 +29,11 @@ Set-PowerCLIConfiguration -WebOperationTimeoutSeconds 5 -Confirm:$false
 
 # Connect to VCenter
 # Define the variables VI_SERVER, VI_USERNAME and VI_PASSWORD in your environment
-Connect-VIServer -Server $Env:VI_SERVER -User $Env:VI_USERNAME -Password $Env:VI_PASSWORD
+Function ConnectVCenter {
+    Connect-VIServer -Server $Env:VI_SERVER -User $Env:VI_USERNAME -Password $Env:VI_PASSWORD
+}
+
+ConnectVCenter
 
 # Load all modules from dir $Env:HOME/.dotfiles/powershell/*
 [string]$items = Get-ChildItem -Path $Env:HOME/.dotfiles/powershell
@@ -42,9 +46,9 @@ foreach ($item in $itemlist) {
 Import-Module git-aliases -DisableNameChecking
 
 # Load custom prompt
-Set-Theme Powerlevel10k-Classic
+Set-PoshPrompt -Theme Powerlevel10k-Classic
 
 # Disable console title to fix iTerm2 alerts
-if($env:LC_TERMINAL -eq "iTerm2") {
-    $ThemeSettings.Options.ConsoleTitle = $false
-}
+# if($env:LC_TERMINAL -eq "iTerm2") {
+#     $ThemeSettings.Options.ConsoleTitle = $false
+# }

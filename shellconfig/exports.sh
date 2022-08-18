@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
+
+# Load utility functions
+source "$HOME/.dotfiles/utils.sh"
 
 # Larger bash history (allow 32³ entries; default is 500)
 export HISTSIZE=50000000;
@@ -46,6 +50,9 @@ export PATH="$HOME/.dotfiles/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+for d in /usr/local/opt/gnu-*; do
+    export PATH="$d/libexec/gnubin:$PATH"
+done
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 ## Golang path
@@ -67,7 +74,9 @@ if [ -x "$(command -v cs)" ] ; then
         JAVA_HOME=$(cs java-home --jvm ${JVM})
     fi
     export JAVA_HOME
-    export PATH=$JAVA_HOME/bin:$PATH
+    if [ "$(uname -s)" == "Linux" ]; then # No need to add JAVA_HOME/bin on Mac
+        export PATH=$JAVA_HOME/bin:$PATH
+    fi
 fi
 
 # Ripgrep config

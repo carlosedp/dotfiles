@@ -124,6 +124,7 @@ function ss() {
 }
 
 # Coursier
+# Coursier Install package
 function csi() { # fzf coursier install
   function csl() {
     unzip -l "$(cs fetch "$1":latest.stable)" | grep json | sed -E 's/.*:[0-9]{2}\s*(.+)\.json$/\1/'
@@ -132,10 +133,18 @@ function csi() { # fzf coursier install
     cs install --contrib "$(cat <(csl io.get-coursier:apps) <(csl io.get-coursier:apps-contrib) | sort -r | fzf)"
 }
 
+# Coursier Java Install
 function csji() { # fzf coursier java install
-    cs java --jvm "$(cs java --available | fzf)" --setup
+    cs java --jvm "$(cs java --available | fzf --prompt="Select JDK to install")" --setup
 }
 
+# Coursier Java Use (already installed)
+function csju() { # fzf coursier java install
+    selectedJDK="$(cs java --installed | cut -d" " -f1 | fzf --prompt="Select JDK")"
+    eval "$(cs java --jvm "${selectedJDK}" --env)"
+}
+
+# Coursier Resolve tree for package
 function csrt() { # fzf coursier resolve tree
     cs resolve -t "$1" | fzf --reverse --ansi
 }
@@ -223,4 +232,17 @@ completion() {
 # Reload completion for command
 relcompletion() {
     unfunction _${1} && autoload -U _${1}
+}
+
+# Colored man pages
+man() {
+	env \
+		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+		LESS_TERMCAP_md=$(printf "\e[1;31m") \
+		LESS_TERMCAP_me=$(printf "\e[0m") \
+		LESS_TERMCAP_se=$(printf "\e[0m") \
+		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+		LESS_TERMCAP_ue=$(printf "\e[0m") \
+		LESS_TERMCAP_us=$(printf "\e[1;32m") \
+		man "$@"
 }
