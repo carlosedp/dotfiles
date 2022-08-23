@@ -1,10 +1,10 @@
+#requires -Version 2.0 -Modules PowerShellGet
+function Remove-OldModules
+{
+  $Latest = Get-InstalledModule
+  foreach ($module in $Latest) {
 
-Function GetOversubscription {
-    Foreach ($esx in Get-VMHost) {
-        $vCPU = Get-VM -Location $esx | Measure-Object -Property NumCpu -Sum |
-        Select-Object -ExpandProperty Sum
-        $esx | Select-Object Name, @{N = 'pCPU'; E = { $_.NumCpu } },
-        @{N = 'vCPU'; E = { $vCPU } },
-        @{N = 'Ratio'; E = { [math]::Round($vCPU / $_.NumCpu, 1) } }
-    }
+    Write-Verbose -Message "Uninstalling old versions of $($module.Name) [latest is $( $module.Version)]" -Verbose
+    Get-InstalledModule -Name $module.Name -AllVersions | Where-Object {$_.Version -ne $module.Version} | Uninstall-Module -Verbose
+  }
 }

@@ -20,6 +20,7 @@ apps=("github.com/github/hub/v2@master"
         "github.com/junegunn/fzf@latest"
         "github.com/brancz/gojsontoyaml@master"
         "mvdan.cc/sh/v3/cmd/shfmt@latest"
+        "github.com/hhatto/gocloc/cmd/gocloc@latest"
 )
 
 # Only run if Go is present
