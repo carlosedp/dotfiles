@@ -77,6 +77,8 @@ _query_with_cache() {
 	local -a milltargetcmds
 	[ "${1}" == "root" ] && target="_" || target="${1}_"
 
+	target_clean=$(echo "${target//\\/}")
+	target="${target_clean}"
 	__mill_debug "Query cache param: ${1}"
 	__mill_debug "Query target: ${target}"
 	if [ ${cachedata} == "true" ]; then
@@ -86,12 +88,12 @@ _query_with_cache() {
 			milltargetcmds=($(cat "${cachepath}/${cachefile}-${target}"))
 		else
 			__mill_debug "Cache file ${cachepath}/${cachefile}-${target} does not exist or is older than ${cachetime} or build.sc file changed."
-			milltargetcmds=($(mill --disable-ticker resolve "${target}" 2>/dev/null))
+			milltargetcmds=($(noglob mill --disable-ticker resolve "${target}" 2>/dev/null))
 			echo "${milltargetcmds[@]}" >"${cachepath}/${cachefile}-${target}"
 		fi
 	else
 		__mill_debug "No cache used"
-		milltargetcmds=($(mill --disable-ticker resolve "${target}" 2>/dev/null))
+		milltargetcmds=($(noglob mill --disable-ticker resolve "${target}" 2>/dev/null))
 	fi
 	__mill_debug "Target args: " "${milltargetcmds[@]}"
 	compadd -S . -q "${milltargetcmds[@]}"

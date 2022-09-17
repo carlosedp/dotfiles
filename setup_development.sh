@@ -65,7 +65,6 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
     log "Install Scala Coursier applications" "$GREEN"
     # Java version comes from JVM var in `shellconfig/exports.sh`
     cs install \
-        ammonite \
         cs \
         giter8 \
         bloop-jvm \
@@ -73,6 +72,7 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
         mill \
         scala \
         scalafmt \
+        scala-cli \
         scalafix
     cs update
 fi
