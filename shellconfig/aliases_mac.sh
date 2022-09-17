@@ -13,7 +13,7 @@ alias noping='sudo noping'
 # Quicklook file. Depends on osx plugin from zsh oh-my-zsh
 alias ql='quick-look'
 
-alias cat='bat --italic-text=always --style header,header-filename,header-filesize,grid,rule,snip --pager "less -rX"'
+alias cat='bat --italic-text=always --theme=Dracula --style header,header-filename,header-filesize,grid,rule,snip --pager "less -rX"'
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"

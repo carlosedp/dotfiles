@@ -35,18 +35,26 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 # Highlight section titles in manual pages
 export LESS_TERMCAP_md="$YELLOW"
 
+# export export FORGIT_PAGER='delta --features=no-side-by-side'
 # Add alt-up/down keybinding to fzf preview window
 export FORGIT_FZF_DEFAULT_OPTS="
 ${FORGIT_FZF_DEFAULT_OPTS:-""}
 --bind='alt-up:preview-up'
 --bind='alt-down:preview-down'
 --no-mouse
+--preview-window='right:75%'
+--exact
+--border
+--cycle
+--reverse
+--height '80%'
 "
 # Change fzf trigger from "**"
 export FZF_COMPLETION_TRIGGER=';'
 
 # Additional PATH exports
 export PATH="$HOME/.dotfiles/bin:$PATH"
+export PATH="$HOME/.dotfiles/bin/scala_scripts/:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"

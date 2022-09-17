@@ -34,6 +34,7 @@
 [merge]
   summary = true
   tool = kdiff3
+  conflictstyle = diff3
 
 [log]
   date = relative
@@ -83,7 +84,7 @@
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
   excludesfile = ~/.gitignore
   autocrlf = input
-  pager = less -S
+  pager = delta --width ${FZF_PREVIEW_COLUMNS-$COLUMNS}
   editor = vim
 
 [apply]
@@ -134,7 +135,7 @@
   trustExitCode = false
 
 [diff]
-  guitool = kdiff3
+  colorMoved = default
   renames = copies
 
 [difftool "kdiff3"]
@@ -166,3 +167,14 @@
 	stickyRecursiveClone = true
 [remote "origin"]
 	prune = true
+
+[interactive]
+    diffFilter = delta --color-only
+
+[add.interactive]
+    useBuiltin = false # required for git 2.37.0
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+    side-by-side = true
+    line-numbers = true
