@@ -27,6 +27,7 @@ rc/config/bpytop/error.log
 rc/config/containers/auth.json
 rc/config/raycast
 
-bin/.ammonite
-bin/.metals
-bin/.vscode
+bin/scala_scripts/.ammonite
+bin/scala_scripts/.metals
+bin/scala_scripts/.vscode
+bin/scala_scripts/.scala-build

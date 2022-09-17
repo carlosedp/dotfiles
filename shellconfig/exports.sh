@@ -47,7 +47,7 @@ ${FORGIT_FZF_DEFAULT_OPTS:-""}
 --border
 --cycle
 --reverse
---height '80%'
+--height '90%'
 "
 # Change fzf trigger from "**"
 export FZF_COMPLETION_TRIGGER=';'

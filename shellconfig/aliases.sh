@@ -89,7 +89,10 @@ alias aptupd='sudo apt update && sudo apt upgrade -y && sudo apt autoclean -y &&
 alias jtop='sudo jtop'
 
 if [[ $(command -v batcat) ]]; then
-  alias cat='batcat --italic-text=always --theme=Dracula --style header,header-filename,header-filesize,grid,snip --pager "less -rX"'
+  ARGS="--italic-text=always --theme=Dracula --style header,header-filename,header-filesize,grid,snip --pager \"less -rX\""
+  alias cat="batcat ${ARGS}"
+else
+  alias cat="bat ${ARGS}"
 fi
 
 alias ic='it2copy'

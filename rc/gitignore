@@ -3,3 +3,5 @@
 *.tmproj
 *~
 *.swp*
+.bsp
+.scala-build
