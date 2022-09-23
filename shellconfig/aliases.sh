@@ -89,10 +89,9 @@ alias aptupd='sudo apt update && sudo apt upgrade -y && sudo apt autoclean -y &&
 alias jtop='sudo jtop'
 
 if [[ $(command -v batcat) ]]; then
-  ARGS="--italic-text=always --theme=Dracula --style header,header-filename,header-filesize,grid,snip --pager \"less -rX\""
-  alias cat="batcat ${ARGS}"
+  alias cat="batcat --italic-text=always --theme=Dracula --style header,header-filename,header-filesize,grid,snip --pager 'less -rX'"
 else
-  alias cat="bat ${ARGS}"
+  alias cat="bat --italic-text=always --theme=Dracula --style header,header-filename,header-filesize,grid,snip --pager 'less -rX'"
 fi
 
 alias ic='it2copy'
@@ -102,5 +101,6 @@ alias ytdl='yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"'
 alias goupall='go get -u ./...'
 
 # Scala
+alias scli='scala-cli'
 alias amm='scala-cli repl -S 3 --amm -O --thin'
 alias amm2='scala-cli repl --scala 2 --ammonite -O --thin'

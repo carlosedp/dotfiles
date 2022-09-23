@@ -69,7 +69,6 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
         giter8 \
         bloop-jvm \
         sbt \
-        mill \
         scala \
         scalafmt \
         scala-cli \
