@@ -45,7 +45,7 @@ if [ "$(uname -s)" == "Linux" ]; then
             "git-delta"
             "hyperfine"
             "ripgrep"
-            "fd"
+            "fd-find"
             "glow"
     )
 

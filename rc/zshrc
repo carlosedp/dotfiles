@@ -3,7 +3,7 @@
 ###
 
 # Debug zsh startup. Uncomment to enable
-#ZSHDEBUG=on
+# ZSHDEBUG=on
 [ ${ZSHDEBUG} ] && zmodload zsh/zprof
 
 : ${ZSH_DISABLE_COMPFIX:=true}
@@ -107,27 +107,16 @@ zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl
 zstyle ':fzf-tab:complete:ps:*' fzf-preview 'ps -p $word -o %cpu,%mem,rss'
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
 
-zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview \
-	'git diff $word | delta'
-zstyle ':fzf-tab:complete:git-log:*' fzf-preview \
-	'git log --color=always $word'
-zstyle ':fzf-tab:complete:git-help:*' fzf-preview \
-	'git help $word | bat -plman --color=always'
-zstyle ':fzf-tab:complete:git-show:*' fzf-preview \
-	'case "$group" in
-	"commit tag") git show --color=always $word ;;
-	*) git show --color=always $word | delta ;;
-	esac'
-zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
-	'case "$group" in
-	"modified file") git diff $word | delta ;;
-	"recent commit object name") git show --color=always $word | delta ;;
-	*) git log --color=always $word ;;
-	esac'
+# Fuzzy matching of completions for when you mistype them:
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
 
- zstyle ':fzf-tab:complete:-command-:*' fzf-preview \
-  ¦ '(out=$(tldr --color always "$word") 2>/dev/null && echo $out) || (out=$(MANWIDTH=$FZF_PREVIEW_COLUMNS man "$word") 2>/dev/null && echo $out) || (out=$(which "$word") && echo $out) || echo "${(P)word}"'
-zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-preview 'brew info $word'
+# Cache zsh completions
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
 
 # zmv
 autoload -U zmv
@@ -163,6 +152,9 @@ export HISTORY_SUBSTRING_SEARCH_FUZZY=true
 setopt appendhistory
 setopt SHARE_HISTORY
 
+# Make pushd/popd silent
+setopt PUSHDSILENT
+
 # Initialize completions
 autoload -Uz compinit
 setopt EXTENDEDGLOB
@@ -176,26 +168,9 @@ done
 unsetopt EXTENDEDGLOB
 compinit -C
 
-# Make pushd/popd silent
-setopt PUSHDSILENT
-
-# Fuzzy matching of completions for when you mistype them:
-zstyle ':completion:*' completer _complete _match _approximate
-zstyle ':completion:*:match:*' original only
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
-
-# Cache zsh completions
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
 
 # Load additional shell rc common to zsh and bash
 source ~/.dotfiles/shellconfig/shellrc.sh
 
 # Debug zsh startup. Check variable on top.
 [ ${ZSHDEBUG} ] && zprof
-
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-

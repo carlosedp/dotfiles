@@ -17,7 +17,7 @@ fi
 #####
 
 # Load exports
-source ~/.dotfiles/shellconfig/exports.sh
+source "${HOME}/.dotfiles/shellconfig/exports.sh"
 # start=$(date +%s.%N)
 
 # Neofetch
@@ -32,42 +32,42 @@ fi
 [ -f /usr/share/autojump/autojump.sh ] && source /usr/share/autojump/autojump.sh # Linux
 
 # Wasmer
-export WASMER_DIR="$HOME/.wasmer"
+export WASMER_DIR="${HOME}/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"  # This loads wasmer
 
 # Use gitstatusd built locally if exists
 # To build, run `zsh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/gitstatus/master/build.zsh)"`
-if [ -f "$HOME"/.dotfiles/bin/gitstatusd-linux-"$(uname -m)" ]; then
-    GITSTATUS_DAEMON=$HOME/.dotfiles/bin/gitstatusd-linux-$(uname -m)
+if [ -f "${HOME}/.dotfiles/bin/gitstatusd-linux-$(uname -m)" ]; then
+    GITSTATUS_DAEMON="${HOME}/.dotfiles/bin/gitstatusd-linux-$(uname -m)"
     export GITSTATUS_DAEMON
 fi
 
 # Load fzf plugin. Installed thru setup_zsh.sh
-[ -f ~/.fzf.${shell} ] && source ~/.fzf.${shell}
+[ -f "${HOME}/.fzf.${shell}" ] && source "${HOME}/.fzf.${shell}"
 
 # Kubernetes
 if [ -x "$(command -v kubectl)" ] > /dev/null 2>&1; then
-  source ~/.dotfiles/shellconfig/kubernetes.sh
+  source "${HOME}/.dotfiles/shellconfig/kubernetes.sh"
 fi
 
 # Load iTerm2 integration
-[ -f "${HOME}"/.dotfiles/shellconfig/iterm2_shell_integration.${shell} ] && source "${HOME}"/.dotfiles/shellconfig/iterm2_shell_integration."${shell}"
+[ -f "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell}" ] && source "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell}"
 
 # Load private exports
-[ -f "${HOME}"/Dropbox/Configs/exports-private.sh ] && source "${HOME}"/Dropbox/Configs/exports-private.sh
+[ -f "${HOME}/Dropbox/Configs/exports-private.sh" ] && source "${HOME}/Dropbox/Configs/exports-private.sh"
 
 # Functions
-source ~/.dotfiles/shellconfig/funcs.sh
+source "${HOME}/.dotfiles/shellconfig/funcs.sh"
 
 # Load generic aliases
-source ~/.dotfiles/shellconfig/aliases.sh
+source "${HOME}/.dotfiles/shellconfig/aliases.sh"
 
 # Source some utilities
-source "$HOME/.dotfiles/utils.sh"
+source "${HOME}/.dotfiles/utils.sh"
 
 # Load Mac aliases
 if [ "$(uname -s)" = 'Darwin' ]; then
-    source ~/.dotfiles/shellconfig/aliases_mac.sh
+    source "${HOME}/.dotfiles/shellconfig/aliases_mac.sh"
 fi
 
 # Load hub (https://github.com/github/hub)
@@ -79,7 +79,7 @@ fi
 _ssh_config () {
     # shellcheck disable=SC2046
     # Here we want to split the output of ssh-config
-    compadd $(grep "Host " "$HOME"/.ssh/config | grep -v "Host \*" |sed -e "s/^Host //g")
+    compadd $(grep "Host " "${HOME}"/.ssh/config | grep -v "Host \*" |sed -e "s/^Host //g")
 }
 
 if [ -n "${BASH}" ]; then
