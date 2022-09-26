@@ -10,7 +10,7 @@ log "Setup Linux..." "$GREENUNDER"
 DOTFILES="$HOME/.dotfiles"
 cd "$HOME"
 
-BASEPACKAGES="sudo curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux neofetch lshw iotop ripgrep rsync tree autojump bat lm-sensors bpytop"
+BASEPACKAGES="sudo curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux neofetch lshw iotop ripgrep rsync tree autojump bat lm-sensors bpytop exa"
 DEBIANPACKAGES="openssh-client openssh-server locales ack-grep nfs-common apt-utils build-essential lsb-release telnet xz-utils apt-rdepends"
 FEDORAPACKAGES="openssh-client openssh-server ack nfs-utils @development-tools which lsb-release telnet xz git-delta"
 ALPINEPACKAGES="openssh-client openssh-server ack nfs-utils build-base xz"

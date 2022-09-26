@@ -19,9 +19,10 @@ else # OS X `ls`
 fi
 
 # Ls aliases
-alias ls='ls -hF ${colorflag}' # classify files in colour
-alias ll='ls -ltr'   # long list
-alias la='ls -lA'    # all but . and ..
+# Commented due to use of zsh-exa plugin
+# alias ls='ls -hF ${colorflag}' # classify files in colour
+# alias ll='ls -ltr'   # long list
+# alias la='ls -lA'    # all but . and ..
 alias lsd='ls -lhF ${colorflag} | grep --color=never "^d"'
 
 alias l='ls -CF'
@@ -89,9 +90,9 @@ alias aptupd='sudo apt update && sudo apt upgrade -y && sudo apt autoclean -y &&
 alias jtop='sudo jtop'
 
 if [[ $(command -v batcat) ]]; then
-  alias cat="batcat --italic-text=always --theme=Dracula --style header,header-filename,header-filesize,grid,snip --pager 'less -rX'"
+  alias cat="batcat"
 else
-  alias cat="bat --italic-text=always --theme=Dracula --style header,header-filename,header-filesize,grid,snip --pager 'less -rX'"
+  alias cat="bat"
 fi
 
 alias ic='it2copy'
@@ -102,5 +103,5 @@ alias goupall='go get -u ./...'
 
 # Scala
 alias scli='scala-cli'
-alias amm='scala-cli repl -S 3 --amm -O --thin'
+alias amm='scala-cli repl --scala 3 --ammonite -O --thin'
 alias amm2='scala-cli repl --scala 2 --ammonite -O --thin'

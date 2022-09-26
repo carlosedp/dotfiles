@@ -76,6 +76,7 @@ plugins=(
     zsh-autosuggestions
     zsh-completions
     zsh-iterm-touchbar
+    zsh-exa
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -90,8 +91,43 @@ fpath=($ZSH_CUSTOM/plugins/zsh-completions/src $fpath)
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.dotfiles/completion $fpath)
 
-# Only show targets on Makefile completion
-zstyle ':completion:*:*:make:*' tag-order 'targets'
+# Configure completion options
+zstyle ':fzf-tab:complete:*:*' fzf-flags --height=80% --preview-window=right:wrap
+zstyle ':fzf-tab:complete:*:options' fzf-preview
+zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
+zstyle ':fzf-tab:*' switch-group ',' '.' # switch group using `,` and `.`
+zstyle ':fzf-tab:complete:*:*' fzf-preview 'less ${(Q)realpath}'
+export LESSOPEN='|$HOME/.dotfiles/bin/lessfilter %s'
+
+zstyle ':completion:*:*:make:*' tag-order 'targets' # Only show targets on Makefile completion
+zstyle ':completion:*:mill:*' sort false # Disable sort on mill completion
+zstyle ':completion:*:git-checkout:*' sort false # Disable sort on git checkout
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # set list-colors to enable filename colorizing
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+zstyle ':fzf-tab:complete:ps:*' fzf-preview 'ps -p $word -o %cpu,%mem,rss'
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
+
+zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview \
+	'git diff $word | delta'
+zstyle ':fzf-tab:complete:git-log:*' fzf-preview \
+	'git log --color=always $word'
+zstyle ':fzf-tab:complete:git-help:*' fzf-preview \
+	'git help $word | bat -plman --color=always'
+zstyle ':fzf-tab:complete:git-show:*' fzf-preview \
+	'case "$group" in
+	"commit tag") git show --color=always $word ;;
+	*) git show --color=always $word | delta ;;
+	esac'
+zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
+	'case "$group" in
+	"modified file") git diff $word | delta ;;
+	"recent commit object name") git show --color=always $word | delta ;;
+	*) git log --color=always $word ;;
+	esac'
+
+ zstyle ':fzf-tab:complete:-command-:*' fzf-preview \
+  ¦ '(out=$(tldr --color always "$word") 2>/dev/null && echo $out) || (out=$(MANWIDTH=$FZF_PREVIEW_COLUMNS man "$word") 2>/dev/null && echo $out) || (out=$(which "$word") && echo $out) || echo "${(P)word}"'
+zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-preview 'brew info $word'
 
 # zmv
 autoload -U zmv

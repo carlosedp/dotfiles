@@ -21,7 +21,7 @@ export LANG="en_US.UTF-8"
 export LESS="-FRX"
 
 # Don’t clear the screen after quitting a manual page
-export MANPAGER="less -X";
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # Do not clear screen after exiting LESS
 unset LESS
@@ -34,6 +34,10 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 # Highlight section titles in manual pages
 export LESS_TERMCAP_md="$YELLOW"
+
+# Use bat as previewer for FZF
+export FZF_DEFAULT_OPTS='--preview "bat --style=numbers --color=always --line-range :500 {}"'
+export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
 
 # export export FORGIT_PAGER='delta --features=no-side-by-side'
 # Add alt-up/down keybinding to fzf preview window
@@ -93,3 +97,6 @@ export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 # GPG
 GPG_TTY=$(tty)
 export GPG_TTY
+
+# Set exa colors (https://the.exa.website/docs/colour-themes)
+export EXA_COLORS="uu=1;36"

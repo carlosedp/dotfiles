@@ -1,0 +1,21 @@
+#! /usr/bin/env sh
+
+has_cmd() { command -v "$1" >/dev/null 2>&1 ; }
+
+MIME="$(file -bL --mime-type "$1")"
+CATEGORY="${MIME%%/*}"
+KIND="${MIME##*/}"
+
+if [[ -d "$1" ]]; then
+    has_cmd exa && exa -a --color=always -l -g --git --group-directories-first --icons "$1"
+    has_cmd lsd && lsd -al --color=always --icon=always "$1"
+elif [[ "$CATEGORY" == "image" ]]; then
+    has_cmd chafa && chafa "$1"
+    has_cmd exiftool && exiftool "$1"
+elif [[ "$CATEGORY" == "text" ]]; then
+    has_cmd bat && bat --color=always --line-range :200 "$1"
+elif [[ "$CATEGORY" == "video" ]]; then
+    has_cmd mediainfo && mediainfo "$1"
+else
+    lesspipe.sh "$1" | bat --color=always --line-range :200
+fi
