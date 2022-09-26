@@ -10,11 +10,11 @@ log "Setup Linux..." "$GREENUNDER"
 DOTFILES="$HOME/.dotfiles"
 cd "$HOME"
 
-BASEPACKAGES="sudo curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux neofetch lshw iotop ripgrep rsync tree autojump bat lm-sensors bpytop exa"
+BASEPACKAGES="sudo curl wget git file dbus bc bash-completion hdparm sysstat less vim iptables ipset pciutils iperf3 net-tools jq haveged htop zsh tmux neofetch lshw iotop rsync tree autojump bat lm-sensors bpytop cargo"
 DEBIANPACKAGES="openssh-client openssh-server locales ack-grep nfs-common apt-utils build-essential lsb-release telnet xz-utils apt-rdepends"
-FEDORAPACKAGES="openssh-client openssh-server ack nfs-utils @development-tools which lsb-release telnet xz git-delta"
+FEDORAPACKAGES="openssh-client openssh-server ack nfs-utils @development-tools which lsb-release telnet xz"
 ALPINEPACKAGES="openssh-client openssh-server ack nfs-utils build-base xz"
-VOIDPACKAGES="base-devel openssh inetutils-telnet xz delta"
+VOIDPACKAGES="base-devel openssh inetutils-telnet xz"
 
 # Install Linux packages
 source /etc/os-release
@@ -40,15 +40,6 @@ elif [ "$ID" == "alpine" ]; then
 elif [ "$ID" == "void" ]; then
     sudo xbps-install -Su -y "$BASEPACKAGES"
     sudo xbps-install -Su -y "$VOIDPACKAGES"
-fi
-
-# Wonky way to add some packages
-if [ "$ID" == "debian" ] || [ "$ID" == "ubuntu" ]; then
-    # Install git-delta
-    pushd /tmp
-    curl -s https://api.github.com/repos/dandavison/delta/releases/latest  |grep "$(uname -m)"|grep browser_download_url | cut -d'"' -f4 | wget -q -N -i - -O- |tar vxz --strip-components=1 --exclude=README.md --exclude=LICENSE
-    sudo mv delta /usr/local/bin
-    popd
 fi
 
 # Setup Zsh

@@ -18,13 +18,13 @@ export LC_CTYPE="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US.UTF-8"
 
-export LESS="-FRX"
+export LESS="-FR"
 
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # Do not clear screen after exiting LESS
-unset LESS
+# unset LESS
 
 # Make vim the default editor
 export EDITOR="vim"
@@ -66,6 +66,7 @@ for d in /usr/local/opt/gnu-*; do
     export PATH="$d/libexec/gnubin:$PATH"
 done
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH=$HOME/.cargo/bin:$PATH
 
 ## Golang path
 export GOPATH=$HOME/go

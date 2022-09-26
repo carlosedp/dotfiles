@@ -3,6 +3,9 @@ tap "homebrew/cask-fonts"
 # Golang
 brew "go"
 
+# Rust
+brew "rust"
+
 # Erlang
 brew "erlang"
 brew "rebar3"

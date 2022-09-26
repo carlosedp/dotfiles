@@ -12,7 +12,7 @@ export PATH=/usr/local/go/bin:"$PATH"
 log "Installing Go apps..." "$GREENUNDER"
 echo ""
 
-apps=("github.com/github/hub/v2@master"
+goapps=("github.com/github/hub/v2@master"
         "rsc.io/2fa@latest"
         "golang.org/x/tools/cmd/benchcmp@latest"
         "github.com/traefik/yaegi/cmd/yaegi@latest"
@@ -25,7 +25,7 @@ apps=("github.com/github/hub/v2@master"
 
 # Only run if Go is present
 if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
-    for m in "${apps[@]}"; do
+    for m in "${goapps[@]}"; do
         log "Installing $m" "$GREEN"
         go install "$m"
     done
@@ -35,7 +35,34 @@ else
     exit 1
 fi
 
-log "Go apps installed." "$GREENUNDER"
+# Use cargo to install rust apps on Linux (on MacOS most are on HomeBrew)
+if [ "$(uname -s)" == "Linux" ]; then
+    log "Installing Rust apps..." "$GREENUNDER"
+    echo ""
+
+    rustapps=("exa"
+            "bat"
+            "git-delta"
+            "hyperfine"
+            "ripgrep"
+            "fd"
+            "glow"
+    )
+
+    # Only run if Rust is present
+    if [ -x "$(command -v cargo)" ] > /dev/null 2>&1; then
+        for m in "${rustapps[@]}"; do
+            log "Installing $m" "$GREEN"
+            cargo install "$m"
+        done
+
+    # else
+        log "ERROR: You don't have Rust installed." "$RED"
+        exit 1
+    fi
+
+    log "Rust apps installed." "$GREENUNDER"
+fi
 
 # Linux app install
 if [ "$(uname -s)" == "Linux" ]; then

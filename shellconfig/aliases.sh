@@ -97,6 +97,7 @@ fi
 
 alias ic='it2copy'
 alias ytdl='yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"'
+alias glow='glow -p'
 
 # Golang
 alias goupall='go get -u ./...'
