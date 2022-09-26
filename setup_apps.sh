@@ -21,6 +21,7 @@ goapps=("github.com/github/hub/v2@master"
         "github.com/brancz/gojsontoyaml@master"
         "mvdan.cc/sh/v3/cmd/shfmt@latest"
         "github.com/hhatto/gocloc/cmd/gocloc@latest"
+        "github.com/charmbracelet/glow@latest"
 )
 
 # Only run if Go is present
@@ -46,7 +47,6 @@ if [ "$(uname -s)" == "Linux" ]; then
             "hyperfine"
             "ripgrep"
             "fd-find"
-            "glow"
     )
 
     # Only run if Rust is present
@@ -60,6 +60,9 @@ if [ "$(uname -s)" == "Linux" ]; then
         log "ERROR: You don't have Rust installed." "$RED"
         exit 1
     fi
+    # workaround to zsh-exa plugin on arm/ppc
+    mkdir -p "${HOME}/.exa"
+    touch "${HOME}/.exa/version.txt"
 
     log "Rust apps installed." "$GREENUNDER"
 fi
