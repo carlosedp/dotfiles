@@ -1,7 +1,7 @@
 #!/usr/bin/env -S scala-cli shebang --scala 3
 // Install [scala-cli](https://scala-cli.virtuslab.org/) to use
 //> using scala "3"
-//> using lib "com.lihaoyi::mainargs:0.2.3"
+//> using lib "com.lihaoyi::mainargs:0.3.0"
 
 import mainargs.{main, arg, ParserForMethods, Flag}
 

@@ -2,14 +2,13 @@
 // checkdeps.sc
 // Install [scala-cli](https://scala-cli.virtuslab.org/) to use
 
-//> using scala "3.nightly"
+//> using scala "3"
 //> using lib "com.lihaoyi::os-lib:0.8.1"
 //> using lib "com.lihaoyi::requests:0.7.1"
 //> using lib "com.lihaoyi::ujson:2.0.0"
 //> using lib "com.lihaoyi::fansi::0.4.0"
 //> using lib "io.kevinlee::just-semver:0.5.0"
 
-import language.experimental.fewerBraces
 import just.semver.SemVer
 
 /** Handles mill and scala scripts plugin updates. */
@@ -57,10 +56,11 @@ object Checkdeps:
     if os.exists(file) then
       val data = loadFile(file)
       val p    = getPlugins(data)
-      p.foreach: plugin =>
+      p.foreach { plugin =>
         getPluginUpdates(plugin) match
           case Some(msg) => println(msg)
           case None      =>
+      }
 
   /** Reads a .sc file and returns the file lines
     * @param file
@@ -116,10 +116,10 @@ object Checkdeps:
 
     val pluginName = s"${plugin("org")}:${plugin("artifact")}"
     // Filter plugins which contain artifacts matching the plugin we need (with and without mill version)
-    val filteredPlugin = doc.arr.filter: r =>
+    val filteredPlugin = doc.arr.filter { r =>
       val art = r("artifacts").arr.toArray
       art.contains(s"${plugin("artifact")}_mill${millVer}") || art.contains(plugin("artifact"))
-
+    }
     if filteredPlugin.isEmpty then
       // Print error if not found
       return Some(
@@ -147,7 +147,6 @@ object Checkdeps:
               .Red(latestVer.render)}.",
         )
       else return None
-
 
 // Run the script
 val path = if args.mkString != "" then args.mkString else os.pwd.toString
