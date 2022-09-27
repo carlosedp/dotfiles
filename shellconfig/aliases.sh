@@ -102,5 +102,5 @@ alias goupall='go get -u ./...'
 
 # Scala
 alias scli='scala-cli'
-alias amm='scala-cli repl --scala 3 --ammonite -O --thin'
+alias amm='scala-cli repl --ammonite -O --thin'
 alias amm2='scala-cli repl --scala 2 --ammonite -O --thin'

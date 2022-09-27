@@ -20,13 +20,6 @@ fi
 source "${HOME}/.dotfiles/shellconfig/exports.sh"
 # start=$(date +%s.%N)
 
-# Neofetch
-if [ -x "$(command -v neofetch)" ] > /dev/null 2>&1; then
-    set +m
-    neofetch --disable packages term > /tmp/neofetch_output.txt &
-    NEOFETCH_PID=$!
-fi
-
 # Enable autojump
 [ -f /usr/local/etc/profile.d/autojump.sh ] && source /usr/local/etc/profile.d/autojump.sh # Mac
 [ -f /usr/share/autojump/autojump.sh ] && source /usr/share/autojump/autojump.sh # Linux
@@ -93,9 +86,6 @@ fi
 #####
 # These are at the end to print on user login
 #####
-
-wait $NEOFETCH_PID
-"cat" /tmp/neofetch_output.txt
 
 if tmux list-sessions > /dev/null 2>&1; then
     echo ""

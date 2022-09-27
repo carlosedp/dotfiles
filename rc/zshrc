@@ -6,6 +6,25 @@
 # ZSHDEBUG=on
 [ ${ZSHDEBUG} ] && zmodload zsh/zprof
 
+# Neofetch
+if [ -x "$(command -v neofetch)" ] > /dev/null 2>&1; then
+    neofetch --disable packages term
+    # set +m
+    # neofetch --disable packages term > /tmp/neofetch_output.txt &
+    # NEOFETCH_PID=$!
+fi
+
+# wait $NEOFETCH_PID
+# "cat" /tmp/neofetch_output.txt
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+
 : ${ZSH_DISABLE_COMPFIX:=true}
 
 # Path to your oh-my-zsh configuration.
