@@ -1,0 +1,6 @@
+#compdef _.scala-cli.aux .scala-cli.aux
+typeset -A opt_args
+
+function _.scala-cli.aux {
+  eval "$(.scala-cli.aux complete zsh-v1 $CURRENT $words[@])"
+}

@@ -36,7 +36,7 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export LESS_TERMCAP_md="$YELLOW"
 
 # Use bat as previewer for FZF
-export FZF_DEFAULT_OPTS='--height "75%" --preview "bat --style=numbers --color=always --line-range :500 {}"'
+export FZF_DEFAULT_OPTS='--height "75%" --preview "bat --style=numbers --cycle --reverse --color=always --line-range :500 {}"'
 export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
 export FZF_CTRL_T_OPTS='--preview "bat --color=always --line-range :500 {}"'
 
@@ -53,6 +53,8 @@ ${FORGIT_FZF_DEFAULT_OPTS:-""}
 --reverse
 --height '90%'
 "
+export FORGIT_LOG_FZF_OPTS="${FORGIT_FZF_DEFAULT_OPTS:-""} --height 100% --preview-window='up:50%'"
+
 # Change fzf trigger from "**"
 export FZF_COMPLETION_TRIGGER=';'
 

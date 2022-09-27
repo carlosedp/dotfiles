@@ -231,11 +231,17 @@ completion() {
 
 # Reload completion for command
 reloadcomp() {
-    unfunction _${1} && autoload -U _${1}
+    unfunction "_${1}" && autoload -U "_${1}"
 }
 
 # Run silicon with code from clipboard. Puts image into clibboard
 # Parameter 1 is the highlight language
 siclip() {
-    silicon --from-clipboard -l ${1:-bash} --to-clipboard
+    silicon --from-clipboard -l "${1:-bash}" --to-clipboard
+}
+
+
+gdd() {
+  preview=("git diff $@ --color=always -- {-1} | delta --side-by-side --width ${FZF_PREVIEW_COLUMNS-$COLUMNS}")
+  git diff "$@" --name-only | fzf -m --ansi --height 100% --preview-window='up:75%' --cycle --reverse --exact --border --preview "${preview[@]}"
 }
