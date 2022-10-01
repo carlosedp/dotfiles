@@ -1,2 +1,4 @@
 /out
 *.build_artifacts.txt
+*.class
+*.tasty

@@ -56,7 +56,7 @@ if [ "$(uname -s)" == "Linux" ]; then
             cargo install "$m"
         done
 
-    # else
+    else
         log "ERROR: You don't have Rust installed." "$RED"
         exit 1
     fi

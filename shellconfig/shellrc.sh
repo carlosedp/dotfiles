@@ -5,6 +5,13 @@
 # Generic shellrc to be used by both zshrc and bashrc
 ###
 
+# Neofetch
+if [ -x "$(command -v neofetch)" ] > /dev/null 2>&1; then
+    set +m
+    neofetch --disable packages term > /tmp/neofetch_output.txt &
+    NEOFETCH_PID=$!
+fi
+
 # NOTE: problems might occur if /bin/sh is symlinked to /bin/bash
 if [ -n "${BASH}" ]; then
     shell="bash"
@@ -86,6 +93,9 @@ fi
 #####
 # These are at the end to print on user login
 #####
+
+wait $NEOFETCH_PID
+"cat" /tmp/neofetch_output.txt
 
 if tmux list-sessions > /dev/null 2>&1; then
     echo ""

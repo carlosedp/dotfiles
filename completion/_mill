@@ -15,6 +15,7 @@ __mill_debug() {
 
 _mill() {
 	__mill_debug "\n========= starting completion logic =========="
+	zstyle ':completion:*:mill:*' sort false
 	projname=$(basename "${PWD}")          # Used to differenciate the cache files
 	cachedata="true"                       # "true" or "false"
 	cachepath="/tmp"                       # Where to store the cache files

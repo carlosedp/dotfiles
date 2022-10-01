@@ -6,24 +6,12 @@
 # ZSHDEBUG=on
 [ ${ZSHDEBUG} ] && zmodload zsh/zprof
 
-# Neofetch
-if [ -x "$(command -v neofetch)" ] > /dev/null 2>&1; then
-    neofetch --disable packages term
-    # set +m
-    # neofetch --disable packages term > /tmp/neofetch_output.txt &
-    # NEOFETCH_PID=$!
-fi
-
-# wait $NEOFETCH_PID
-# "cat" /tmp/neofetch_output.txt
-
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
 : ${ZSH_DISABLE_COMPFIX:=true}
 
@@ -44,7 +32,6 @@ export POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|
 # p10k-on-post-prompt() { p10k display '1'=hide '2/right/time'=show }
 # p10k-on-pre-prompt()  { p10k display '1'=show '2/right/time'=hide }
 
-
 # Automatically quote globs in URL and remote references
 __remote_commands=(scp rsync)
 autoload -U url-quote-magic
@@ -54,8 +41,14 @@ zstyle -e :urlglobber url-other-schema '[[ $__remote_commands[(i)$words[1]] -le 
 # Disable zsh globbing (using wildcards in commands)
 unsetopt nomatch
 
+# Configure completion dirs
+fpath=($ZSH_CUSTOM/plugins/zsh-completions/src $fpath)
+fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=($HOME/.dotfiles/completion $fpath)
+
 # Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS=true
+HYPHEN_INSENSITIVE=true
 
 # Autosuggest Async                                                                      │
 ZSH_AUTOSUGGEST_USE_ASYNC=true
@@ -104,11 +97,6 @@ source $ZSH/oh-my-zsh.sh
 source $ZSH_CUSTOM/plugins/autoupdate-oh-my-zsh-plugins/autoupdate.plugin.zsh
 source $ZSH_CUSTOM/plugins/zsh-you-should-use/you-should-use.plugin.zsh
 source $ZSH_CUSTOM/plugins/forgit/forgit.plugin.zsh
-
-# Configure completions
-fpath=($ZSH_CUSTOM/plugins/zsh-completions/src $fpath)
-fpath=(/usr/local/share/zsh-completions $fpath)
-fpath=($HOME/.dotfiles/completion $fpath)
 
 # Configure completion options
 zstyle ':fzf-tab:complete:*:*' fzf-flags --height=80% --preview-window=right:wrap
@@ -174,22 +162,17 @@ setopt SHARE_HISTORY
 # Make pushd/popd silent
 setopt PUSHDSILENT
 
+# Skip the not really helping Ubuntu global compinit
+skip_global_compinit=1
 # Initialize completions
 autoload -Uz compinit
-setopt EXTENDEDGLOB
-for dump in $ZSH_COMPDUMP(#qN.m1); do
+for dump in $HOME/.zcompdump(N.mh+24); do
   compinit
-  if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
-    zcompile "$dump"
-  fi
-  #echo "Initializing Completions..."
 done
-unsetopt EXTENDEDGLOB
 compinit -C
 
-
 # Load additional shell rc common to zsh and bash
-source ~/.dotfiles/shellconfig/shellrc.sh
+source $HOME/.dotfiles/shellconfig/shellrc.sh
 
 # Debug zsh startup. Check variable on top.
 [ ${ZSHDEBUG} ] && zprof
