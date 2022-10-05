@@ -74,6 +74,7 @@
     # plenv                   # perl version from plenv (https://github.com/tokuhirom/plenv)
     # phpenv                  # php version from phpenv (https://github.com/phpenv/phpenv)
     scalaenv                # scala version from scalaenv (https://github.com/scalaenv/scalaenv)
+    mill_version
     # haskell_stack           # haskell version from stack (https://haskellstack.org/)
     kubecontext             # current kubernetes context (https://kubernetes.io/)
     terraform               # terraform workspace (https://www.terraform.io)
@@ -1578,6 +1579,40 @@
   function prompt_example() {
     p10k segment -f 208 -i '⭐' -t 'hello, %n'
   }
+
+  function prompt_mill_version() {
+    if [ -f ".mill-version" ] ; then
+      local millver=$(cat .mill-version || echo 'bug')
+    else
+      return
+    fi
+
+    local cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/p10k-${(%):-%n}/millversion
+    mkdir -p $cache_dir # just ensuring that it exists
+    local cache_file=$cache_dir/latest_mill_version
+
+    local timeout_in_hours=24
+    local timeout_in_seconds=$(($timeout_in_hours*60*60))
+
+    if [[ ! (-f "$cache_file" && $(($(date +%s) - $(stat -c '%Y' "$cache_file") < $timeout_in_seconds)) -gt 0) ]]; then
+      local latest_mill_version_maven=$(curl -sL https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib_2.13/maven-metadata.xml |grep latest |head -1 |sed -e 's/<[^>]*>//g' |tr -d " ")
+
+      if [[ -n "$latest_mill_version_maven" ]]; then
+         echo "$latest_mill_version_maven" > $cache_file
+      else
+         touch $cache_file
+      fi
+    fi
+
+    local latest_mill_version=$(cat $cache_file)
+
+    if [[ -n "$latest_mill_version" && "$millver" != "$latest_mill_version" ]]; then
+       p10k segment -s "NOT_UP_TO_DATE" -f red -i '' -t "⇣$millver  [$latest_mill_version]"
+    else
+       p10k segment -s "UP_TO_DATE" -f blue -i '' -t "$millver"
+    fi
+  }
+
   # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job
   # is to generate the prompt segment for display in instant prompt. See
   # https://github.com/romkatv/powerlevel10k/blob/master/README.md#instant-prompt.
