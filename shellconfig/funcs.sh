@@ -240,8 +240,25 @@ siclip() {
     silicon --from-clipboard -l "${1:-bash}" --to-clipboard
 }
 
-
+# Git diff with Delta side-by-side
 gdd() {
   preview=("git diff $@ --color=always -- {-1} | delta --side-by-side --width ${FZF_PREVIEW_COLUMNS-$COLUMNS}")
   git diff "$@" --name-only | fzf -m --ansi --height 100% --preview-window='up:75%' --cycle --reverse --exact --border --preview "${preview[@]}"
+}
+
+# Update Scala Mill `.mill-version` file with latest build
+millupd() {
+    if [ -f ".mill-version" ] ; then
+        latest_mill_version=$(curl -sL https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib_2.13/maven-metadata.xml |grep latest |head -1 |sed -e 's/<[^>]*>//g' |tr -d " ")
+        echo "Latest mill version is $latest_mill_version..."
+        millver=$(cat .mill-version || echo 'bug')
+        if [[ -n "$latest_mill_version" && "$millver" != "$latest_mill_version" ]]; then
+            echo "Version differs, updating .mill-version."
+            echo "$latest_mill_version" > .mill-version
+        else
+            echo "Mill is already up-to-date."
+        fi
+    else
+      return
+    fi
 }
