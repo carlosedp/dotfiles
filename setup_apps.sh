@@ -8,7 +8,10 @@ SUPPORTED_ARCHS=(x86_64 aarch64)
 source "$HOME/.dotfiles/utils.sh"
 
 # Install Go apps
+source "$HOME/.dotfiles/shellconfig/funcs.sh"
 export PATH=/usr/local/go/bin:"$PATH"
+log "Installing Golang..." "$GREEN"
+install_golang
 log "Installing Go apps..." "$GREENUNDER"
 echo ""
 
