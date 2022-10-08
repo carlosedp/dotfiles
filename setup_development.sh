@@ -56,7 +56,7 @@ fi
 # The [JVM](./shellconfig/exports.sh) env is defined in exports.sh
 if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
     # Install JVM using Coursier if supported
-    if [ "$(uname -s)" == "Darwin" ] || containsElement "$(uname -m)" "${GRAALVM_ARCHS[@]}"; then
+    if containsElement "$(uname -m)" "${GRAALVM_ARCHS[@]}"; then
         cs install --jvm "${JVM}"
     fi
     JAVA_HOME=$(cs java-home)
@@ -71,8 +71,8 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
         sbt \
         scala \
         scalafmt \
-        scala-cli \
         scalafix
+        # scala-cli \
     cs update
 fi
 
