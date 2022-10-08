@@ -87,7 +87,9 @@ alias zshupd='$HOME/.dotfiles/setup_zsh.sh'
 alias aptupd='sudo apt update && sudo apt upgrade -y && sudo apt autoclean -y && sudo apt autoremove -y'
 alias jtop='sudo jtop'
 
-if [[ $(command -v batcat) ]]; then
+if [[ $(command -v bat) ]]; then
+  alias cat="bat"
+elif [[ $(command -v batcat) ]]; then
   alias cat="batcat"
 else
   alias cat="bat"

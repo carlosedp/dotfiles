@@ -123,32 +123,6 @@ function ss() {
     fi
 }
 
-# Coursier
-# Coursier Install package
-function csi() { # fzf coursier install
-  function csl() {
-    unzip -l "$(cs fetch "$1":latest.stable)" | grep json | sed -E 's/.*:[0-9]{2}\s*(.+)\.json$/\1/'
-  }
-
-    cs install --contrib "$(cat <(csl io.get-coursier:apps) <(csl io.get-coursier:apps-contrib) | sort -r | fzf)"
-}
-
-# Coursier Java Install
-function csji() { # fzf coursier java install
-    cs java --jvm "$(cs java --available | fzf --prompt="Select JDK to install")" --setup
-}
-
-# Coursier Java Use (already installed)
-function csju() { # fzf coursier java install
-    selectedJDK="$(cs java --installed | cut -d" " -f1 | fzf --prompt="Select JDK")"
-    eval "$(cs java --jvm "${selectedJDK}" --env)"
-}
-
-# Coursier Resolve tree for package
-function csrt() { # fzf coursier resolve tree
-    cs resolve -t "$1" | fzf --reverse --ansi
-}
-
 # Return latest Github release
 # Usage: lgr <owner/repo> <additional_grep_filter>
 lgr() {
@@ -252,21 +226,4 @@ siclip() {
 gdd() {
   preview=("git diff $@ --color=always -- {-1} | delta --side-by-side --width ${FZF_PREVIEW_COLUMNS-$COLUMNS}")
   git diff "$@" --name-only | fzf -m --ansi --height 100% --preview-window='up:75%' --cycle --reverse --exact --border --preview "${preview[@]}"
-}
-
-# Update Scala Mill `.mill-version` file with latest build
-millupd() {
-    if [ -f ".mill-version" ] ; then
-        latest_mill_version=$(curl -sL https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib_2.13/maven-metadata.xml |grep latest |head -1 |sed -e 's/<[^>]*>//g' |tr -d " ")
-        echo "Latest mill version is $latest_mill_version..."
-        millver=$(cat .mill-version || echo 'bug')
-        if [[ -n "$latest_mill_version" && "$millver" != "$latest_mill_version" ]]; then
-            echo "Version differs, updating .mill-version."
-            echo "$latest_mill_version" > .mill-version
-        else
-            echo "Mill is already up-to-date."
-        fi
-    else
-      return
-    fi
 }

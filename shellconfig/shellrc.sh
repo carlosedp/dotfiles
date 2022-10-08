@@ -58,6 +58,7 @@ fi
 
 # Functions
 source "${HOME}/.dotfiles/shellconfig/funcs.sh"
+source "${HOME}/.dotfiles/shellconfig/scala.sh"
 
 # Load generic aliases
 source "${HOME}/.dotfiles/shellconfig/aliases.sh"
