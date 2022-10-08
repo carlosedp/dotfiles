@@ -186,14 +186,22 @@ dlgr() {
     fi
 
     URL=$(curl -s "${repo}" | grep "$(uname | tr LD ld)" |grep "$(uname -m)" | grep "browser_download_url" | cut -d '"' -f 4 | grep "${FILTER}" |grep -v "\(sha256\|md5\|sha1\)")
+    FILENAME="$(echo ${URL} | rev | cut -d/ -f1 | rev)"
+    OUT="${FILENAME}"
     if [ "${URL}" ]; then
-        OUT=""
         if [ -n "${2+set}" ]; then
-            OUT=$(echo "$2" | awk '{$1=$1};1')
+            if [[ "${FILENAME}" == *gz ]]; then
+                OUT=$(echo "$2" | awk '{$1=$1};1').gz
+            else
+                OUT=$(echo "$2" | awk '{$1=$1};1')
+            fi
         fi
         curl -s -o "${OUT}" -OL "${URL}"
     else
         return 1
+    fi
+    if [[ "${FILENAME}" == *gz ]]; then
+        gzip -d "${OUT}"
     fi
 }
 
