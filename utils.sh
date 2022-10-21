@@ -61,7 +61,7 @@ cloneorpull () {
         if [[ -n $(git status --porcelain) ]]; then
             log "> Your dir $dest has changes" "$MAGENTA"
         fi
-        git pull --autostash --quiet "$@"
+        git pull --rebase --autostash --quiet "$@"
         popd >/dev/null || return
     fi
 }
