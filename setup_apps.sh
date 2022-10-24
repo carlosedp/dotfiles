@@ -39,8 +39,12 @@ else
     exit 1
 fi
 
+
 # Use cargo to install rust apps on Linux (on MacOS most are on HomeBrew)
 if [ "$(uname -s)" == "Linux" ]; then
+    log "Installing Rust..." "$GREEN"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
     log "Installing Rust apps..." "$GREENUNDER"
     echo ""
 

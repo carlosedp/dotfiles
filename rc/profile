@@ -7,3 +7,4 @@ if [ "$BASH" ]; then
 fi
 
 mesg n || true
+. "$HOME/.cargo/env"

@@ -91,3 +91,4 @@ done
 
 # Load additional shell rc
 source ~/.dotfiles/shellconfig/shellrc.sh
+. "$HOME/.cargo/env"
