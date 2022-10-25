@@ -2,6 +2,11 @@
 
 # Functions when required functionality won't work with an alias
 
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 4); do /usr/bin/time $shell -i -c exit; done
+}
+
 function update() {
     if [ "$(uname -s)" == "Linux" ]; then
         bash -c "$HOME/.dotfiles/setup_linux.sh"

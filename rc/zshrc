@@ -162,14 +162,9 @@ setopt SHARE_HISTORY
 # Make pushd/popd silent
 setopt PUSHDSILENT
 
-# Skip the not really helping Ubuntu global compinit
-skip_global_compinit=1
 # Initialize completions
 autoload -Uz compinit
-for dump in $HOME/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
+compinit
 
 # Load additional shell rc common to zsh and bash
 source $HOME/.dotfiles/shellconfig/shellrc.sh

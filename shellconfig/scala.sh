@@ -8,6 +8,7 @@ export keepMajorMillVersion=true
 # Update Scala Mill `.mill-version` file with latest build
 millupd() {
     if [ -f ".mill-version" ] ; then
+        rm ${XDG_CACHE_HOME:-$HOME/.cache}/p10k-${(%):-%n}/millversion/latest_mill_version
         latest_mill_version=$(curl -sL https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib_2.13/maven-metadata.xml |grep latest |head -1 |sed -e 's/<[^>]*>//g' |tr -d " ")
         echo "Latest mill version is $latest_mill_version..."
         if [ "$keepMajorMillVersion" = true ]; then
