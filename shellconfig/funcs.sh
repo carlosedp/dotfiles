@@ -232,3 +232,9 @@ gdd() {
   preview=("git diff $@ --color=always -- {-1} | delta --side-by-side --width ${FZF_PREVIEW_COLUMNS-$COLUMNS}")
   git diff "$@" --name-only | fzf -m --ansi --height 100% --preview-window='up:75%' --cycle --reverse --exact --border --preview "${preview[@]}"
 }
+
+# Trap signals from command on $1 and run command $2 on exit
+trapexit() {
+    echo "Running command \"${1}\" and on exit (Ctrl+C), will run \"${2}\""
+    bash -c "trap '${2}' SIGINT SIGTERM EXIT; ${1}"
+}

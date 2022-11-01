@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-# These are Scala development environment functions
+# These are Scala development environment functions/aliases
+
+alias installedjava='cs java --installed'
+alias listjava='cs java --available'
+alias installjava='cs java --jvm' # With version as argument
 
 #If keepMajor is true, functions will only use major versions (no daily builds)
 export keepMajorMillVersion=true
