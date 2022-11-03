@@ -43,7 +43,7 @@ fi
 # Use cargo to install rust apps on Linux (on MacOS most are on HomeBrew)
 if [ "$(uname -s)" == "Linux" ]; then
     log "Installing Rust..." "$GREEN"
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 
     log "Installing Rust apps..." "$GREENUNDER"
     echo ""
@@ -68,9 +68,10 @@ if [ "$(uname -s)" == "Linux" ]; then
         exit 1
     fi
     # workaround to zsh-exa plugin on arm/ppc
-    mkdir -p "${HOME}/.exa"
-    touch "${HOME}/.exa/version.txt"
-
+    if [ -x "$(command -v exa)" ] > /dev/null 2>&1; then
+        mkdir -p "${HOME}/.exa"
+        touch "${HOME}/.exa/version.txt"
+    fi
     log "Rust apps installed." "$GREENUNDER"
 fi
 
