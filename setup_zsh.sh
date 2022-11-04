@@ -87,7 +87,7 @@ cloneorpull https://github.com/carlosedp/dotfiles.git "$DOTFILES"
 echo ""
 log "Install oh-my-zsh" "$GREEN"
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-    curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
     log "> You already have the oh-my-zsh, updating..." "$YELLOW"
     pushd "$HOME"/.oh-my-zsh >/dev/null
