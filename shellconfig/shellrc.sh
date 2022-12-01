@@ -8,7 +8,7 @@
 # Neofetch
 if [ -x "$(command -v neofetch)" ] > /dev/null 2>&1; then
     set +m
-    neofetch --disable packages term > /tmp/neofetch_output.txt &
+    neofetch > /tmp/neofetch_output.txt &
     NEOFETCH_PID=$!
 fi
 
@@ -96,7 +96,7 @@ fi
 #####
 
 wait $NEOFETCH_PID
-"cat" /tmp/neofetch_output.txt
+\cat /tmp/neofetch_output.txt
 
 if tmux list-sessions > /dev/null 2>&1; then
     echo ""

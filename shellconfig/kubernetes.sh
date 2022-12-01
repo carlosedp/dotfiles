@@ -33,6 +33,7 @@ wpod() {
       then
       NAMESPACE="-n ${NS}"
     fi
+    # kubectl get pods --watch --all-namespaces --sort-by={.metadata.namespace,.metadata.name} -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,STATUS:.status.phase,RESTARTS:.status.containerStatuses[0].restartCount,NODE:.spec.nodeName,READY:.status.containerStatuses[*].ready
     watch -n 1 "kubectl get pods $NAMESPACE -o wide --sort-by={.metadata.namespace} |awk {'print substr(\$1,1,40)\" \" substr(\$2,1,45)\" \" \$3\" \" \$4\" \" \$5\" \" \$6\" \" \$8'} | column -t"
 }
 wp() {
