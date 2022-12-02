@@ -2,9 +2,15 @@
 
 # These are Scala development environment functions/aliases
 
+alias scli='scala-cli'
+alias amm='scala-cli repl --ammonite -O --thin'
+alias amm2='scala-cli repl --scala 2 --ammonite -O --thin'
+
 alias installedjava='cs java --installed'
 alias listjava='cs java --available'
 alias installjava='cs java --jvm' # With version as argument
+
+alias cleansproj='rm -rf .bsp .metals .vscode .bloop .scala-build .ammonite out'
 
 #If keepMajor is true, functions will only use major versions (no daily builds)
 export keepMajorMillVersion=true

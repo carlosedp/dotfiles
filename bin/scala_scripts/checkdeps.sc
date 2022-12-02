@@ -2,26 +2,28 @@
 // checkdeps.sc
 // Install [scala-cli](https://scala-cli.virtuslab.org/) to use
 
-//> using scala "3"
+//> using scala "3.nightly"
 //> using lib "com.lihaoyi::os-lib:0.8.1"
 //> using lib "com.lihaoyi::requests:0.7.1"
 //> using lib "com.lihaoyi::ujson:2.0.0"
 //> using lib "com.lihaoyi::fansi::0.4.0"
 //> using lib "io.kevinlee::just-semver:0.5.0"
+//> using options "-language:experimental.fewerBraces"
 
 import just.semver.SemVer
+import fansi.Color.*
+
 
 /** Handles mill and scala scripts plugin updates. */
 object Checkdeps:
 
-// ------------------- Handle Mill Versions ------------------------ //
-
+  // ------------------- Handle Mill Versions ------------------------ //
   /** Checks for mill updates.
     * @param path
     *   Is the path where `.sc` and/or `.mill-version` files are located
     */
   def checkMill(path: os.Path = os.pwd) =
-    println(s"Checking for Ammonite/Mill plugin updates in ${fansi.Color.Yellow(path.toString)}")
+    println(s"Checking for Ammonite/Mill plugin updates in ${Yellow(path.toString)}")
     if os.exists(path / ".mill-version") then
       getMillVersion(os.read(path / ".mill-version").trim) match
         case Some(msg) => println(msg)
@@ -39,8 +41,7 @@ object Checkdeps:
       ujson.read(requests.get("https://api.github.com/repos/com-lihaoyi/mill/releases/latest"))("tag_name").str.trim
     if SemVer.parse(currentVer).toOption.get < SemVer.parse(latest).toOption.get then
       Some(
-        s"${fansi.Bold.On("Mill has updates.")} Currently on $currentVer, latest version: ${fansi.Color
-            .Red(latest)}. Bump your ${fansi.Color.Yellow(".mill-version")} and/or ${fansi.Color.Yellow("mill")} launcher script.",
+        s"${fansi.Bold.On("Mill has updates.")} Currently on $currentVer, latest version: ${Red(latest)}. Bump your ${Yellow(".mill-version")} and/or ${Yellow("mill")} launcher script.",
       )
     else None
 
@@ -56,11 +57,10 @@ object Checkdeps:
     if os.exists(file) then
       val data = loadFile(file)
       val p    = getPlugins(data)
-      p.foreach { plugin =>
+      p.foreach: plugin =>
         getPluginUpdates(plugin) match
           case Some(msg) => println(msg)
           case None      =>
-      }
 
   /** Reads a .sc file and returns the file lines
     * @param file
@@ -70,7 +70,7 @@ object Checkdeps:
     */
   def loadFile(file: os.Path): IndexedSeq[String] =
     // Lets read the .sc file
-    println(s"Checking plugins for: " + fansi.Color.Yellow(s"${file.baseName}.${file.ext}"))
+    println(s"Checking plugins for: " + Yellow(s"${file.baseName}.${file.ext}"))
     os.read.lines(file)
 
   /** Gets the plugins matching pattern
@@ -99,54 +99,32 @@ object Checkdeps:
     *   an `Option[String]` with a message if the plugin has updates or if there was an error checking. Could also be
     *   `None` if no update is found.
     */
-  def getPluginUpdates(plugin: Map[String, String], millVer: String = "0.10"): Option[String] =
-    // println(s"Detected plugins: ${plugins.mkString(" ")}")
-    // val scalaVer    = scalaVersion.value.split('.').take(2).mkString(".")
-    val scalaVer    = "2.13" // As most plugins are published for scala 2.13
+  def getPluginUpdates(
+    plugin:   Map[String, String],
+    millVer:  String = "0.10",
+    scalaVer: String = "2.13",
+  ): Option[String] =
     val scaladexURL = "https://index.scala-lang.org"
 
-    // Search Scaladex for matching plugins
-
-    val doc =
-      ujson.read(
-        requests.get(
-          s"$scaladexURL/api/search?q=${plugin("artifact")}&target=JVM&scalaVersion=${scalaVer}",
-        ),
-      )
+    // Search Scaladex for plugin
+    val url = s"$scaladexURL/api/artifacts/${plugin("org")}/${plugin("artifact")}_mill${millVer}_${scalaVer}"
+    val doc = ujson.read(requests.get(url))
 
     val pluginName = s"${plugin("org")}:${plugin("artifact")}"
-    // Filter plugins which contain artifacts matching the plugin we need (with and without mill version)
-    val filteredPlugin = doc.arr.filter { r =>
-      val art = r("artifacts").arr.toArray
-      art.contains(s"${plugin("artifact")}_mill${millVer}") || art.contains(plugin("artifact"))
-    }
-    if filteredPlugin.isEmpty then
-      // Print error if not found
+    if doc("items").arr.isEmpty then
       return Some(
-        s"  - ${fansi.Color.Red("Could not find")} plugin ${fansi.Color.Green(pluginName)} in Scaladex ($scaladexURL).",
+        s" ${Red("Could not find plugin or any version")} for plugin ${Green(pluginName)} in Scaladex ($scaladexURL).",
       )
-    else
-      // Fetch the plugin available versions
-      val pluginversions = ujson.read(
-        requests.get(
-          s"$scaladexURL/api/project?organization=${filteredPlugin(0)("organization").str}&repository=${filteredPlugin(0)("repository").str}",
-        ),
+
+    // Check if current version is lower than the available one
+    val currentVersion = SemVer.parse(plugin("version")).toOption.get
+    val latestVer =
+      doc("items").arr.map(_("version")).toArray.map(_.str).flatMap(SemVer.parse(_).toOption).sortWith(_ < _).last
+    if currentVersion < latestVer then
+      return Some(
+        s"  - Plugin ${Green(pluginName)} has updates. Using ${currentVersion.render}. Latest version is ${Red(latestVer.render)}.",
       )
-      if pluginversions.toString == "[]" then
-        return Some(
-          s" ${fansi.Color.Red("Could not find versions")} for plugin ${fansi.Color.Green(pluginName)} in Scaladex ($scaladexURL).",
-        )
-
-      // Check if current version is lower than the available one
-      val currentVersion = SemVer.parse(plugin("version")).toOption.get
-      var latestVer      = pluginversions("versions").arr.map(_.str).flatMap(SemVer.parse(_).toOption).sortWith(_ < _).last
-
-      if currentVersion < latestVer then
-        return Some(
-          s"  - Plugin ${fansi.Color.Green(pluginName)} has updates. Using ${currentVersion.render}. Latest version is ${fansi.Color
-              .Red(latestVer.render)}.",
-        )
-      else return None
+    else return None
 
 // Run the script
 val path = if args.mkString != "" then args.mkString else os.pwd.toString
