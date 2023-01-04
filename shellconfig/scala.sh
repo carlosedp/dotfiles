@@ -18,8 +18,8 @@ export keepMajorMillVersion=true
 # Update Scala Mill `.mill-version` file with latest build
 millupd() {
     if [ -f ".mill-version" ] ; then
-        rm ${XDG_CACHE_HOME:-$HOME/.cache}/p10k-${(%):-%n}/millversion/latest_mill_version
-        latest_mill_version=$(curl -sL https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib_2.13/maven-metadata.xml |grep latest |head -1 |sed -e 's/<[^>]*>//g' |tr -d " ")
+        rm -rf "${XDG_CACHE_HOME:-$HOME/.cache}"/p10k-${(%):-%n}/millversion/latest_mill_version
+        latest_mill_version=$(curl -sL https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib_2.13/maven-metadata.xml | grep "<version>" |grep -v "\-M" |tail -1 |sed -e 's/<[^>]*>//g' |tr -d " ")
         echo "Latest mill version is $latest_mill_version..."
         if [ "$keepMajorMillVersion" = true ]; then
             latest_mill_version=$(echo "$latest_mill_version" | cut -d- -f1)
@@ -61,7 +61,7 @@ function prompt_mill_version() {
 
     if [[ ! (-f "$cache_file" && $(($(date +%s) - $(stat -c '%Y' "$cache_file") < $timeout_in_seconds)) -gt 0) ]]; then
         local latest_mill_version_maven
-        latest_mill_version_maven=$(curl -sL https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib_2.13/maven-metadata.xml |grep latest |head -1 |sed -e 's/<[^>]*>//g' |tr -d " ")
+        latest_mill_version_maven=$(curl -sL https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib_2.13/maven-metadata.xml | grep "<version>" |grep -v "\-M" |tail -1 |sed -e 's/<[^>]*>//g' |tr -d " ")
         if [ "$keepMajorMillVersion" = true ]; then
             latest_mill_version_maven=$(echo "$latest_mill_version_maven" | cut -d- -f1)
         fi

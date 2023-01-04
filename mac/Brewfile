@@ -76,6 +76,7 @@ brew "wagoodman/dive/dive"
 brew "gh"
 brew "yt-dlp"
 brew "jandedobbeleer/oh-my-posh/oh-my-posh"
+brew "direnv"
 
 brew "bat"
 brew "hyperfine"

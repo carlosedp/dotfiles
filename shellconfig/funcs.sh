@@ -2,6 +2,29 @@
 
 # Functions when required functionality won't work with an alias
 
+# Updates all packages
+updall() {
+    if [ -x "$(command -v brew)" ] > /dev/null 2>&1; then
+        brewupd
+    fi
+    if [ "$(uname -s)" == "Linux" ]; then
+        if [ -x "$(command -v apt)" ] > /dev/null 2>&1; then
+            aptupd
+        fi
+        if [ -x "$(command -v dnf)" ] > /dev/null 2>&1; then
+            dnf upgrade
+        fi
+    fi
+    if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
+        cs update
+    fi
+    if [ -x "$(command -v npm)" ] > /dev/null 2>&1; then
+        npm -g update
+    fi
+    zshupd
+    bash -c "$HOME/.dotfiles/setup_apps.sh"
+}
+
 timezsh() {
   shell=${1-$SHELL}
   for i in $(seq 1 4); do /usr/bin/time $shell -i -c exit; done

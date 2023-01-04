@@ -17,7 +17,7 @@
 
 FONTS='B612Mono Liga NerdFont;Monaco'
 # BGCOLOR="#006666"
-BGCOLOR="##66b2b2"
+BGCOLOR="#66b2b2"
 
 if ! command -v silicon &> /dev/null
 then

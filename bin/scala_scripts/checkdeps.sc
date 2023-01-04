@@ -3,11 +3,11 @@
 // Install [scala-cli](https://scala-cli.virtuslab.org/) to use
 
 //> using scala "3.nightly"
-//> using lib "com.lihaoyi::os-lib:0.8.1"
-//> using lib "com.lihaoyi::requests:0.7.1"
+//> using lib "com.lihaoyi::os-lib:0.9.0"
+//> using lib "com.lihaoyi::requests:0.8.0"
 //> using lib "com.lihaoyi::ujson:2.0.0"
 //> using lib "com.lihaoyi::fansi::0.4.0"
-//> using lib "io.kevinlee::just-semver:0.5.0"
+//> using lib "io.kevinlee::just-semver:0.6.0"
 //> using options "-language:experimental.fewerBraces"
 
 import just.semver.SemVer

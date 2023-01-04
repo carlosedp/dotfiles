@@ -89,6 +89,7 @@ plugins=(
     zsh-completions
     zsh-iterm-touchbar
     zsh-exa
+    direnv
 )
 
 source $ZSH/oh-my-zsh.sh

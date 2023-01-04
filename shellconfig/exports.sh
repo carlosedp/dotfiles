@@ -89,9 +89,7 @@ if [ -x "$(command -v cs)" ] ; then
         JAVA_HOME=$(cs java-home --jvm ${JVM})
     fi
     export JAVA_HOME
-    if [ "$(uname -s)" == "Linux" ]; then # No need to add JAVA_HOME/bin on Mac
-        export PATH=$JAVA_HOME/bin:$PATH
-    fi
+    export PATH=$JAVA_HOME/bin:$PATH
 fi
 
 # Ripgrep config
