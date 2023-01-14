@@ -11,6 +11,7 @@ alias listjava='cs java --available'
 alias installjava='cs java --jvm' # With version as argument
 
 alias cleansproj='rm -rf .bsp .metals .vscode .bloop .scala-build .ammonite out'
+alias bloopgen='mill --import ivy:com.lihaoyi::mill-contrib-bloop:  mill.contrib.bloop.Bloop/install'
 
 #If keepMajor is true, functions will only use major versions (no daily builds)
 export keepMajorMillVersion=true
