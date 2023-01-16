@@ -152,6 +152,9 @@ for p in "${plugins[@]}"
     cloneorpull "$p" "$ZSH_CUSTOM/plugins/$plugin_name"
 done
 
+# Fix completion permissions
+sudo chmod -R 755 /usr/local/share
+
 echo ""
 log "Clean unused plugins" "$GREEN"
 pushd "$ZSH_CUSTOM/plugins/" >/dev/null

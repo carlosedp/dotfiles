@@ -54,7 +54,7 @@ fi
 [ -f "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell}" ] && source "${HOME}/.dotfiles/shellconfig/iterm2_shell_integration.${shell}"
 
 # Load private exports
-[ -f "${HOME}/Dropbox/Configs/exports-private.sh" ] && source "${HOME}/Dropbox/Configs/exports-private.sh"
+[ -f "${HOME}/Google Drive/My Drive/Configs/exports-private.sh" ] && source "${HOME}/Google Drive/My Drive/Configs/exports-private.sh"
 
 # Functions
 source "${HOME}/.dotfiles/shellconfig/funcs.sh"

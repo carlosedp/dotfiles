@@ -1,4 +1,5 @@
 tap "homebrew/cask-fonts"
+tap "coursier/formulas"
 
 # Golang
 brew "go"

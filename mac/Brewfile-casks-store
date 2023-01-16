@@ -5,12 +5,11 @@ brew "mas"
 cask "raycast"
 cask "appcleaner"
 cask "betterzip"
-cask "batchmod"
 cask "docker"
 cask "dropbox"
 cask "firefox"
-cask "ferdi"
-cask "google-backup-and-sync"
+cask "franz"
+cask "google-drive"
 cask "google-chrome"
 cask "go2shell"
 cask "grandperspective"
@@ -18,7 +17,7 @@ cask "handbrake"
 cask "hiddenbar"
 cask "iterm2"
 cask "itsycal"
-cask "joplin"
+cask "obsidian"
 cask "muzzle"
 cask "nightowl"
 cask "qlcolorcode"
@@ -31,12 +30,10 @@ cask "spotify"
 cask "skype"
 cask "steam"
 cask "transmission"
-cask "unshaky"
 cask "virtualbox"
-cask "virtualbox-extension-pack"
 cask "vlc"
-cask "horndis"
-cask "tweetbot"
+cask "balenaetcher"
+#cask "horndis"
 cask "powershell"
 cask "nrlquaker-winbox"
 cask "1password"
@@ -45,13 +42,13 @@ cask "maccy"
 cask "contexts"
 cask "lulu"
 cask "tweeten"
+cask "clocker"
+cask "fluid"
+cask "tunnelblick"
+cask "element"
 
 mas "Amphetamine", id: 937984704
 mas "Disk Speed Test", id: 425264550
-mas "ForkLift", id: 412448059
-mas "LimeChat", id: 414030210
-mas "OTP Manager", id: 928941247
-mas "Pixelmator", id: 407963104
 mas "Slack", id: 803453959
 mas "Speedtest", id: 1153157709
-mas "Hidden Bar", id: 1452453066
+mas "Wireguard", id: 1451685025

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+# set -euo pipefail
 
 # Ask for the administrator password upfront
 sudo -v
@@ -65,10 +65,10 @@ defaults write com.apple.BezelServices kDimTime -int 300
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
 #Set a blazingly fast keyboard repeat rate"
-#defaults write NSGlobalDomain KeyRepeat -int 0.02
+defaults write NSGlobalDomain KeyRepeat -int 0.7
 
 #Set a shorter Delay until key repeat"
-#defaults write NSGlobalDomain InitialKeyRepeat -int 20
+defaults write NSGlobalDomain InitialKeyRepeat -int 5
 
 # Disable window animations
 #defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false

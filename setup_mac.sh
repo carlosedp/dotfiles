@@ -10,15 +10,15 @@ log "Setup MacOS..." "$GREENUNDER"
 DOTFILES="$HOME/.dotfiles"
 cd "$HOME"
 
-log "Checking if macOS is up to date..." "$GREEN"
-if [[ "$(sudo softwareupdate -l 2>&1)" != *"No new software available"* ]]; then
-    log "> Updating macOS" "$GREEN"
-    sudo softwareupdate -i -a
-    log "> Reboot your machine now and run this script again afterwards." "$YELLOW"
-    exit 0
-else
-    log "> This MacOS is up to date." "$GREEN"
-fi
+# log "Checking if macOS is up to date..." "$GREEN"
+#if [[ "$(sudo softwareupdate -l 2>&1)" != *"No new software available"* ]]; then
+#    log "> Updating macOS" "$GREEN"
+#    #sudo softwareupdate -i -a
+#    log "> Reboot your machine now and run this script again afterwards." "$YELLOW"
+#    exit 0
+#else
+#    log "> This MacOS is up to date." "$GREEN"
+#fi
 
 log "Testing if you have XCode or Developer tools already installed" "$GREEN"
 echo ""
@@ -54,9 +54,9 @@ log "Install brews" "$GREEN"
 log "===================================" "$GREEN"
 echo ""
 # Command line apps
-brew bundle install --file "$DOTFILES/mac/Brewfile"
+brew bundle install --file "$DOTFILES/mac/Brewfile" || true
 # Mac apps (do not fail)
-brew bundle install --file "$DOTFILES/mac/Brewfile-casks-store" || true
+brew bundle install -f --file "$DOTFILES/mac/Brewfile-casks-store" || true
 echo ""
 log "Brew install finished..." "$GREEN"
 echo ""
@@ -64,6 +64,13 @@ sleep 1
 
 # Install additional fonts
 for F in "$HOME"/.dotfiles/fonts/*.tar.gz; do sudo tar vxf "$F" -C /Library/Fonts; done
+
+read -p "Will setup links, is the source sync folder for config is available (Google Drive)? " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit 1
+fi
 
 # Setup dotfiles
 bash -c "$DOTFILES/setup_links.sh"

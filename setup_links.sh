@@ -10,7 +10,7 @@ log "Setup home links..." "$GREENUNDER"
 # ------------------------------------------------------------------------------
 # Settings
 # ------------------------------------------------------------------------------
-SYNC_FOLDER="$HOME/Dropbox"
+SYNC_FOLDER="$HOME/Google Drive/My Drive"
 
 #-------------------------------------------------------------------------------
 # Script start
@@ -57,8 +57,8 @@ if [ "$(uname -s)" == "Darwin" ]; then
   linkAll "$SYNC_FOLDER"/Configs/AppSupport "$HOME/Library/Application Support"
 
   ## Link preferences from ~/Library/Preferences/
-  log "Linking ~/Library/Preferences files" "$GREEN"
-  linkAll "$SYNC_FOLDER"/Configs/Preferences "$HOME/Library/Preferences"
+  # log "Linking ~/Library/Preferences files" "$GREEN"
+  # linkAll "$SYNC_FOLDER"/Configs/Preferences "$HOME/Library/Preferences"
 
   ## Link workflows from ~/Library/Services/
   log "Linking ~/Library/Services (automator) files" "$GREEN"

@@ -21,7 +21,7 @@ fi
 if [ "$(uname -s)" == "Darwin" ]; then
     # Development Tools
     log "Install homebrew bundle for development" "$GREEN"
-    brew bundle install --file "$HOME/.dotfiles/mac/Brewfile-development"
+    brew bundle install --file "$HOME/.dotfiles/mac/Brewfile-development" || true
     # Fix for GTKWave from command line
     sudo cpan install Switch
     # Link Erlang Language Server config file
@@ -71,8 +71,8 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
         sbt \
         scala \
         scalafmt \
-        scalafix
-        # scala-cli \
+        scalafix \
+        scala-cli
     cs update
 fi
 
