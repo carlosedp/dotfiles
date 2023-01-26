@@ -6,9 +6,20 @@ alias scli='scala-cli'
 alias amm='scala-cli repl --ammonite -O --thin'
 alias amm2='scala-cli repl --scala 2 --ammonite -O --thin'
 
-alias installedjava='cs java --installed'
-alias listjava='cs java --available'
-alias installjava='cs java --jvm' # With version as argument
+# Use Coursier to list, install and use Java
+alias javainstalled='cs java --installed'
+alias javalist='cs java --available'
+
+javainstall() {
+    USE=$(cs java --available | fzf --preview-window=,hidden)
+    cs java --jvm "$USE"
+}
+
+javause() {
+    USE=$(cs java --installed  | cut -d" " -f1 | fzf --preview-window=,hidden)
+    eval "$(cs java --jvm $USE --env)"
+    export PATH=$JAVA_HOME/bin:$PATH
+}
 
 alias cleansproj='rm -rf .bsp .metals .vscode .bloop .scala-build .ammonite out'
 alias bloopgen='mill --import ivy:com.lihaoyi::mill-contrib-bloop:  mill.contrib.bloop.Bloop/install'
@@ -91,7 +102,7 @@ function csi() { # fzf coursier install
     unzip -l "$(cs fetch "$1":latest.stable)" | grep json | sed -E 's/.*:[0-9]{2}\s*(.+)\.json$/\1/'
   }
 
-    cs install --contrib "$(cat <(csl io.get-coursier:apps) <(csl io.get-coursier:apps-contrib) | sort -r | fzf)"
+    cs install --contrib "$(cat <(csl io.get-coursier:apps) <(csl io.get-coursier:apps-contrib) | sort -r | fzf --preview-window=,hidden)"
 }
 
 # Coursier Java Install

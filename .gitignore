@@ -27,6 +27,7 @@ rc/config/bpytop/error.log
 rc/config/containers/auth.json
 rc/config/raycast
 rc/config/hub
+rc/config/qobuz-dl
 
 bin/scala_scripts/.ammonite
 bin/scala_scripts/.metals
