@@ -28,6 +28,8 @@ rc/config/containers/auth.json
 rc/config/raycast
 rc/config/hub
 rc/config/qobuz-dl
+rc/config/op
+rc/config/nicotine
 
 bin/scala_scripts/.ammonite
 bin/scala_scripts/.metals

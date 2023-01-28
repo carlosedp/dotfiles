@@ -63,7 +63,7 @@ function f () {
     fi
     name=$1
     shift
-    find . -name "$name" "$@"
+    find . -iname "*$name*" "$@"
 }
 
 # Call journalctl for process or all if no arguments
