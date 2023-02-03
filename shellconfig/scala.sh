@@ -39,7 +39,7 @@ millupd() {
         fi
         millver=$(cat .mill-version || echo 'bug')
         if [[ -n "$latest_mill_version" && "$millver" != "$latest_mill_version" ]]; then
-            echo "Version differs, updating .mill-version."
+            echo "Version differs, currently in $millver... updating .mill-version to $latest_mill_version."
             echo "$latest_mill_version" > .mill-version
         else
             echo "Mill is already up-to-date."

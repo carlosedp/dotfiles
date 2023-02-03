@@ -2,11 +2,10 @@
 // Install [scala-cli](https://scala-cli.virtuslab.org/)
 // Test with `scala-cli test checkdeps.test.scala`
 
-//> using scala "3.nightly"
-//> using lib "org.scalameta::munit:1.0.0-M3"
-//> using lib "io.kevinlee::just-semver:0.5.0"
+//> using scala "3.3.0-RC2"
+//> using lib "org.scalameta::munit:1.0.0-M7"
+//> using lib "io.kevinlee::just-semver:0.6.0"
 //> using file "checkdeps.sc"
-//> using options "-language:experimental.fewerBraces"
 
 // import utest._
 import munit.FunSuite

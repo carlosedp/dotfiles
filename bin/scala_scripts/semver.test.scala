@@ -2,7 +2,7 @@
 // Install [scala-cli](https://scala-cli.virtuslab.org/) to use
 // Run with scli test semver.test.scala
 //> using scala "2.13"
-//> using lib "org.scalameta::munit::1.0.0-M6"
+//> using lib "org.scalameta::munit::1.0.0-M7"
 //> using file "semver.sc"
 
 import munit.FunSuite

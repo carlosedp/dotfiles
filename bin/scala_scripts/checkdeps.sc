@@ -2,17 +2,17 @@
 // checkdeps.sc
 // Install [scala-cli](https://scala-cli.virtuslab.org/) to use
 
-//> using scala "3.nightly"
+//> using scala "3.3.0-RC2"
 //> using lib "com.lihaoyi::os-lib:0.9.0"
 //> using lib "com.lihaoyi::requests:0.8.0"
 //> using lib "com.lihaoyi::ujson:2.0.0"
 //> using lib "com.lihaoyi::fansi::0.4.0"
 //> using lib "io.kevinlee::just-semver:0.6.0"
-//> using options "-language:experimental.fewerBraces"
 
 import just.semver.SemVer
 import fansi.Color.*
 
+val DEBUG = true
 
 /** Handles mill and scala scripts plugin updates. */
 object Checkdeps:
@@ -58,6 +58,7 @@ object Checkdeps:
       val data = loadFile(file)
       val p    = getPlugins(data)
       p.foreach: plugin =>
+        if DEBUG then println(s"  ⊡ ${plugin("artifact")}")
         getPluginUpdates(plugin) match
           case Some(msg) => println(msg)
           case None      =>
@@ -122,7 +123,7 @@ object Checkdeps:
       doc("items").arr.map(_("version")).toArray.map(_.str).flatMap(SemVer.parse(_).toOption).sortWith(_ < _).last
     if currentVersion < latestVer then
       return Some(
-        s"  - Plugin ${Green(pluginName)} has updates. Using ${currentVersion.render}. Latest version is ${Red(latestVer.render)}.",
+        s"   ↳ Plugin ${Green(pluginName)} has updates. Using ${currentVersion.render}. Latest version is ${Red(latestVer.render)}.",
       )
     else return None
 
