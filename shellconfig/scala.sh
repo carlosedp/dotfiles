@@ -2,6 +2,9 @@
 
 # These are Scala development environment functions/aliases
 
+# Load scala-cli completions
+eval "$(scala-cli install completions --env --shell `basename $SHELL`)"
+
 alias scli='scala-cli'
 alias amm='scala-cli repl --ammonite -O --thin'
 alias amm2='scala-cli repl --scala 2 --ammonite -O --thin'
