@@ -16,19 +16,19 @@ log "Installing Go apps..." "$GREENUNDER"
 echo ""
 
 goapps=("github.com/github/hub/v2@master"
-        "rsc.io/2fa@latest"
-        "golang.org/x/tools/cmd/benchcmp@latest"
-        "github.com/traefik/yaegi/cmd/yaegi@latest"
-        "github.com/rakyll/hey@latest"
-        "github.com/junegunn/fzf@latest"
-        "github.com/brancz/gojsontoyaml@master"
-        "mvdan.cc/sh/v3/cmd/shfmt@latest"
-        "github.com/hhatto/gocloc/cmd/gocloc@latest"
-        "github.com/charmbracelet/glow@latest"
+    "rsc.io/2fa@latest"
+    "golang.org/x/tools/cmd/benchcmp@latest"
+    "github.com/traefik/yaegi/cmd/yaegi@latest"
+    "github.com/rakyll/hey@latest"
+    "github.com/junegunn/fzf@latest"
+    "github.com/brancz/gojsontoyaml@master"
+    "mvdan.cc/sh/v3/cmd/shfmt@latest"
+    "github.com/hhatto/gocloc/cmd/gocloc@latest"
+    "github.com/charmbracelet/glow@latest"
 )
 
 # Only run if Go is present
-if [ -x "$(command -v go)" ] > /dev/null 2>&1; then
+if [ -x "$(command -v go)" ] >/dev/null 2>&1; then
     for m in "${goapps[@]}"; do
         log "Installing $m" "$GREEN"
         go install "$m"
@@ -39,25 +39,25 @@ else
     exit 1
 fi
 
-
 # Use cargo to install rust apps on Linux (on MacOS most are on HomeBrew)
 if [ "$(uname -s)" == "Linux" ]; then
     log "Installing Rust..." "$GREEN"
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 
+    source "$HOME/.cargo/env"
     log "Installing Rust apps..." "$GREENUNDER"
     echo ""
 
     rustapps=("exa"
-            "bat"
-            "git-delta"
-            "hyperfine"
-            "ripgrep"
-            "fd-find"
+        "bat"
+        "git-delta"
+        "hyperfine"
+        "ripgrep"
+        "fd-find"
     )
 
     # Only run if Rust is present
-    if [ -x "$(command -v cargo)" ] > /dev/null 2>&1; then
+    if [ -x "$(command -v cargo)" ] >/dev/null 2>&1; then
         for m in "${rustapps[@]}"; do
             log "Installing $m" "$GREEN"
             cargo install "$m"
@@ -68,7 +68,7 @@ if [ "$(uname -s)" == "Linux" ]; then
         exit 1
     fi
     # workaround to zsh-exa plugin on arm/ppc
-    if [ -x "$(command -v exa)" ] > /dev/null 2>&1; then
+    if [ -x "$(command -v exa)" ] >/dev/null 2>&1; then
         mkdir -p "${HOME}/.exa"
         touch "${HOME}/.exa/version.txt"
     fi
@@ -87,27 +87,27 @@ if [ "$(uname -s)" == "Linux" ]; then
     # Install Kubernetes Krew
     if containsElement "$(uname -m)" "${SUPPORTED_ARCHS[@]}"; then
         (
-        set -x; cd "$(mktemp -d)" &&
-        OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
-        ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
-        curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH}.tar.gz" &&
-        tar zxvf "./krew-${OS}_${ARCH}.tar.gz" &&
-        KREW=./krew-"${OS}_${ARCH}" &&
-        "$KREW" install krew
+            set -x
+            cd "$(mktemp -d)" &&
+                OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+                ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+                curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH}.tar.gz" &&
+                tar zxvf "./krew-${OS}_${ARCH}.tar.gz" &&
+                KREW=./krew-"${OS}_${ARCH}" &&
+                "$KREW" install krew
         )
         log "Upgrade and install kubectl plugins." "$GREENUNDER"
         export PATH="/usr/local/bin/:${HOME}/.krew/bin:${PATH}"
         kubectl krew upgrade
         for app in ctx ns restart; do
-            kubectl krew install $app;
+            kubectl krew install $app
         done
     fi
 fi
 
-
 # Mac App configs
 # if [ "$(uname -s)" == "Darwin" ]; then
-    ## Limechat settings
-    # mkdir -p "$HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes"
-    # cp "$HOME/.dotfiles/themes/Limechat-Choco/*" "$HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes"
+## Limechat settings
+# mkdir -p "$HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes"
+# cp "$HOME/.dotfiles/themes/Limechat-Choco/*" "$HOME/Library/Application\ Support/net.limechat.LimeChat-AppStore/Themes"
 # fi

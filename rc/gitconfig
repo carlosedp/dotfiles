@@ -100,7 +100,7 @@
   ignore = dirty
 
 [push]
-  default = matching
+	default = matching
 
 [filter "media"]
   required = true
