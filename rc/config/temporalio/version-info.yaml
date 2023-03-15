@@ -1,0 +1,6 @@
+aliases: {}
+current-env: default
+env:
+    default:
+        cluster-id: b764a014-c40e-44d5-a8fc-efa9e86ca1b3
+version: ""

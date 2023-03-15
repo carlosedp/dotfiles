@@ -28,7 +28,6 @@ if [ "$(uname -s)" == "Darwin" ]; then
     mkdir -p "$HOME/Library/Application\ Support/erlang_ls"
     ln -sf "$HOME/.dotfiles/rc/config/erlang_ls/erlang_ls.config" "$HOME/Library/Application\ Support/erlang_ls/erlang-ls.config"
 
-
 # Install Linux Dev Tools
 elif [ "$(uname -s)" == "Linux" ]; then
     # Install Golang
@@ -37,7 +36,7 @@ elif [ "$(uname -s)" == "Linux" ]; then
 
     # Java / Scala / Coursier
     # Install Coursier
-    if [ ! -x "$(command -v cs)" ] > /dev/null 2>&1; then
+    if [ ! -x "$(command -v cs)" ] >/dev/null 2>&1; then
         log "Install Coursier" "$GREEN"
         pushd /tmp >/dev/null
         dlgr coursier/coursier cs
@@ -54,7 +53,7 @@ fi
 
 # Scala
 # The [JVM](./shellconfig/exports.sh) env is defined in exports.sh
-if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
+if [ -x "$(command -v cs)" ] >/dev/null 2>&1; then
     # Install JVM using Coursier if supported
     if containsElement "$(uname -m)" "${GRAALVM_ARCHS[@]}"; then
         cs install --jvm "${JVM}"
@@ -77,9 +76,9 @@ if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
 fi
 
 # Install GraalVM native-image utility
-if [ -x "$(command -v gu)" ] > /dev/null 2>&1; then
+if [ -x "$(command -v gu)" ] >/dev/null 2>&1; then
     if [ "$(uname -s)" == "Darwin" ]; then
-        gu install native-image
+        gu install native-image visualvm
     elif [ "$(uname -s)" == "Linux" ]; then
         sudo env PATH="$PATH" JAVA_HOME="$JAVA_HOME" gu install native-image
     fi

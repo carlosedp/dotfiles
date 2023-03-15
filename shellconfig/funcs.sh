@@ -4,21 +4,21 @@
 
 # Updates all packages
 updall() {
-    if [ -x "$(command -v brew)" ] > /dev/null 2>&1; then
+    if [ -x "$(command -v brew)" ] >/dev/null 2>&1; then
         brewupd
     fi
     if [ "$(uname -s)" == "Linux" ]; then
-        if [ -x "$(command -v apt)" ] > /dev/null 2>&1; then
+        if [ -x "$(command -v apt)" ] >/dev/null 2>&1; then
             aptupd
         fi
-        if [ -x "$(command -v dnf)" ] > /dev/null 2>&1; then
+        if [ -x "$(command -v dnf)" ] >/dev/null 2>&1; then
             dnf upgrade
         fi
     fi
-    if [ -x "$(command -v cs)" ] > /dev/null 2>&1; then
+    if [ -x "$(command -v cs)" ] >/dev/null 2>&1; then
         cs update
     fi
-    if [ -x "$(command -v npm)" ] > /dev/null 2>&1; then
+    if [ -x "$(command -v npm)" ] >/dev/null 2>&1; then
         npm -g update
     fi
     zshupd
@@ -26,8 +26,8 @@ updall() {
 }
 
 timezsh() {
-  shell=${1-$SHELL}
-  for i in $(seq 1 4); do /usr/bin/time $shell -i -c exit; done
+    shell=${1-$SHELL}
+    for i in $(seq 1 4); do /usr/bin/time $shell -i -c exit; done
 }
 
 function update() {
@@ -39,23 +39,23 @@ function update() {
 }
 
 # Generate a scp command to copy files between hosts
-function scppath () {
+function scppath() {
     if [ "$#" -ne 1 ]; then
         echo "Illegal number of parameters. Call function with file name."
         echo "E.g. $0 myfile"
         return
     fi
-if [ "$(uname -s)" == "Linux" ]; then
+    if [ "$(uname -s)" == "Linux" ]; then
         IP=$(hostname -I | awk '{print $1}')
     elif [ "$(uname -s)" == "Darwin" ]; then
-        IP=$(ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' |head -1)
+        IP=$(ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -1)
     fi
 
     echo "$USER"@"$IP":"$(readlink -f "$1")"
 }
 
 # Quickly find files by name
-function f () {
+function f() {
     if [ "$#" -ne 1 ]; then
         echo "Illegal number of parameters. Call function with file name or wildcard."
         echo "E.g. $0 *.pdf"
@@ -67,17 +67,16 @@ function f () {
 }
 
 # Call journalctl for process or all if no arguments
-function jo () {
+function jo() {
     if [[ "$1" != "" ]]; then
-        sudo journalctl -xef -u "$1";
+        sudo journalctl -xef -u "$1"
     else
-        sudo journalctl -xef;
+        sudo journalctl -xef
     fi
 }
 
-
 # Generate a patch email from git commits
-function gpatch () {
+function gpatch() {
     if [[ "$1" != "" ]]; then
         git format-patch HEAD~"$1"
     else
@@ -86,24 +85,24 @@ function gpatch () {
 }
 
 # Send patch file with git
-function gsendpatch () {
-  echo 'If replying to an existing message, add "--in-reply-to messageIDfromMessage@somehostname.com" param'
-  patch=$1
-  shift
-  git send-email \
-    --cc-cmd="./scripts/get_maintainer.pl --norolestats $patch" \
-    "$@" "$patch"
+function gsendpatch() {
+    echo 'If replying to an existing message, add "--in-reply-to messageIDfromMessage@somehostname.com" param'
+    patch=$1
+    shift
+    git send-email \
+        --cc-cmd="./scripts/get_maintainer.pl --norolestats $patch" \
+        "$@" "$patch"
 }
 
 # Query Docker image manifest
-function qi () {
+function qi() {
     if [ "$#" -lt 1 ]; then
         echo "Illegal number of parameters. Call function with image name."
         echo "E.g. $0 repo/image"
         return
     fi
     echo "Querying image $1"
-    if docker manifest inspect "$1" | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' 2> /dev/null | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$'; then
+    if docker manifest inspect "$1" | jq -r '.manifests[] | [.platform.os, .platform.architecture] |@csv' 2>/dev/null | sed -E 's/\"(.*)\",\"(.*)\"/- \1\/\2/g' | grep -v '^/$'; then
         echo "$OUT"
     else
         echo "Image does not have a multiarch manifest."
@@ -112,20 +111,20 @@ function qi () {
 
 # Execute ripgrep output thru pager
 function rg() {
-   command rg -p "$@" | less -FRX
+    command rg -p "$@" | less -FRX
 }
 
 # Install latest Golang. Replaces current one on /usr/local/go
 function install_golang() {
     function install() {
-        if ldd --version 2>&1 | grep -i musl > /dev/null; then
+        if ldd --version 2>&1 | grep -i musl >/dev/null; then
             echo "ERROR: Distro not supported for Go."
             return 1
         fi
-        declare -A ARCH=( [x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x )
+        declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
         pushd /tmp >/dev/null || return
         FILE=$(curl -sL https://golang.org/dl/?mode=json | grep -E 'go[0-9\.]+' | sed 's/.*\(go.*\.tar\.gz\).*/\1/' | sort -n | grep -i "$(uname -s)" | grep tar | grep "${ARCH[$(uname -m)]}" | tail -1)
-        CURRENT_VERSION=$(go version | grep -Po "go[0-9]\.[0-9]+\.[0-9]+") > /dev/null 2>&1
+        CURRENT_VERSION=$(go version | grep -Po "go[0-9]\.[0-9]+\.[0-9]+") >/dev/null 2>&1
         NEW_VERSION=$(echo "$FILE" | grep -Po "go[0-9]\.[0-9]+\.[0-9]+")
         if [ "$CURRENT_VERSION" == "$NEW_VERSION" ]; then
             echo "Go version $CURRENT_VERSION already installed."
@@ -187,7 +186,7 @@ dlgr() {
         FILTER="$3"
     fi
 
-    URL=$(curl -s "${repo}" | grep "$(uname | tr LD ld)" |grep "$(uname -m)" | grep "browser_download_url" | cut -d '"' -f 4 | grep "${FILTER}" |grep -v "\(sha256\|md5\|sha1\)")
+    URL=$(curl -s "${repo}" | grep "$(uname | tr LD ld)" | grep "$(uname -m)" | grep "browser_download_url" | cut -d '"' -f 4 | grep "${FILTER}" | grep -v "\(sha256\|md5\|sha1\)")
     FILENAME="$(echo ${URL} | rev | cut -d/ -f1 | rev)"
     OUT="${FILENAME}"
     if [ "${URL}" ]; then
@@ -252,12 +251,17 @@ siclip() {
 
 # Git diff with Delta side-by-side
 gdd() {
-  preview=("git diff $@ --color=always -- {-1} | delta --side-by-side --width ${FZF_PREVIEW_COLUMNS-$COLUMNS}")
-  git diff "$@" --name-only | fzf -m --ansi --height 100% --preview-window='up:75%' --cycle --reverse --exact --border --preview "${preview[@]}"
+    preview=("git diff $@ --color=always -- {-1} | delta --side-by-side --width ${FZF_PREVIEW_COLUMNS-$COLUMNS}")
+    git diff "$@" --name-only | fzf -m --ansi --height 100% --preview-window='up:75%' --cycle --reverse --exact --border --preview "${preview[@]}"
 }
 
 # Trap signals from command on $1 and run command $2 on exit
 trapexit() {
     echo "Running command \"${1}\" and on exit (Ctrl+C), will run \"${2}\""
     bash -c "trap '${2}' SIGINT SIGTERM EXIT; ${1}"
+}
+
+addpath() {
+    echo "Adding \"${1}\" to PATH"
+    export PATH="${1}":$PATH
 }

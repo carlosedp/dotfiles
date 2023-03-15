@@ -1,0 +1,3 @@
+fpath=("/Users/cdepaula/Library/Application Support/ScalaCli/completions/zsh" $fpath)
+compinit
+

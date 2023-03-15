@@ -3,8 +3,6 @@ Coursier is the Scala application and artifact manager.
 It can install Scala applications and setup your Scala development environment.
 It can also download and cache artifacts from the web.
 
-
-
 Install application commands:
   [1minstall[0m    Install an application from its descriptor.
   [1mlist[0m       List all currently installed applications.

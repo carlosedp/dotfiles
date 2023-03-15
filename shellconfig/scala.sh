@@ -2,10 +2,10 @@
 
 # These are Scala development environment functions/aliases
 
-# Load scala-cli completions
-if [ -x "$(command -v scala-cli)" ] > /dev/null 2>&1; then
-    eval "$(scala-cli install completions --env --shell `basename $SHELL`)"
-fi
+# Add Temporal to path and load completions
+export PATH=$HOME/.temporalio/bin:$PATH
+source "$HOME/.dotfiles/completion/_temporal"
+
 alias scli='scala-cli'
 alias amm='scala-cli repl --ammonite -O --thin'
 alias amm2='scala-cli repl --scala 2 --ammonite -O --thin'
@@ -25,7 +25,7 @@ javause() {
     export PATH=$JAVA_HOME/bin:$PATH
 }
 
-alias cleansproj='rm -rf .bsp .metals .vscode .bloop .scala-build .ammonite out'
+alias cleansproj='rm -rf .bsp .metals .bloop .scala-build .ammonite out target project/target project/project'
 alias bloopgen='mill --import ivy:com.lihaoyi::mill-contrib-bloop:  mill.contrib.bloop.Bloop/install'
 
 #If keepMajor is true, functions will only use major versions (no daily builds)

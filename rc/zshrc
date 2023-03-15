@@ -46,6 +46,7 @@ fpath=($ZSH_CUSTOM/plugins/zsh-completions/src $fpath)
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.dotfiles/completion $fpath)
 
+
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS=true
 HYPHEN_INSENSITIVE=true
@@ -163,15 +164,16 @@ setopt SHARE_HISTORY
 # Make pushd/popd silent
 setopt PUSHDSILENT
 
-# Initialize completions
-autoload -Uz compinit
-compinit
-
 # Trick to load prompt at the bottom of the screen
 # Ref: https://github.com/romkatv/powerlevel10k/issues/563
 printf '\n%.0s' {1..100}
 
 # Load additional shell rc common to zsh and bash
 source $HOME/.dotfiles/shellconfig/shellrc.sh
+
+# Initialize completions
+autoload -Uz compinit
+compinit
+
 # Debug zsh startup. Check variable on top.
 [ ${ZSHDEBUG} ] && zprof
