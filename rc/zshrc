@@ -177,3 +177,4 @@ compinit
 
 # Debug zsh startup. Check variable on top.
 [ ${ZSHDEBUG} ] && zprof
+

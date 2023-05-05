@@ -1,30 +1,4 @@
-Usage: [1m/Users/cdepaula/Library/Application Support/Coursier/bin/.cs.aux[0m <COMMAND>
-Coursier is the Scala application and artifact manager.
-It can install Scala applications and setup your Scala development environment.
-It can also download and cache artifacts from the web.
-
-Install application commands:
-  [1minstall[0m    Install an application from its descriptor.
-  [1mlist[0m       List all currently installed applications.
-  [1msetup[0m      Setup a machine for Scala development.
-  [1muninstall[0m  Uninstall one or more applications.
-  [1mupdate[0m     Update one or more applications.
-
-Application channel commands:
-  [1mchannel[0m  Manage additional channels, used by coursier to resolve application descriptors.
-  [1msearch[0m   Search application names from known channels.
-
-Java commands:
-  [1mjava[0m       Manage installed JVMs and run java.
-  [1mjava-home[0m  Print the home directory of a particular JVM.
-
-Launcher commands:
-  [1mbootstrap[0m  Create a binary launcher from a dependency or an application descriptor.
-  [1mlaunch[0m     Launch an application from a dependency or an application descriptor.
-
-Resolution commands:
-  [1mfetch[0m    Transitively fetch the JARs of one or more dependencies or an application.
-  [1mresolve[0m  Resolve and print the transitive dependencies of one or more dependencies or an application.
-
-Other commands:
-  [1mversion[0m  Prints the coursier version
+#compdef _cs cs
+function _cs {
+  eval "$(cs complete zsh-v1 $CURRENT $words[@])"
+}

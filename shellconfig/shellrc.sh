@@ -6,9 +6,9 @@
 ###
 
 # Neofetch
-if [ -x "$(command -v neofetch)" ] > /dev/null 2>&1; then
+if [ -x "$(command -v neofetch)" ] >/dev/null 2>&1; then
     set +m
-    neofetch > /tmp/neofetch_output.txt &
+    neofetch >/tmp/neofetch_output.txt &
     NEOFETCH_PID=$!
 fi
 
@@ -29,11 +29,11 @@ source "${HOME}/.dotfiles/shellconfig/exports.sh"
 
 # Enable autojump
 [ -f /usr/local/etc/profile.d/autojump.sh ] && source /usr/local/etc/profile.d/autojump.sh # Mac
-[ -f /usr/share/autojump/autojump.sh ] && source /usr/share/autojump/autojump.sh # Linux
+[ -f /usr/share/autojump/autojump.sh ] && source /usr/share/autojump/autojump.sh           # Linux
 
 # Wasmer
 export WASMER_DIR="${HOME}/.wasmer"
-[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"  # This loads wasmer
+[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh" # This loads wasmer
 
 # Use gitstatusd built locally if exists
 # To build, run `zsh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/gitstatus/master/build.zsh)"`
@@ -46,8 +46,8 @@ fi
 [ -f "${HOME}/.fzf.${shell}" ] && source "${HOME}/.fzf.${shell}"
 
 # Kubernetes
-if [ -x "$(command -v kubectl)" ] > /dev/null 2>&1; then
-  source "${HOME}/.dotfiles/shellconfig/kubernetes.sh"
+if [ -x "$(command -v kubectl)" ] >/dev/null 2>&1; then
+    source "${HOME}/.dotfiles/shellconfig/kubernetes.sh"
 fi
 
 # Load iTerm2 integration
@@ -73,14 +73,14 @@ fi
 
 # Load hub (https://github.com/github/hub)
 if [ -x "$(command -v hub)" ]; then
-  eval "$(hub alias -s)"
+    eval "$(hub alias -s)"
 fi
 
 # Initialize and add custom completions
-_ssh_config () {
+_ssh_config() {
     # shellcheck disable=SC2046
     # Here we want to split the output of ssh-config
-    compadd $(grep "Host " "${HOME}"/.ssh/config | grep -v "Host \*" |sed -e "s/^Host //g")
+    compadd $(grep "Host " "${HOME}"/.ssh/config | grep -v "Host \*" | sed -e "s/^Host //g")
 }
 
 if [ -n "${BASH}" ]; then
@@ -91,6 +91,12 @@ elif [ -n "${ZSH_NAME}" ]; then
     compdef _cs coursier
 fi
 
+# Load github-copilot-cli aliases
+# https://www.npmjs.com/package/@githubnext/github-copilot-cli
+if [ -x "$(command -v github-copilot-cli)" ]; then
+    eval "$(github-copilot-cli alias -- "$0")"
+fi
+
 #####
 # These are at the end to print on user login
 #####
@@ -98,7 +104,7 @@ fi
 wait $NEOFETCH_PID
 \cat /tmp/neofetch_output.txt
 
-if tmux list-sessions > /dev/null 2>&1; then
+if tmux list-sessions >/dev/null 2>&1; then
     echo ""
     echo "There are TMux sessions running:"
     echo ""

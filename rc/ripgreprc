@@ -13,5 +13,6 @@
 --glob=!node_modules/*
 --glob=!node_modules/*
 --glob=!.bloop/*
---glob=!.metals/*
 --glob=!target/*
+--glob=!**/.metals/*
+--glob=!**/.scala-build/*

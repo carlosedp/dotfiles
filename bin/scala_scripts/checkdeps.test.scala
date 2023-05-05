@@ -2,9 +2,9 @@
 // Install [scala-cli](https://scala-cli.virtuslab.org/)
 // Test with `scala-cli test checkdeps.test.scala`
 
-//> using scala "3.3.0-RC2"
-//> using lib "org.scalameta::munit:1.0.0-M7"
-//> using lib "io.kevinlee::just-semver:0.6.0"
+//> using scala "3.3.0-RC5"
+//> using dep "org.scalameta::munit:1.0.0-M7"
+//> using dep "io.kevinlee::just-semver:0.6.0"
 //> using file "checkdeps.sc"
 
 // import utest._
@@ -33,6 +33,15 @@ class PluginDepsSpec extends munit.FunSuite:
       val p = getPlugins(testData)
       assert(
         p.contains(Map("org" -> "io.github.davidgregory084", "artifact" -> "mill-tpolecat", "version" -> "0.3.1")),
+      )
+
+    test("check plugin parsing for scala-cli file"):
+      val testData = """
+          //> using lib "dev.zio::zio:2.0.13"
+          """.stripMargin.split("\n").toIndexedSeq
+      val p = getPlugins(testData)
+      assert(
+        p.contains(Map("org" -> "dev.zio", "artifact" -> "zio", "version" -> "2.0.13")),
       )
 
     test("check plugin parsing for single line import with two plugins"):
@@ -99,13 +108,20 @@ class PluginDepsSpec extends munit.FunSuite:
         p.contains(Map("org" -> "com.goyeau", "artifact" -> "mill-scalafix", "version" -> latestVer.render)),
       )
       // to make sure we don't show updates
-      assert(getPluginUpdates(p(0)).isEmpty)
+      assertEquals(getPluginUpdates(p(0)).get.contains("up-to-date"), true)
 
     test("check plugin with update"):
       val testData = """
                  // Some comment
-                 import $ivy.`io.github.davidgregory084::mill-tpolecat::0.3.0`
+                 import $ivy.`io.kevinlee::just-semver:0.5.0`
                  """.stripMargin.split("\n").toIndexedSeq
       val p = getPlugins(testData)
-      val d = getPluginUpdates(p(0)).get
-      assert(d.contains("has updates"))
+      assertEquals(getPluginUpdates(p(0)).get.contains("has updates"), true)
+
+    test("check plugin with error in version parsing"):
+      val testData = """
+                 // Some comment
+                 import $ivy.`io.kevinlee::just-semver:x.y.z`
+                 """.stripMargin.split("\n").toIndexedSeq
+      val p = getPlugins(testData)
+      assertEquals(getPluginUpdates(p(0)).get.contains("Could not parse"), true)

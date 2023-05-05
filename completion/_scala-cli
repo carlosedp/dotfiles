@@ -1,3 +1,5 @@
-fpath=("/Users/cdepaula/Library/Application Support/ScalaCli/completions/zsh" $fpath)
-compinit
+#compdef _scala-cli scala-cli
 
+function _scala-cli {
+  eval "$(scala-cli complete zsh-v1 $CURRENT $words[@])"
+}
