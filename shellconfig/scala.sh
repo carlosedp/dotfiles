@@ -11,19 +11,35 @@ alias amm='scala-cli repl --ammonite -O --thin'
 alias amm2='scala-cli repl --scala 2 --ammonite -O --thin'
 
 # Use Coursier to list, install and use Java
-alias javainstalled='cs java --installed'
-alias javalist='cs java --available'
+alias javainstalled='cs java --installed | column -t'
+alias javalist='cs java --available | fzf --preview-window=,hidden --reverse'
 
+# Install Java using Coursier
 javainstall() {
-    USE=$(cs java --available | fzf --preview-window=,hidden)
+    USE=$(cs java --available | fzf --preview-window=,hidden --reverse --prompt="Select JDK to install")
     cs java --jvm "$USE"
 }
 
+# Switch Java version using Coursier
 javause() {
-    USE=$(cs java --installed  | cut -d" " -f1 | fzf --preview-window=,hidden)
-    eval "$(cs java --jvm $USE --env)"
+    USE=$(cs java --installed  | cut -d" " -f1 | fzf --preview-window=,hidden --reverse --prompt="Select JDK")
+    eval "$(cs java --jvm "$USE" --env)"
     export PATH=$JAVA_HOME/bin:$PATH
 }
+
+# Coursier Install package
+function csi() { # fzf coursier install
+  function csl() {
+    unzip -l "$(cs fetch "$1":latest.stable)" | grep json | sed -E 's/.*:[0-9]{2}\s*(.+)\.json$/\1/'
+  }
+    cs install --contrib "$(cat <(csl io.get-coursier:apps) <(csl io.get-coursier:apps-contrib) | fzf --preview-window=,hidden --reverse --prompt="Select app to install")"
+}
+
+# Coursier Resolve tree for package
+function csrt() { # fzf coursier resolve tree
+    cs resolve -t "$1" | fzf --reverse --ansi
+}
+
 
 alias cleansproj='rm -rf .bsp .metals .bloop .scala-build .ammonite out target project/target project/project'
 alias bloopgen='mill --import ivy:com.lihaoyi::mill-contrib-bloop:  mill.contrib.bloop.Bloop/install'
@@ -97,30 +113,4 @@ function prompt_mill_version() {
     else
         p10k segment -s "UP_TO_DATE" -f blue -i '' -t "$millver"
     fi
-}
-
-# Coursier
-# Coursier Install package
-function csi() { # fzf coursier install
-  function csl() {
-    unzip -l "$(cs fetch "$1":latest.stable)" | grep json | sed -E 's/.*:[0-9]{2}\s*(.+)\.json$/\1/'
-  }
-
-    cs install --contrib "$(cat <(csl io.get-coursier:apps) <(csl io.get-coursier:apps-contrib) | sort -r | fzf --preview-window=,hidden)"
-}
-
-# Coursier Java Install
-function csji() { # fzf coursier java install
-    cs java --jvm "$(cs java --available | fzf --prompt="Select JDK to install")" --setup
-}
-
-# Coursier Java Use (already installed)
-function csju() { # fzf coursier java install
-    selectedJDK="$(cs java --installed | cut -d" " -f1 | fzf --prompt="Select JDK")"
-    eval "$(cs java --jvm "${selectedJDK}" --env)"
-}
-
-# Coursier Resolve tree for package
-function csrt() { # fzf coursier resolve tree
-    cs resolve -t "$1" | fzf --reverse --ansi
 }
