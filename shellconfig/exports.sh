@@ -5,12 +5,12 @@
 source "$HOME/.dotfiles/utils.sh"
 
 # Larger bash history (allow 32³ entries; default is 500)
-export HISTSIZE=50000000;
-export SAVEHIST=50000000;
-export HISTFILESIZE=$HISTSIZE;
-export HISTCONTROL=ignoredups;
+export HISTSIZE=50000000
+export SAVEHIST=50000000
+export HISTFILESIZE=$HISTSIZE
+export HISTCONTROL=ignoredups
 # Make some commands not show up in history
-export HISTIGNORE=" *:ls:cd:cd -:pwd:exit:date:* --help:* -h:pony:pony add *:pony update *:pony save *:pony ls:pony ls *:history*";
+export HISTIGNORE=" *:ls:cd:cd -:pwd:exit:date:* --help:* -h:pony:pony add *:pony update *:pony save *:pony ls:pony ls *:history*"
 export HISTTIMEFORMAT="%d/%m/%y %T "
 
 # Prefer US English and use UTF-8
@@ -76,21 +76,6 @@ export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
 
 # Add Erlang shell history and unicode messages
 export ERL_AFLAGS="+pc unicode -kernel shell_history enabled -enable-feature all"
-
-## Scala Coursier Path for Mac and Linux
-export PATH="$HOME/Library/Application Support/Coursier/bin:$PATH"
-export PATH="$HOME/.local/share/coursier/bin:$PATH"
-
-# Add Java to path (if coursier is installed)
-export JVM=graalvm-java17
-JAVA_HOME=/usr/local/java
-if [ -x "$(command -v cs)" ] ; then
-    if [[ "$(cs java-home --jvm ${JVM} > /dev/null 2>&1)" -eq 0 ]]; then
-        JAVA_HOME=$(cs java-home --jvm ${JVM})
-    fi
-    export JAVA_HOME
-    export PATH=$JAVA_HOME/bin:$PATH
-fi
 
 # Ripgrep config
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc

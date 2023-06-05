@@ -1,10 +1,29 @@
 #!/usr/bin/env bash
 
 # These are Scala development environment functions/aliases
+# Most functions require Coursier and FZF to be installed
 
-# Add Temporal to path and load completions
-export PATH=$HOME/.temporalio/bin:$PATH
-source "$HOME/.dotfiles/completion/_temporal"
+# Set default JVM to use (graalvm-java17, zulu, etc.)
+export JVM=graalvm-java17
+
+# Check if fzf is installed
+if [ ! -x "$(command -v fzf)" ] >/dev/null 2>&1; then
+    echo "FZF not installed. Install from https://github.com/junegunn/fzf"
+fi
+
+# Scala Coursier Path for Mac and Linux
+export PATH="$HOME/Library/Application Support/Coursier/bin:$PATH"
+export PATH="$HOME/.local/share/coursier/bin:$PATH"
+
+# Add Java to path (if coursier is installed)
+JAVA_HOME=/usr/local/java
+if [ -x "$(command -v cs)" ] ; then
+    if [[ "$(cs java-home --jvm ${JVM} > /dev/null 2>&1)" -eq 0 ]]; then
+        JAVA_HOME=$(cs java-home --jvm ${JVM})
+    fi
+    export JAVA_HOME
+    export PATH=$JAVA_HOME/bin:$PATH
+fi
 
 alias scli='scala-cli'
 alias amm='scala-cli repl --ammonite -O --thin'
@@ -13,6 +32,15 @@ alias amm2='scala-cli repl --scala 2 --ammonite -O --thin'
 # Use Coursier to list, install and use Java
 alias javainstalled='cs java --installed | column -t'
 alias javalist='cs java --available | fzf --preview-window=,hidden --reverse'
+
+# Set default JVM to use (graalvm-java17, zulu, etc.) on scala.sh file
+javasetdefault() {
+    USE=$(cs java --available |cut -d":" -f1| sort -u | fzf --preview-window=,hidden --reverse --prompt="Select JDK")
+    sed -i "s/^export JVM=.*/export JVM=${USE}/" "$HOME/.dotfiles/shellconfig/scala.sh"
+    echo "Loading the new config and installing $USE if needed..."
+    source "$HOME/.dotfiles/shellconfig/scala.sh"
+    echo "Default JVM set to $JVM."
+}
 
 # Install Java using Coursier
 javainstall() {
@@ -27,6 +55,32 @@ javause() {
     export PATH=$JAVA_HOME/bin:$PATH
 }
 
+javaupd() {
+    # JVM var comes from `shellconfig/exports.sh` defining which JVM to use (adptium, graalvm-java17, zulu, etc.)
+    echo "Checking installed Java versions..."
+    INSTALLEDJAVA=$(cs java --installed | grep "$JVM")
+    CURRENTJAVA=$(echo "$INSTALLEDJAVA" | cut -d" " -f1)
+    CURRENTPATH=$(echo "$INSTALLEDJAVA" | cut -d" " -f4)
+    CURRENTVERSION=$(echo "$CURRENTJAVA" | cut -d":" -f2)
+    LATESTJAVA=$(cs java --available | grep "$JVM" | tail -1 | cut -d":" -f2)
+    if [ "$CURRENTVERSION" = "$LATESTJAVA" ]; then
+        echo "Java $JVM is already up-to-date at version $CURRENTVERSION."
+        return
+    fi
+    echo "Current Java is $CURRENTJAVA at $CURRENTPATH"
+    echo "Removing current Java $JVM..."
+    rm -rf "$(realpath "$CURRENTPATH/../../..")"
+    echo "Installing latest Java $JVM version $LATESTJAVA..."
+    cs java --jvm "$JVM"
+    echo "Java $JVM is now at version $LATESTJAVA, reload your shell to load the right path."
+}
+
+javaremove() {
+    USE=$(cs java --installed | fzf --preview-window=,hidden --reverse --prompt="Select JDK to remove" --with-nth=1)
+    echo "$USE"
+    rm -rf "$(realpath "$(echo "$USE" | cut -d" " -f4)/../../../..")"
+}
+
 # Coursier Install package
 function csi() { # fzf coursier install
   function csl() {
@@ -39,7 +93,6 @@ function csi() { # fzf coursier install
 function csrt() { # fzf coursier resolve tree
     cs resolve -t "$1" | fzf --reverse --ansi
 }
-
 
 alias cleansproj='rm -rf .bsp .metals .bloop .scala-build .ammonite out target project/target project/project'
 alias bloopgen='mill --import ivy:com.lihaoyi::mill-contrib-bloop:  mill.contrib.bloop.Bloop/install'
@@ -114,3 +167,7 @@ function prompt_mill_version() {
         p10k segment -s "UP_TO_DATE" -f blue -i '' -t "$millver"
     fi
 }
+
+# Add Temporal to path and load completions
+export PATH=$HOME/.temporalio/bin:$PATH
+source "$HOME/.dotfiles/completion/_temporal"
