@@ -48,9 +48,9 @@ fi
 curl -s https://raw.githubusercontent.com/scalacenter/bloop/master/etc/zsh-completions -o "$HOME"/.dotfiles/completion/_bloop
 
 # cs
-if [ -x "$(command -v cs)" ] >/dev/null 2>&1; then
-        cs --completions zsh >"$HOME"/.dotfiles/completion/_cs
-fi
+# if [ -x "$(command -v cs)" ] >/dev/null 2>&1; then
+#         cs --completions zsh >"$HOME"/.dotfiles/completion/_cs
+# fi
 
 # scalafix
 if [ -x "$(command -v scalafix)" ] >/dev/null 2>&1; then
@@ -61,13 +61,18 @@ fi
 curl -s https://raw.githubusercontent.com/scalameta/scalafmt/master/bin/_scalafmt -o "$HOME"/.dotfiles/completion/_scalafmt
 
 # scala-cli
-if [ -x "$(command -v scala-cli)" ] >/dev/null 2>&1; then
-        scala-cli install completions --env --shell zsh >"$HOME"/.dotfiles/completion/_scala-cli
-fi
+# if [ -x "$(command -v scala-cli)" ] >/dev/null 2>&1; then
+#         scala-cli install completions --env --shell zsh >"$HOME"/.dotfiles/completion/_scala-cli
+# fi
 
 # temporal
 if [ -x "$(command -v temporal)" ] >/dev/null 2>&1; then
         temporal completion zsh >"$HOME"/.dotfiles/completion/_temporal
+fi
+
+# npm
+if [ -x "$(command -v npm)" ] >/dev/null 2>&1; then
+        npm completion >"$HOME"/.dotfiles/completion/_npm
 fi
 
 # Refresh completion
