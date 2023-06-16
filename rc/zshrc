@@ -91,6 +91,7 @@ plugins=(
     zsh-iterm-touchbar
     zsh-exa
     direnv
+    npm
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -177,4 +178,3 @@ compinit
 
 # Debug zsh startup. Check variable on top.
 [ ${ZSHDEBUG} ] && zprof
-

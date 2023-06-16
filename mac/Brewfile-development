@@ -20,6 +20,9 @@ brew "python"
 # Jsonnet
 brew "jsonnet"
 
+# NodeJS
+brew "node"
+
 # Development Environment
 cask "visual-studio-code"
 cask "open-in-code"
