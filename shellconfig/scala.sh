@@ -97,11 +97,14 @@ function csrt() { # fzf coursier resolve tree
 alias cleansproj='rm -rf .bsp .metals .bloop .scala-build .ammonite out target project/target project/project'
 alias bloopgen='mill --import ivy:com.lihaoyi::mill-contrib-bloop:  mill.contrib.bloop.Bloop/install'
 
-#If keepMajor is true, functions will only use major versions (no daily builds)
-export keepMajorMillVersion=true
-
 # Update Scala Mill `.mill-version` file with latest build
 millupd() {
+    stickToMajorVersion="${1:-true}"
+    if [ $stickToMajorVersion = "-m" ] ; then
+        keepMajorMillVersion=false
+    else
+        keepMajorMillVersion=true
+    fi
     if [ -f ".mill-version" ] ; then
         rm -rf "${XDG_CACHE_HOME:-$HOME/.cache}"/p10k-${(%):-%n}/millversion/latest_mill_version
         latest_mill_version=$(curl -sL https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib_2.13/maven-metadata.xml | grep "<version>" |grep -v "\-M" |tail -1 |sed -e 's/<[^>]*>//g' |tr -d " ")
@@ -136,6 +139,8 @@ function prompt_mill_version() {
     else
         return
     fi
+    #If keepMajor is true, functions will only use major versions (no daily builds)
+    keepMajorMillVersion=true
 
     local cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/p10k-${(%):-%n}/millversion
     mkdir -p "$cache_dir" # just ensuring that it exists
@@ -161,7 +166,10 @@ function prompt_mill_version() {
     local latest_mill_version
     latest_mill_version=$(cat "$cache_file")
 
-    if [[ -n "$latest_mill_version" && "$millver" != "$latest_mill_version" ]]; then
+    if [[ -n "$latest_mill_version" && "$millver" != $(echo "$latest_mill_version" | cut -d- -f1)  && "$millver" != "$latest_mill_version" ]];
+    then
+        p10k segment -s "UP_TO_DATE" -f yellow -i '' -t "⇡$millver"
+    elif [[ -n "$latest_mill_version" && "$millver" != "$latest_mill_version" ]]; then
         p10k segment -s "NOT_UP_TO_DATE" -f red -i '' -t "⇣$millver  [$latest_mill_version]"
     else
         p10k segment -s "UP_TO_DATE" -f blue -i '' -t "$millver"
