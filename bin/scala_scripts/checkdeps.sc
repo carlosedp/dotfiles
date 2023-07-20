@@ -5,7 +5,7 @@
 //> using scala "3.3.0"
 //> using dep "com.lihaoyi::os-lib:0.9.1"
 //> using dep "com.lihaoyi::requests:0.8.0"
-//> using dep "com.lihaoyi::ujson:3.1.0"
+//> using dep "com.lihaoyi::ujson:3.1.2"
 //> using dep "com.lihaoyi::fansi::0.4.0"
 //> using dep "io.kevinlee::just-semver:0.6.0"
 //> using dep "org.scala-lang.modules::scala-xml:2.2.0"
@@ -23,100 +23,133 @@ object Checkdeps:
   def getScalaVersion() =
     // Get latest Scala version for Scala 3
     println(s"Checking for updates in Scala versions")
-    val currentScalaReq = requests.get("https://api.github.com/repos/lampepfl/dotty/releases/latest")
-    val currentScala = if currentScalaReq.is2xx then
-      ujson.read(currentScalaReq)("tag_name").str.trim
-    else
-      // Check version from other source in case Github limits API
-      (scala.xml.XML.loadString(requests.get("https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/maven-metadata.xml").text()) \\ "release").text.trim
-    println(s"  → ${Yellow("Dotty")} is currently on ${Green(currentScala)}")
+    // Try to get latest Scala version from Github
+    var currentScala = ""
+    try {
+      val currentScalaReq = requests.get("https://api.github.com/repos/lampepfl/dotty/releases/latest")
+      currentScala = if currentScalaReq.is2xx then
+        ujson.read(currentScalaReq)("tag_name").str.trim
+      else
+        // Check version from other source in case Github limits API
+        (scala.xml.XML.loadString(requests.get("https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/maven-metadata.xml").text()) \\ "release").text.trim
+      println(s"  → ${Yellow("Scala 3")} is currently on ${Green(currentScala)}")
+    } catch {
+      case e: Exception =>
+        println(s"  → Error getting latest Scala 3 version from Github/Maven: ${Red(e.getMessage)}")
+    }
 
     // Get latest Scala version for Scala 2.12 and 2.13
-    val currentScala2Req = requests.get("https://api.github.com/repos/scala/scala/releases")
+    var currentScala213 = ""
+    var currentScala212 = ""
+    try {
+      val currentScala2Req = requests.get("https://api.github.com/repos/scala/scala/releases")
 
-    val currentScala213 = if currentScala2Req.is2xx then
-      ujson.read(currentScala2Req)
-              .arr.filter(_("tag_name").str
-              .contains("2.13"))
-              .map(_("tag_name").str.trim
-              .replace("v", ""))
-              .sortWith(SemVer.parse(_).toOption.get > SemVer.parse(_).toOption.get)
-              .head
-    else
-      // Check version from other source in case Github limits API
-      val currentScala2 = scala.xml.XML.loadString(
-              requests.get("https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/maven-metadata.xml").text(),
-            )
-            val latest212 = currentScala2 \ "versioning" \ "versions" \ "version"
-            latest212
-              .map(_.text)
-              .filter(_.startsWith("2.13"))
-              .sortWith(SemVer.parse(_).toOption.get > SemVer.parse(_).toOption.get)
-              .head
-    println(s"  → ${Yellow("Scala 2.13")} is currently on ${Green(currentScala213)}")
+      currentScala213 = if currentScala2Req.is2xx then
+        ujson.read(currentScala2Req)
+                .arr.filter(_("tag_name").str
+                .contains("2.13"))
+                .map(_("tag_name").str.trim
+                .replace("v", ""))
+                .sortWith(SemVer.parse(_).toOption.get > SemVer.parse(_).toOption.get)
+                .head
+      else
+        // Check version from other source in case Github limits API
+        val currentScala2 = scala.xml.XML.loadString(
+                requests.get("https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/maven-metadata.xml").text(),
+              )
+              val latest212 = currentScala2 \ "versioning" \ "versions" \ "version"
+              latest212
+                .map(_.text)
+                .filter(_.startsWith("2.13"))
+                .sortWith(SemVer.parse(_).toOption.get > SemVer.parse(_).toOption.get)
+                .head
+      println(s"  → ${Yellow("Scala 2.13")} is currently on ${Green(currentScala213)}")
 
-    val currentScala212 = if currentScala2Req.is2xx then
-      // Get all releases and filter for 2.12
-      ujson.read(currentScala2Req)
-        .arr.filter(_("tag_name").str
-        .contains("2.12"))
-        .map(_("tag_name").str.trim
-        .replace("v", ""))
-        .sortWith(SemVer.parse(_).toOption.get > SemVer.parse(_).toOption.get)
-        .head
-    else
-      // Check version from other source in case Github limits API
-      val currentScala2 = scala.xml.XML.loadString(
-        requests.get("https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/maven-metadata.xml").text(),
-      )
-      val latest212 = currentScala2 \ "versioning" \ "versions" \ "version"
-      latest212
-        .map(_.text)
-        .filter(_.startsWith("2.12"))
-        .sortWith(SemVer.parse(_).toOption.get > SemVer.parse(_).toOption.get)
-        .head
-    println(s"  → ${Yellow("Scala 2.12")} is currently on ${Green(currentScala212)}")
+      // Get latest Scala version for Scala 2.12
+      currentScala212 = if currentScala2Req.is2xx then
+        // Get all releases and filter for 2.12
+        ujson.read(currentScala2Req)
+          .arr.filter(_("tag_name").str
+          .contains("2.12"))
+          .map(_("tag_name").str.trim
+          .replace("v", ""))
+          .sortWith(SemVer.parse(_).toOption.get > SemVer.parse(_).toOption.get)
+          .head
+      else
+        // Check version from other source in case Github limits API
+        val currentScala2 = scala.xml.XML.loadString(
+          requests.get("https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/maven-metadata.xml").text(),
+        )
+        val latest212 = currentScala2 \ "versioning" \ "versions" \ "version"
+        latest212
+          .map(_.text)
+          .filter(_.startsWith("2.12"))
+          .sortWith(SemVer.parse(_).toOption.get > SemVer.parse(_).toOption.get)
+          .head
+      println(s"  → ${Yellow("Scala 2.12")} is currently on ${Green(currentScala212)}")
 
-    val millout = os.proc("./mill", "show", "__.scalaVersion").call(stdout = os.Pipe, check = false)
+    } catch {
+      case e: Exception =>
+        println(s"  → Error getting latest Scala 2.12/2.13 versions from Github/Maven: ${Red(e.getMessage)}")
+    }
+
+    val millout = os.proc("./mill", "show", "__.scalaVersion").call(stderr = os.Pipe, check = false)
     if millout.exitCode == 0 then
       val scalaVers = ujson.read(millout.out.trim())
-      scalaVers.obj.foreach { case (k, v) =>
-        // Check which Scala version is used
-        v.str.replace("\"", "") match
-          case ver if ver.startsWith("2.12") => if ver != currentScala212 then
-            println(s"    ↳ Project \"${Yellow(k)}\" is outdated (${Red(v.str)}). Current version is ${Green(currentScala212)}")
-            anyUpdates = true
-          case ver if ver.startsWith("2.13") => if ver != currentScala213 then
-            println(s"    ↳ Project \"${Yellow(k)}\" is outdated (${Red(v.str)}). Current version is ${Green(currentScala213)}")
-            anyUpdates = true
-          case ver if ver.startsWith("3") => if ver != currentScala then
-            println(s"    ↳ Project \"${Yellow(k)}\" is outdated (${Red(v.str)}). Current version is  ${Green(currentScala)}")
-            anyUpdates = true
-          case _ =>
-            println("    ↳ " + Red("Could not parse Scala version for " + k + ""))
+      scalaVers.objOpt match
+        case None => matchScala(scalaVers.str, "global")
+        case Some(value) => scalaVers.obj.foreach { case (k, v) =>
+          matchScala(v.str, k.replace(".scalaVersion",""))
     }
+    def matchScala(version: String, project: String) =
+    // Check which Scala version is used
+      version.replace("\"", "") match
+        case ver if ver.startsWith("2.12") => if ver != currentScala212 then
+          println(s"    ↳ Project \"${Yellow(project)}\" uses Scala ${Red(ver)} which is outdated. Current version is ${Green(currentScala212)}")
+          anyUpdates = true
+        case ver if ver.startsWith("2.13") => if ver != currentScala213 then
+          println(s"    ↳ Project \"${Yellow(project)}\" uses Scala ${Red(ver)} which is outdated. Current version is ${Green(currentScala213)}")
+          anyUpdates = true
+        case ver if ver.startsWith("3") => if ver != currentScala then
+          println(s"    ↳ Project \"${Yellow(project)}\" uses Scala ${Red(ver)} which is outdated. Current version is ${Green(currentScala)}")
+          anyUpdates = true
+        case _ =>
+          println("    ↳ " + Red(s"Could not parse Scala version for $project"))
+
+
     // Check Scala Native
     val scalaNative = ujson.read(requests.get("https://api.github.com/repos/scala-native/scala-native/releases/latest"))("tag_name").str.trim.replace("v", "")
     println(s"  → ${Yellow("Scala Native")} is currently on ${Green(scalaNative)}")
-    val milloutNative = os.proc("./mill", "show", "__.scalaNativeVersion").call(check = false)
+    val milloutNative = os.proc("./mill", "show", "__.scalaNativeVersion").call(stderr = os.Pipe, check = false)
     if milloutNative.exitCode == 0 then
-      val projectScalaNativeVer = milloutNative.out.trim().replace("v", "")
-      // println(s"  → Project uses Scala Native ${Green(projectScalaNativeVer)}")
-      if projectScalaNativeVer.replace("\"","") != scalaNative then
-        println(s"    ↳ Project uses Scala Native ${Red(projectScalaNativeVer)} which is outdated. Current version is ${Green(scalaNative)}")
+      val scalaVersNative = ujson.read(milloutNative.out.trim().replace("v", ""))
+      scalaVersNative.objOpt match
+        case None => matchScalaNative(scalaVersNative.str, "global")
+        case Some(value) => scalaVersNative.obj.foreach { case (k, v) =>
+          matchScalaNative(v.str, k.replace(".scalaNativeVersion",""))
+        }
+
+    def matchScalaNative(version: String, project: String) =
+      if version != scalaNative then
+        println(s"    ↳ Project \"${Yellow(project)}\" uses Scala Native ${Red(version)} which is outdated. Current version is ${Green(scalaNative)}")
         anyUpdates = true
 
     // Check Scala.js
     val scalaJS = ujson.read(requests.get("https://api.github.com/repos/scala-js/scala-js/releases/latest"))("tag_name").str.trim.replace("v", "")
     println(s"  → ${Yellow("Scala.js")} is currently on ${Green(scalaJS)}")
-    val milloutJS = os.proc("./mill", "show", "__.scalaJSVersion").call(stdout = os.Pipe, check = false)
+    val milloutJS = os.proc("./mill", "show", "__.scalaJSVersion").call(stderr = os.Pipe, check = false)
     if milloutJS.exitCode == 0 then
-      val projectScalaJSVer = milloutJS.out.trim().replace("v", "")
-      // println(s"  → Project uses Scala.js ${Green(projectScalaJSVer)}")
-      if projectScalaJSVer.replace("\"","") != scalaJS then
-        println(s"    ↳ Project uses Scala.js ${Red(projectScalaJSVer)} which is outdated. Current version is ${Green(scalaJS)}")
-        anyUpdates = true
+      val scalaVersJs = ujson.read(milloutJS.out.trim().replace("v", ""))
+        scalaVersJs.objOpt match
+          case None => matchScalaJs(scalaVersJs.str, "global")
+          case Some(value) => scalaVersJs.obj.foreach { case (k, v) =>
+            matchScalaJs(v.str, k.replace(".scalaJSVersion",""))
+          }
 
+      def matchScalaJs(version: String, project: String) =
+        if version != scalaJS then
+          println(s"    ↳ Project \"${Yellow(project)}\" uses Scala.js ${Red(version)} which is outdated. Current version is ${Green(scalaJS)}")
+          anyUpdates = true
 
   /**
    * Compares the current version with latest release
