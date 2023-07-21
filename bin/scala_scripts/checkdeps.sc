@@ -118,39 +118,48 @@ object Checkdeps:
 
 
     // Check Scala Native
-    val scalaNative = ujson.read(requests.get("https://api.github.com/repos/scala-native/scala-native/releases/latest"))("tag_name").str.trim.replace("v", "")
-    println(s"  → ${Yellow("Scala Native")} is currently on ${Green(scalaNative)}")
-    val milloutNative = os.proc("./mill", "show", "__.scalaNativeVersion").call(stderr = os.Pipe, check = false)
-    if milloutNative.exitCode == 0 then
-      val scalaVersNative = ujson.read(milloutNative.out.trim().replace("v", ""))
-      scalaVersNative.objOpt match
-        case None => matchScalaNative(scalaVersNative.str, "global")
-        case Some(value) => scalaVersNative.obj.foreach { case (k, v) =>
-          matchScalaNative(v.str, k.replace(".scalaNativeVersion",""))
-        }
-
-    def matchScalaNative(version: String, project: String) =
-      if version != scalaNative then
-        println(s"    ↳ Project \"${Yellow(project)}\" uses Scala Native ${Red(version)} which is outdated. Current version is ${Green(scalaNative)}")
-        anyUpdates = true
-
-    // Check Scala.js
-    val scalaJS = ujson.read(requests.get("https://api.github.com/repos/scala-js/scala-js/releases/latest"))("tag_name").str.trim.replace("v", "")
-    println(s"  → ${Yellow("Scala.js")} is currently on ${Green(scalaJS)}")
-    val milloutJS = os.proc("./mill", "show", "__.scalaJSVersion").call(stderr = os.Pipe, check = false)
-    if milloutJS.exitCode == 0 then
-      val scalaVersJs = ujson.read(milloutJS.out.trim().replace("v", ""))
-        scalaVersJs.objOpt match
-          case None => matchScalaJs(scalaVersJs.str, "global")
-          case Some(value) => scalaVersJs.obj.foreach { case (k, v) =>
-            matchScalaJs(v.str, k.replace(".scalaJSVersion",""))
+    try {
+      val scalaNative = ujson.read(requests.get("https://api.github.com/repos/scala-native/scala-native/releases/latest"))("tag_name").str.trim.replace("v", "")
+      println(s"  → ${Yellow("Scala Native")} is currently on ${Green(scalaNative)}")
+      val milloutNative = os.proc("./mill", "show", "__.scalaNativeVersion").call(stderr = os.Pipe, check = false)
+      if milloutNative.exitCode == 0 then
+        val scalaVersNative = ujson.read(milloutNative.out.trim().replace("v", ""))
+        scalaVersNative.objOpt match
+          case None => matchScalaNative(scalaVersNative.str, "global")
+          case Some(value) => scalaVersNative.obj.foreach { case (k, v) =>
+            matchScalaNative(v.str, k.replace(".scalaNativeVersion",""))
           }
-
-      def matchScalaJs(version: String, project: String) =
-        if version != scalaJS then
-          println(s"    ↳ Project \"${Yellow(project)}\" uses Scala.js ${Red(version)} which is outdated. Current version is ${Green(scalaJS)}")
+      def matchScalaNative(version: String, project: String) =
+        if version != scalaNative then
+          println(s"    ↳ Project \"${Yellow(project)}\" uses Scala Native ${Red(version)} which is outdated. Current version is ${Green(scalaNative)}")
           anyUpdates = true
 
+    } catch {
+      case e: Exception =>
+        println(s"  → Error getting latest Scala Native versions from Github/Maven: ${Red(e.getMessage)}")
+    }
+
+    // Check Scala.js
+    try {
+      val scalaJS = ujson.read(requests.get("https://api.github.com/repos/scala-js/scala-js/releases/latest"))("tag_name").str.trim.replace("v", "")
+      println(s"  → ${Yellow("Scala.js")} is currently on ${Green(scalaJS)}")
+      val milloutJS = os.proc("./mill", "show", "__.scalaJSVersion").call(stderr = os.Pipe, check = false)
+      if milloutJS.exitCode == 0 then
+        val scalaVersJs = ujson.read(milloutJS.out.trim().replace("v", ""))
+          scalaVersJs.objOpt match
+            case None => matchScalaJs(scalaVersJs.str, "global")
+            case Some(value) => scalaVersJs.obj.foreach { case (k, v) =>
+              matchScalaJs(v.str, k.replace(".scalaJSVersion",""))
+            }
+
+        def matchScalaJs(version: String, project: String) =
+          if version != scalaJS then
+            println(s"    ↳ Project \"${Yellow(project)}\" uses Scala.js ${Red(version)} which is outdated. Current version is ${Green(scalaJS)}")
+            anyUpdates = true
+    } catch {
+          case e: Exception =>
+            println(s"  → Error getting latest Scala Native versions from Github/Maven: ${Red(e.getMessage)}")
+    }
   /**
    * Compares the current version with latest release
    *
@@ -192,7 +201,8 @@ object Checkdeps:
       p.foreach: plugin =>
         if DEBUG then println(s"  → ${plugin("artifact")}")
         val isMill = if file.baseName == "build" then true else false
-        getPluginUpdates(plugin, isMill = isMill) match
+        val  millVersion = if isMill then os.read(file / os.up / ".mill-version").trim.split('.').take(2).mkString(".") else "0.10"
+        getPluginUpdates(plugin, isMill = isMill, millVer = millVersion) match
           case Some(msg) => println(msg)
           case None      =>
 
