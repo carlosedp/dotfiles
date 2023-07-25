@@ -45,7 +45,7 @@ unsetopt nomatch
 fpath=($ZSH_CUSTOM/plugins/zsh-completions/src $fpath)
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.dotfiles/completion $fpath)
-
+fpath=("/Users/cdepaula/Library/Application Support/build.bleep/zsh" $fpath) # Bleep managed
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS=true

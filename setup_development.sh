@@ -63,6 +63,7 @@ if [ -x "$(command -v cs)" ] >/dev/null 2>&1; then
     export PATH=$JAVA_HOME/bin:$PATH
     log "Install Scala Coursier applications" "$GREEN"
     # Java version comes from JVM var in `shellconfig/exports.sh`
+    cs channel -a https://raw.githubusercontent.com/oyvindberg/bleep/master/coursier-channel.json
     cs install \
         cs \
         giter8 \
@@ -71,7 +72,8 @@ if [ -x "$(command -v cs)" ] >/dev/null 2>&1; then
         scala \
         scalafmt \
         scalafix \
-        scala-cli
+        scala-cli \
+        bleep
     cs update
 fi
 
