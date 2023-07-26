@@ -74,7 +74,8 @@
     # plenv                   # perl version from plenv (https://github.com/tokuhirom/plenv)
     # phpenv                  # php version from phpenv (https://github.com/phpenv/phpenv)
     scalaenv                # scala version from scalaenv (https://github.com/scalaenv/scalaenv)
-    mill_version
+    mill_version            # Shows Mill Scala build tool version from `prompr_mill_version` function in scala.sh
+    bleep_version           # Shows Bleep Scala build tool version from `prompr_bleep_version` function in scala.sh
     # haskell_stack           # haskell version from stack (https://haskellstack.org/)
     kubecontext             # current kubernetes context (https://kubernetes.io/)
     terraform               # terraform workspace (https://www.terraform.io)

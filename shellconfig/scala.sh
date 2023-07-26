@@ -125,14 +125,14 @@ millupd() {
     fi
 }
 
+# This function is used by Zsh P10k prompt. To use, add `mill_version` in the `p10k.zsh` file:
+#       typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+#       status # already exists
+#       ...
+#       mill_version
+#       ...
+#       )
 function prompt_mill_version() {
-    # This function is meant to be used on Zsh P10k prompt. To use, add `mill_version` in the `p10k.zsh` file:
-    #       typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
-    #       status # already exists
-    #       ...
-    #       mill_version
-    #       ...
-    #       )
     if [ -f ".mill-version" ] ; then
         local millver
         millver=$(cat .mill-version || echo 'bug')
@@ -142,7 +142,7 @@ function prompt_mill_version() {
     #If keepMajor is true, functions will only use major versions (no daily builds)
     keepMajorMillVersion=true
 
-    local cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/p10k-${(%):-%n}/millversion
+    local cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/p10k-${(%):-%n}
     mkdir -p "$cache_dir" # just ensuring that it exists
     local cache_file="$cache_dir/latest_mill_version"
 
@@ -168,11 +168,56 @@ function prompt_mill_version() {
 
     if [[ -n "$latest_mill_version" && "$millver" != $(echo "$latest_mill_version" | cut -d- -f1)  && "$millver" != "$latest_mill_version" ]];
     then
-        p10k segment -s "UP_TO_DATE" -f yellow -i '' -t "⇡$millver"
+        p10k segment -s "UP_TO_DATE" -f yellow -i '' -t "⇡ Mill $millver"
     elif [[ -n "$latest_mill_version" && "$millver" != "$latest_mill_version" ]]; then
-        p10k segment -s "NOT_UP_TO_DATE" -f red -i '' -t "⇣$millver  [$latest_mill_version]"
+        p10k segment -s "NOT_UP_TO_DATE" -f red -i '' -t "⇣ Mill $millver  [$latest_mill_version]"
     else
-        p10k segment -s "UP_TO_DATE" -f blue -i '' -t "$millver"
+        p10k segment -s "UP_TO_DATE" -f blue -i '' -t "Mill $millver"
+    fi
+}
+
+# This function is used by Zsh P10k prompt. To use, add `bleep_version` in the `p10k.zsh` file:
+#       typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+#       status # already exists
+#       ...
+#       bleep_version
+#       ...
+#       )
+function prompt_bleep_version() {
+    if [ -f "bleep.yaml" ] ; then
+        local bleepver
+        bleepver=$(cat bleep.yaml |grep "\$version" | cut -d: -f2 |tr -d " ")
+    else
+        return
+    fi
+    local cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/p10k-${(%):-%n}
+    mkdir -p "$cache_dir" # just ensuring that it exists
+    local cache_file="$cache_dir/latest_bleep_version"
+
+    local timeout_in_hours=24
+    local timeout_in_seconds=$(($timeout_in_hours*60*60))
+
+    if [[ ! (-f "$cache_file" && $(($(date +%s) - $(stat -c '%Y' "$cache_file") < $timeout_in_seconds)) -gt 0) ]]; then
+        local latest_bleep_version
+        latest_bleep_version=$(curl -sSf https://api.github.com/repos/oyvindberg/bleep/releases |grep tag_name | head -1 | cut -d: -f2 |tr -d "\",v\ ")
+
+        if [[ -n "$latest_bleep_version" ]]; then
+            echo "$latest_bleep_version" > "$cache_file"
+        else
+            touch "$cache_file"
+        fi
+    fi
+
+    local latest_bleep_version
+    latest_bleep_version=$(cat "$cache_file")
+
+    if [[ -n "$latest_bleep_version" && "$bleepver" != $(echo "$latest_bleep_version" | cut -d- -f1)  && "$bleepver" != "$latest_bleep_version" ]];
+    then
+        p10k segment -s "UP_TO_DATE" -f yellow -i '' -t "⇡ Bleep $bleepver"
+    elif [[ -n "$latest_bleep_version" && "$bleepver" != "$latest_bleep_version" ]]; then
+        p10k segment -s "NOT_UP_TO_DATE" -f red -i '' -t "⇣ Bleep $bleepver  [$latest_bleep_version]"
+    else
+        p10k segment -s "UP_TO_DATE" -f blue -i '' -t "Bleep $bleepver"
     fi
 }
 
