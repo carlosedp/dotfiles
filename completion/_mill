@@ -77,7 +77,7 @@ _mill() {
 _query_with_cache() {
 	local target
 	local -a milltargetcmds
-	if [ "${1}" == "root" ];then
+	if [[ "${1}" == "root" ]];then
 		target="_"
 	else target="${1}_"
 	fi
@@ -85,7 +85,7 @@ _query_with_cache() {
 	target="${target_clean}"
 	__mill_debug "Query cache param: ${1}"
 	__mill_debug "Query target: ${target}"
-	if [ ${cachedata} == "true" ]; then
+	if [[ "${cachedata}" == "true" ]]; then
 		# Cache the mill tasks
 		if test "$(find ${cachepath}/ -name "${cachefile}-${target}" -mmin -${cachetime} 2>/dev/null)" && [[ "${cachepath}/${cachefile}-${target}" -nt build.sc ]]; then
 			__mill_debug "Cache file ${cachepath}/${cachefile}-${target} exists and is newer than ${cachetime} mins and build.sc file not changed."
