@@ -60,14 +60,14 @@ alias hl='$HOME/.dotfiles/bin/highlight'
 alias sc-dreload='sudo systemctl daemon-reload'
 
 # Git aliases
-alias gitchanges='find . -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo \"--------------- \n Repo: \"{} && cd {} && git status -s && echo)" \;'                                                                          # Show git status of all repos in current dir
-alias gs='git s -u'                                                                                                                                                                                                          # Show status
-alias gr='git remote -v'                                                                                                                                                                                                     # Show remotes
-alias gcs='git commit -v -s'                                                                                                                                                                                                 # Commit verbose and sign
-alias gt='git log --tags -10 --simplify-by-decoration  --reverse --date=format:"%Y-%m-%d %H:%I:%S" --format=format:"%C(03)%>|(10)%h%C(reset)  %C(04)%ad%C(reset)  %C(green)%<(16,trunc)%an%C(reset)  %C(bold 1)%d%C(reset)"' # Show last 10 tags
-alias gcns='git commit -v --no-edit -s --amend'                                                                                                                                                                              # Commit no edit, sign and amend
-alias gstu='git stash --include-untracked'                                                                                                                                                                                   # Stash all files including untracked
-alias gdm='git diff $(git rev-parse --abbrev-ref --symbolic-full-name @{u})...'                                                                                                                                              # Diff current branch with it's upstream
+alias gitchanges='find . -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo \"--------------- \n Repo: \"{} && cd {} && git status -s && echo)" \;'                                                                           # Show git status of all repos in current dir
+alias gs='git s -u'                                                                                                                                                                                                           # Show status
+alias gr='git remote -v'                                                                                                                                                                                                      # Show remotes
+alias gcs='git commit -v -s'                                                                                                                                                                                                  # Commit verbose and sign
+alias gtl='git log --tags -10 --simplify-by-decoration  --reverse --date=format:"%Y-%m-%d %H:%I:%S" --format=format:"%C(03)%>|(10)%h%C(reset)  %C(04)%ad%C(reset)  %C(green)%<(16,trunc)%an%C(reset)  %C(bold 1)%d%C(reset)"' # Show last 10 tags
+alias gcns='git commit -v --no-edit -s --amend'                                                                                                                                                                               # Commit no edit, sign and amend
+alias gstu='git stash --include-untracked'                                                                                                                                                                                    # Stash all files including untracked
+alias gdm='git diff $(git rev-parse --abbrev-ref --symbolic-full-name @{u})...'                                                                                                                                               # Diff current branch with it's upstream
 
 alias ansible-syntax='ansible-playbook --syntax-check -i "127.0.0.1,"'
 alias elasticindex='watch -n 5 "curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/nodes?v&s=name\"; echo \"\n\"; curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/indices?v&s=index:desc\"|head -30"'
@@ -80,7 +80,7 @@ alias tma='tmate new -A -s mySession'
 alias yaegi='rlwrap yaegi'
 alias dot='cd $HOME/.dotfiles'
 alias query-manifest='qi'
-alias tree='tree -sh --du --dirsfirst -F -A -C -I "out|node_modules|vendor|build"'
+alias tree='tree --dirsfirst -F -A -C --gitignore -I "out|node_modules|vendor|build"'
 
 alias ping='prettyping'
 alias fuck='sudo $(fc -ln -1)'

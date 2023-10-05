@@ -112,11 +112,6 @@
   smudge = git hawser smudge %f
   required = true
 
-[filter "lfs"]
-  clean = git lfs clean %f
-  smudge = git lfs smudge %f
-  required = true
-
 [credential]
 	helper = store
 

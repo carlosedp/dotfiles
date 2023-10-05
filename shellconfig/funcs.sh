@@ -265,3 +265,30 @@ addpath() {
     echo "Adding \"${1}\" to PATH"
     export PATH="${1}":$PATH
 }
+
+# Create a git annotated tag
+gt() {
+    if [ "$#" -lt 2 ]; then
+        echo "Illegal number of parameters. Call function with tag name and a description."
+        echo "E.g. $0 v1.0.0 My tag description"
+        echo "Listing last 10 tags:"
+        git log --no-walk --tags -10 --simplify-by-decoration --reverse --date=format:"%Y-%m-%d %H:%I:%S" --format=format:"%C(03)%>|(10)%h%C(reset)  %C(04)%ad%C(reset)  %C(green)%<(16,trunc)%an%C(reset)  %C(bold 1)%<(20,trunc)%d%C(reset) %C(white)%s%C(reset)"
+        return
+    fi
+    VER=$1
+    shift
+    DESC="$*"
+    git tag -a "$VER" -m "$VER - $DESC"
+}
+
+# Push latest tag to remote
+gtp() {
+    # Ask if user wants to push to remote
+    TAG=$(git describe --tags --abbrev=0)
+    REMOTE=$(git remote | grep -v upstream | head -1)
+    echo "Push tag $TAG to remote $REMOTE? [y/N] "
+    read -r response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+        git push "$REMOTE" "$TAG"
+    fi
+}
