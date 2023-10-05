@@ -94,13 +94,13 @@ function csrt() { # fzf coursier resolve tree
     cs resolve -t "$1" | fzf --reverse --ansi
 }
 
-alias cleansproj='rm -rf .bsp .metals .bloop .scala-build .ammonite out target project/target project/project'
+alias cleansproj='rm -rf .bsp .metals .bloop .scala-build .ammonite out target project/target project/project .bleep'
 alias bloopgen='mill --import ivy:com.lihaoyi::mill-contrib-bloop:  mill.contrib.bloop.Bloop/install'
 
 # Update Scala Mill `.mill-version` file with latest build
 millupd() {
     stickToMajorVersion="${1:-true}"
-    if [ $stickToMajorVersion = "-m" ] ; then
+    if [ "$stickToMajorVersion" = "-m" ] ; then
         keepMajorMillVersion=false
     else
         keepMajorMillVersion=true
