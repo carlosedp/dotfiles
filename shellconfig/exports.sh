@@ -70,6 +70,9 @@ done
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH=$HOME/.cargo/bin:$PATH
 
+## Python pip packages
+export PATH=$HOME/Library/Python/3.11/bin:$PATH
+
 ## Golang path
 export GOPATH=$HOME/go
 export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
