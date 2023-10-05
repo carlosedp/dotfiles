@@ -33,7 +33,7 @@ PATH=/usr/local/go/bin:"$HOME"/go/bin:"$PATH"
 
 sudo -v
 
-if [ ! "$(command -v zsh)" ] 2> /dev/null 2>&1; then
+if [ ! "$(command -v zsh)" ] 2>/dev/null 2>&1; then
     log "Zsh not installed, installing..." "$GREEN"
 
     if [ "$(uname -s)" == "Darwin" ]; then
@@ -79,7 +79,6 @@ else
     fi
 fi
 
-
 echo ""
 log "Update dotfiles" "$GREEN"
 cloneorpull https://github.com/carlosedp/dotfiles.git "$DOTFILES"
@@ -119,11 +118,10 @@ bash -c "$DOTFILES/setup_links.sh"
 # Zsh plugins
 ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
 
-themes=("https://github.com/romkatv/powerlevel10k" \
-        )
+themes=("https://github.com/romkatv/powerlevel10k"
+)
 
-for t in "${themes[@]}"
-    do
+for t in "${themes[@]}"; do
     log "Installing $t prompt..." "$GREEN"
     theme_name=$(basename "$t")
 
@@ -131,21 +129,21 @@ for t in "${themes[@]}"
 done
 
 # Add plugins to the array below
-plugins=("https://github.com/carlosedp/zsh-iterm-touchbar" \
-         "https://github.com/TamCore/autoupdate-oh-my-zsh-plugins" \
-         "https://github.com/zsh-users/zsh-autosuggestions" \
-         "https://github.com/zdharma-continuum/fast-syntax-highlighting" \
-         "https://github.com/zsh-users/zsh-completions" \
-         "https://github.com/zsh-users/zsh-history-substring-search" \
-         "https://github.com/MichaelAquilina/zsh-you-should-use" \
-         "https://github.com/Aloxaf/fzf-tab" \
-         "https://github.com/wfxr/forgit" \
-         "https://github.com/zpm-zsh/clipboard" \
-         "https://github.com/ptavares/zsh-exa"
-        )
+plugins=("https://github.com/carlosedp/zsh-iterm-touchbar"
+    "https://github.com/TamCore/autoupdate-oh-my-zsh-plugins"
+    "https://github.com/zsh-users/zsh-autosuggestions"
+    "https://github.com/zdharma-continuum/fast-syntax-highlighting"
+    "https://github.com/zsh-users/zsh-completions"
+    "https://github.com/zsh-users/zsh-history-substring-search"
+    "https://github.com/MichaelAquilina/zsh-you-should-use"
+    "https://github.com/Aloxaf/fzf-tab"
+    "https://github.com/wfxr/forgit"
+    "https://github.com/zpm-zsh/clipboard"
+    "https://github.com/ptavares/zsh-exa"
+    "https://github.com/carlosedp/mill-zsh-completions"
+)
 plugin_names=()
-for p in "${plugins[@]}"
-    do
+for p in "${plugins[@]}"; do
     plugin_name=$(basename "$p")
     plugin_names+=("$plugin_name")
     log "Installing $plugin_name..." "$GREEN"

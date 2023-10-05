@@ -92,6 +92,7 @@ plugins=(
     zsh-exa
     direnv
     npm
+    mill-zsh-completions
 )
 
 source $ZSH/oh-my-zsh.sh
