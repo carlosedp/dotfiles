@@ -272,7 +272,7 @@ gt() {
         echo "Illegal number of parameters. Call function with tag name and a description."
         echo "E.g. $0 v1.0.0 My tag description"
         echo "Listing last 10 tags:"
-        git log --no-walk --tags -10 --simplify-by-decoration --reverse --date=format:"%Y-%m-%d %H:%I:%S" --format=format:"%C(03)%>|(10)%h%C(reset)  %C(04)%ad%C(reset)  %C(green)%<(16,trunc)%an%C(reset)  %C(bold 1)%<(20,trunc)%d%C(reset) %C(white)%s%C(reset)"
+        git log -n 10 --no-walk --tags --simplify-by-decoration --date=format:"%Y-%m-%d %H:%I:%S" --format=format:"%C(03)%>|(10)%h%C(reset)  %C(04)%ad%C(reset)  %C(bold 1)%<(25,trunc)%d%C(reset)  %C(green)%<(16,trunc)%an%C(reset)  %C(white)%s%C(reset)"
         return
     fi
     VER=$1
@@ -285,8 +285,9 @@ gt() {
 gtp() {
     # Ask if user wants to push to remote
     TAG=$(git describe --tags --abbrev=0)
-    REMOTE=$(git remote | grep -v upstream | head -1)
-    echo "Push tag $TAG to remote $REMOTE? [y/N] "
+    REMOTE=${1:-$(git remote | grep -v upstream | head -1)}
+    echo "Push tag $TAG to remote $REMOTE? [y/n] "
+    echo -n ">"
     read -r response
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
         git push "$REMOTE" "$TAG"
