@@ -4,7 +4,7 @@
 # Most functions require Coursier and FZF to be installed
 
 # Set default JVM to use (graalvm-java17, zulu, etc.)
-export JVM=graalvm-java17
+export JVM=graalvm-java21
 
 # Check if fzf is installed
 if [ ! -x "$(command -v fzf)" ] >/dev/null 2>&1; then
@@ -35,7 +35,7 @@ alias javalist='cs java --available | fzf --preview-window=,hidden --reverse'
 
 # Set default JVM to use (graalvm-java17, zulu, etc.) on scala.sh file
 javasetdefault() {
-    USE=$(cs java --available |cut -d":" -f1| sort -u | fzf --preview-window=,hidden --reverse --prompt="Select JDK")
+    USE=$(cs java --available |cut -d":" -f1| sort -u | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
     sed -i "s/^export JVM=.*/export JVM=${USE}/" "$HOME/.dotfiles/shellconfig/scala.sh"
     echo "Loading the new config and installing $USE if needed..."
     source "$HOME/.dotfiles/shellconfig/scala.sh"
@@ -44,13 +44,13 @@ javasetdefault() {
 
 # Install Java using Coursier
 javainstall() {
-    USE=$(cs java --available | fzf --preview-window=,hidden --reverse --prompt="Select JDK to install")
+    USE=$(cs java --available | fzf --preview-window=,hidden --reverse --prompt="Select JDK to install:")
     cs java --jvm "$USE"
 }
 
 # Switch Java version using Coursier
 javause() {
-    USE=$(cs java --installed  | cut -d" " -f1 | fzf --preview-window=,hidden --reverse --prompt="Select JDK")
+    USE=$(cs java --installed  | cut -d" " -f1 | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
     eval "$(cs java --jvm "$USE" --env)"
     export PATH=$JAVA_HOME/bin:$PATH
 }
@@ -76,7 +76,7 @@ javaupd() {
 }
 
 javaremove() {
-    USE=$(cs java --installed | fzf --preview-window=,hidden --reverse --prompt="Select JDK to remove" --with-nth=1)
+    USE=$(cs java --installed | fzf --preview-window=,hidden --reverse --prompt="Select JDK to remove:" --with-nth=1)
     echo "$USE"
     rm -rf "$(realpath "$(echo "$USE" | cut -d" " -f4)/../../../..")"
 }
@@ -86,7 +86,7 @@ function csi() { # fzf coursier install
   function csl() {
     unzip -l "$(cs fetch "$1":latest.stable)" | grep json | sed -E 's/.*:[0-9]{2}\s*(.+)\.json$/\1/'
   }
-    cs install --contrib "$(cat <(csl io.get-coursier:apps) <(csl io.get-coursier:apps-contrib) | fzf --preview-window=,hidden --reverse --prompt="Select app to install")"
+    cs install --contrib "$(cat <(csl io.get-coursier:apps) <(csl io.get-coursier:apps-contrib) | fzf --preview-window=,hidden --reverse --prompt="Select app to install:")"
 }
 
 # Coursier Resolve tree for package
