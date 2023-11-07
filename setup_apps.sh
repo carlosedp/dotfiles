@@ -48,7 +48,8 @@ if [ "$(uname -s)" == "Linux" ]; then
     log "Installing Rust apps..." "$GREENUNDER"
     echo ""
 
-    rustapps=("exa"
+    rustapps=(
+        "eza"
         "bat"
         "git-delta"
         "hyperfine"

@@ -23,8 +23,9 @@ fi
 # alias ls='ls -hF ${colorflag}' # classify files in colour
 # alias ll='ls -ltr'   # long list
 # alias la='ls -lA'    # all but . and ..
-alias exa='exa --color=always'
-alias ll='exa -lbF -smod' # long list
+alias exa='eza --color=always'
+alias eza='eza --color=always'
+alias ll='eza -lbF -smod' # long list
 alias lsd='ls -lhF ${colorflag} | grep --color=never "^d"'
 
 alias l='ls -CF'

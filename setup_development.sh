@@ -62,7 +62,6 @@ if [ -x "$(command -v cs)" ] >/dev/null 2>&1; then
     export JAVA_HOME
     export PATH=$JAVA_HOME/bin:$PATH
     log "Install Scala Coursier applications" "$GREEN"
-    # Java version comes from JVM var in `shellconfig/exports.sh`
     cs channel -a https://raw.githubusercontent.com/oyvindberg/bleep/master/coursier-channel.json
     cs install \
         cs \
@@ -70,6 +69,7 @@ if [ -x "$(command -v cs)" ] >/dev/null 2>&1; then
         bloop-jvm \
         sbt \
         scala \
+        scalac \
         scalafmt \
         scalafix \
         scala-cli \
