@@ -52,11 +52,11 @@ elif [ "$(uname -s)" == "Linux" ]; then
 fi
 
 # Scala
-# The [JVM](./shellconfig/scala.sh) env is defined in scala.sh
+# The [JVM_VERSION](./shellconfig/scala.sh) env is defined in scala.sh
 if [ -x "$(command -v cs)" ] >/dev/null 2>&1; then
     # Install JVM using Coursier if supported
     if containsElement "$(uname -m)" "${GRAALVM_ARCHS[@]}"; then
-        cs install --jvm "${JVM}"
+        cs install --jvm "${JVM_VERSION}"
     fi
     JAVA_HOME=$(cs java-home)
     export JAVA_HOME

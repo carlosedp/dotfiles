@@ -4,7 +4,7 @@
 # Most functions require Coursier and FZF to be installed
 
 # Set default JVM to use (graalvm-java17, zulu, etc.)
-export JVM=graalvm-java21
+export JVM_VERSION=graalvm-java21
 
 # Check if fzf is installed
 if [ ! -x "$(command -v fzf)" ] >/dev/null 2>&1; then
@@ -18,8 +18,8 @@ export PATH="$HOME/.local/share/coursier/bin:$PATH"
 # Add Java to path (if coursier is installed)
 JAVA_HOME=/usr/local/java
 if [ -x "$(command -v cs)" ] ; then
-    if [[ "$(cs java-home --jvm ${JVM} > /dev/null 2>&1)" -eq 0 ]]; then
-        JAVA_HOME=$(cs java-home --jvm ${JVM})
+    if [[ "$(cs java-home --jvm ${JVM_VERSION} > /dev/null 2>&1)" -eq 0 ]]; then
+        JAVA_HOME=$(cs java-home --jvm ${JVM_VERSION})
     fi
     export JAVA_HOME
     export PATH=$JAVA_HOME/bin:$PATH
@@ -36,10 +36,10 @@ alias javalist='cs java --available | fzf --preview-window=,hidden --reverse'
 # Set default JVM to use (graalvm-java17, zulu, etc.) on scala.sh file
 javasetdefault() {
     USE=$(cs java --available |cut -d":" -f1| sort -u | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
-    sed -i "s/^export JVM=.*/export JVM=${USE}/" "$HOME/.dotfiles/shellconfig/scala.sh"
+    sed -i "s/^export JVM_VERSION=.*/export JVM_VERSION=${USE}/" "$HOME/.dotfiles/shellconfig/scala.sh"
     echo "Loading the new config and installing $USE if needed..."
     source "$HOME/.dotfiles/shellconfig/scala.sh"
-    echo "Default JVM set to $JVM."
+    echo "Default JVM set to $JVM_VERSION."
 }
 
 # Install Java using Coursier
@@ -58,21 +58,21 @@ javause() {
 javaupd() {
     # JVM var comes from `shellconfig/exports.sh` defining which JVM to use (adptium, graalvm-java17, zulu, etc.)
     echo "Checking installed Java versions..."
-    INSTALLEDJAVA=$(cs java --installed | grep "$JVM")
+    INSTALLEDJAVA=$(cs java --installed | grep "$JVM_VERSION")
     CURRENTJAVA=$(echo "$INSTALLEDJAVA" | cut -d" " -f1)
     CURRENTPATH=$(echo "$INSTALLEDJAVA" | cut -d" " -f4)
     CURRENTVERSION=$(echo "$CURRENTJAVA" | cut -d":" -f2)
-    LATESTJAVA=$(cs java --available | grep "$JVM" | tail -1 | cut -d":" -f2)
+    LATESTJAVA=$(cs java --available | grep "$JVM_VERSION" | tail -1 | cut -d":" -f2)
     if [ "$CURRENTVERSION" = "$LATESTJAVA" ]; then
-        echo "Java $JVM is already up-to-date at version $CURRENTVERSION."
+        echo "Java $JVM_VERSION is already up-to-date at version $CURRENTVERSION."
         return
     fi
     echo "Current Java is $CURRENTJAVA at $CURRENTPATH"
-    echo "Removing current Java $JVM..."
+    echo "Removing current Java $JVM_VERSION..."
     rm -rf "$(realpath "$CURRENTPATH/../../..")"
-    echo "Installing latest Java $JVM version $LATESTJAVA..."
-    cs java --jvm "$JVM"
-    echo "Java $JVM is now at version $LATESTJAVA, reload your shell to load the right path."
+    echo "Installing latest Java $JVM_VERSION version $LATESTJAVA..."
+    cs java --jvm "$JVM_VERSION"
+    echo "Java $JVM_VERSION is now at version $LATESTJAVA, reload your shell to load the right path."
 }
 
 javaremove() {
@@ -83,9 +83,9 @@ javaremove() {
 
 # Coursier Install package
 function csi() { # fzf coursier install
-  function csl() {
-    unzip -l "$(cs fetch "$1":latest.stable)" | grep json | sed -E 's/.*:[0-9]{2}\s*(.+)\.json$/\1/'
-  }
+    function csl() {
+        unzip -l "$(cs fetch "$1":latest.stable)" | grep json | sed -E 's/.*:[0-9]{2}\s*(.+)\.json$/\1/'
+    }
     cs install --contrib "$(cat <(csl io.get-coursier:apps) <(csl io.get-coursier:apps-contrib) | fzf --preview-window=,hidden --reverse --prompt="Select app to install:")"
 }
 
