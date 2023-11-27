@@ -7,6 +7,11 @@
           "rebuild": 0,
           "root_url": "https://ghcr.io/v2/homebrew/core",
           "files": {
+            "arm64_sonoma": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/mas/blobs/sha256:7b11bfefcb43e9a423ff301f7bbc29b0fb86044bf93442f243c5a8a67d8d4869",
+              "sha256": "7b11bfefcb43e9a423ff301f7bbc29b0fb86044bf93442f243c5a8a67d8d4869"
+            },
             "arm64_ventura": {
               "cellar": ":any_skip_relocation",
               "url": "https://ghcr.io/v2/homebrew/core/mas/blobs/sha256:e49511dd1283813c4420aec9fc3b3167d18f9fdbb51d82b1e479b628d5312342",
@@ -21,6 +26,11 @@
               "cellar": ":any_skip_relocation",
               "url": "https://ghcr.io/v2/homebrew/core/mas/blobs/sha256:918a1484de106940f7bebc936e1ded87d7b65652054b09204887ad0651937ec4",
               "sha256": "918a1484de106940f7bebc936e1ded87d7b65652054b09204887ad0651937ec4"
+            },
+            "sonoma": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/mas/blobs/sha256:24e3057991ea1eed52eb4a27c0f17d794106770621e5a8bb975477dae135b82d",
+              "sha256": "24e3057991ea1eed52eb4a27c0f17d794106770621e5a8bb975477dae135b82d"
             },
             "ventura": {
               "cellar": ":any_skip_relocation",
@@ -48,7 +58,7 @@
     },
     "cask": {
       "raycast": {
-        "version": "1.46.1",
+        "version": "1.62.2",
         "options": {
           "full_name": "raycast",
           "args": {
@@ -57,7 +67,7 @@
         }
       },
       "appcleaner": {
-        "version": "3.6.7,4301",
+        "version": "3.6.8",
         "options": {
           "full_name": "appcleaner",
           "args": {
@@ -66,7 +76,7 @@
         }
       },
       "betterzip": {
-        "version": "5.3",
+        "version": "5.3.4",
         "options": {
           "full_name": "betterzip",
           "args": {
@@ -75,7 +85,7 @@
         }
       },
       "docker": {
-        "version": "4.16.2,95914",
+        "version": "4.25.2,129061",
         "options": {
           "full_name": "docker",
           "args": {
@@ -93,7 +103,7 @@
         }
       },
       "firefox": {
-        "version": "109.0",
+        "version": "120.0",
         "options": {
           "full_name": "firefox",
           "args": {
@@ -102,7 +112,7 @@
         }
       },
       "franz": {
-        "version": "5.9.2",
+        "version": "5.10.0",
         "options": {
           "full_name": "franz",
           "args": {
@@ -111,7 +121,7 @@
         }
       },
       "google-drive": {
-        "version": "69.0.0",
+        "version": "84.0.4",
         "options": {
           "full_name": "google-drive",
           "args": {
@@ -120,7 +130,7 @@
         }
       },
       "google-chrome": {
-        "version": "109.0.5414.87",
+        "version": "119.0.6045.159",
         "options": {
           "full_name": "google-chrome",
           "args": {
@@ -129,7 +139,7 @@
         }
       },
       "go2shell": {
-        "version": "2.5,25",
+        "version": "2.5",
         "options": {
           "full_name": "go2shell",
           "args": {
@@ -138,7 +148,7 @@
         }
       },
       "grandperspective": {
-        "version": "3.0.1",
+        "version": "3.4.2",
         "options": {
           "full_name": "grandperspective",
           "args": {
@@ -147,7 +157,7 @@
         }
       },
       "handbrake": {
-        "version": "1.6.1",
+        "version": "1.7.1",
         "options": {
           "full_name": "handbrake",
           "args": {
@@ -165,7 +175,7 @@
         }
       },
       "iterm2": {
-        "version": "3.4.19",
+        "version": "3.4.22",
         "options": {
           "full_name": "iterm2",
           "args": {
@@ -174,7 +184,7 @@
         }
       },
       "itsycal": {
-        "version": "0.13.4,2228",
+        "version": "0.15.1",
         "options": {
           "full_name": "itsycal",
           "args": {
@@ -183,7 +193,7 @@
         }
       },
       "obsidian": {
-        "version": "1.1.9",
+        "version": "1.4.16",
         "options": {
           "full_name": "obsidian",
           "args": {
@@ -219,7 +229,7 @@
         }
       },
       "qlmarkdown": {
-        "version": "1.0.15",
+        "version": "1.0.17",
         "options": {
           "full_name": "qlmarkdown",
           "args": {
@@ -246,7 +256,7 @@
         }
       },
       "rectangle": {
-        "version": "0.65,71",
+        "version": "0.74",
         "options": {
           "full_name": "rectangle",
           "args": {
@@ -255,7 +265,7 @@
         }
       },
       "send-to-kindle": {
-        "version": "1.1.1.254",
+        "version": "1.1.1.255",
         "options": {
           "full_name": "send-to-kindle",
           "args": {
@@ -264,7 +274,7 @@
         }
       },
       "spotify": {
-        "version": "1.2.3.1115,d61a8f5c,384",
+        "version": "1.2.25.1011,0348b2ea,716",
         "options": {
           "full_name": "spotify",
           "args": {
@@ -291,7 +301,7 @@
         }
       },
       "transmission": {
-        "version": "3.00",
+        "version": "4.0.4",
         "options": {
           "full_name": "transmission",
           "args": {
@@ -300,7 +310,7 @@
         }
       },
       "virtualbox": {
-        "version": "7.0.6,155176",
+        "version": "7.0.12,159484",
         "options": {
           "full_name": "virtualbox",
           "args": {
@@ -309,7 +319,7 @@
         }
       },
       "vlc": {
-        "version": "3.0.18",
+        "version": "3.0.20",
         "options": {
           "full_name": "vlc",
           "args": {
@@ -318,7 +328,7 @@
         }
       },
       "balenaetcher": {
-        "version": "latest",
+        "version": "1.18.11",
         "options": {
           "full_name": "balenaetcher",
           "args": {
@@ -327,7 +337,7 @@
         }
       },
       "powershell": {
-        "version": "7.3.1",
+        "version": "7.4.0",
         "options": {
           "full_name": "powershell",
           "args": {
@@ -336,7 +346,7 @@
         }
       },
       "nrlquaker-winbox": {
-        "version": "3.37.0",
+        "version": "3.40.0",
         "options": {
           "full_name": "nrlquaker-winbox",
           "args": {
@@ -345,7 +355,7 @@
         }
       },
       "1password": {
-        "version": "8.9.13",
+        "version": "8.10.20",
         "options": {
           "full_name": "1password",
           "args": {
@@ -354,7 +364,7 @@
         }
       },
       "1password-cli": {
-        "version": "2.12.0",
+        "version": "2.23.0",
         "options": {
           "full_name": "1password-cli",
           "args": {
@@ -363,7 +373,7 @@
         }
       },
       "maccy": {
-        "version": "0.25.0,14",
+        "version": "0.28.0",
         "options": {
           "full_name": "maccy",
           "args": {
@@ -372,7 +382,7 @@
         }
       },
       "contexts": {
-        "version": "3.8.1",
+        "version": "3.9.0",
         "options": {
           "full_name": "contexts",
           "args": {
@@ -399,7 +409,7 @@
         }
       },
       "clocker": {
-        "version": "22.07",
+        "version": "23.01",
         "options": {
           "full_name": "clocker",
           "args": {
@@ -408,7 +418,7 @@
         }
       },
       "fluid": {
-        "version": "2.1.2,2120",
+        "version": "2.1.2",
         "options": {
           "full_name": "fluid",
           "args": {
@@ -417,7 +427,7 @@
         }
       },
       "tunnelblick": {
-        "version": "3.8.7a,5770",
+        "version": "3.8.8e,5779.1",
         "options": {
           "full_name": "tunnelblick",
           "args": {
@@ -426,9 +436,18 @@
         }
       },
       "element": {
-        "version": "1.11.20",
+        "version": "1.11.50",
         "options": {
           "full_name": "element",
+          "args": {
+            "appdir": "/Applications"
+          }
+        }
+      },
+      "qobuz": {
+        "version": "7.1.3,010",
+        "options": {
+          "full_name": "qobuz",
           "args": {
             "appdir": "/Applications"
           }
@@ -450,7 +469,7 @@
       },
       "Speedtest": {
         "id": "1153157709",
-        "version": "1.25"
+        "version": "1.27"
       },
       "Wireguard": null
     }
@@ -464,6 +483,14 @@
         "CLT": "12.5.1.0.1.1623191612",
         "Xcode": "12.5.1",
         "macOS": "11.7.2"
+      },
+      "ventura": {
+        "HOMEBREW_VERSION": "4.1.22",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "api",
+        "CLT": "15.0.0.0.1.1694021235",
+        "Xcode": "15.0",
+        "macOS": "13.5"
       }
     }
   }
