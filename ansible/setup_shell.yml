@@ -1,0 +1,91 @@
+- name: ZSH setup
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Set a variable if the OS is Linux or MacOS
+      ansible.builtin.set_fact:
+        is_linux: "{{ ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' or ansible_os_family == 'Alpine' }}"
+        is_macos: "{{ ansible_os_family == 'Darwin' }}"
+
+    - name: Install basic packages on Linux
+      ansible.builtin.package:
+        name:
+          - zsh
+          - bash
+          - git
+          - curl
+          - wget
+        state: present
+        # Only run on Linux
+      when: is_linux
+      become: true
+
+    - name: Install basic packages on MacOS using Homebrew
+      community.general.homebrew:
+        name:
+          - zsh
+          - git
+          - curl
+          - wget
+        state: present
+        update_homebrew: true
+      when: is_macos
+      become: false
+
+    - name: Change default shell to zsh (Linux)
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        shell: /bin/zsh
+      when: is_linux
+      become: true
+
+    - name: Change default shell to zsh (MacOS)
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        shell: /usr/local/bin/zsh
+      when: is_macos
+
+    - name: Pull the dotfiles repository or update it
+      ansible.builtin.git: # noqa: latest[git]
+        repo: https://github.com/carlosedp/dotfiles.git
+        dest: $HOME/.dotfiles
+        update: true
+
+    - name: Check if oh-my-zsh is installed
+      ansible.builtin.stat:
+        path: $HOME/.oh-my-zsh
+      register: ohmyzsh_installed
+
+    # If oh-my-zsh is installed, update it
+    - name: Update oh-my-zsh as it is already installed
+      ansible.builtin.command: # noqa: latest[git]
+        cmd: $HOME/.oh-my-zsh/tools/upgrade.sh -v minimal
+        chdir: $HOME/.oh-my-zsh
+      register: omz_updated
+      changed_when: omz_updated.stdout.find('already at the latest version.') == -1
+      when: ohmyzsh_installed.stat.exists
+
+    - name: Install oh-my-zsh
+      ansible.builtin.shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && exit 0
+      args:
+        creates: $HOME/.oh-my-zsh
+      when: not ohmyzsh_installed.stat.exists
+
+    - name: Install fzf repository
+      ansible.builtin.git: # noqa: latest[git]
+        repo: https://github.com/junegunn/fzf
+        dest: $HOME/.fzf
+        update: true
+
+    - name: Install fzf
+      ansible.builtin.shell: $HOME/.fzf/install --all --no-update-rc --no-bash --no-fish --no-zsh
+      args:
+        creates: $HOME/.fzf
+
+
+    - name: Setup TMUX Plugin
+      ansible.builtin.git: # noqa: latest[git]
+        repo: https://github.com/tmux-plugins/tpm
+        dest: $HOME/.tmux/plugins/tpm
+        update: true
