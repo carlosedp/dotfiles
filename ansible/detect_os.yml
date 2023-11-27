@@ -1,0 +1,4 @@
+- name: Detect OS
+  ansible.builtin.set_fact:
+    is_linux: "{{ ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' or ansible_os_family == 'Alpine' }}"
+    is_macos: "{{ ansible_os_family == 'Darwin' }}"

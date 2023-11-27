@@ -3,10 +3,8 @@
   connection: local
 
   tasks:
-    - name: Set a variable if the OS is Linux or MacOS
-      ansible.builtin.set_fact:
-        is_linux: "{{ ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' or ansible_os_family == 'Alpine' }}"
-        is_macos: "{{ ansible_os_family == 'Darwin' }}"
+    - name: Include Detect OS task
+      ansible.builtin.include_tasks: detect_os.yml
 
     - name: Get all packed fonts
       ansible.builtin.find:
