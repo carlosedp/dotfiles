@@ -42,7 +42,7 @@ log "Linking .ssh directory" "$GREEN"
 createLink "$SYNC_FOLDER/Configs/SSH_Keys" "$HOME/.ssh"
 
 # Link PGP keys
-log "Linking .ssh directory" "$GREEN"
+log "Linking pgp directory" "$GREEN"
 createLink "$SYNC_FOLDER/Configs/pgp-keys" "$HOME/.gnupg"
 
 # Link 2fa keychain file
