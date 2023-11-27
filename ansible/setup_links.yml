@@ -6,16 +6,23 @@
   vars:
     # Define the default shell
     sync_folder: "$HOME/Google Drive/My Drive"
+    wsl2_sync_folder: "/mnt/g/My Drive"
 
   tasks:
     - name: Include Detect OS task
       ansible.builtin.include_tasks: detect_os.yml
 
-    - name: Check if sync folder exists
+    - name: Check if sync folder exists (MacOS)
       ansible.builtin.stat:
         path: "{{ sync_folder }}"
-      when: is_macos
       register: sync_folder_exists
+      when: is_macos
+
+    - name: Check if sync folder exists (WSL2)
+      ansible.builtin.stat:
+        path: "{{ wsl2_sync_folder }}"
+      register: sync_folder_exists
+      when: is_wsl2
 
     - name: Build a list of all rc files
       ansible.builtin.find:
@@ -36,7 +43,7 @@
         src: "{{ sync_folder }}/Configs/rc/config"
         dest: "$HOME/.config"
         state: link
-      when: sync_folder_exists.stat.exists
+      when: sync_folder_exists is defined and sync_folder_exists.stat.exists
 
     # Fix WSL2 permission issues someday
     - name: Setup symlinks for ssh config

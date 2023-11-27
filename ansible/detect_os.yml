@@ -2,3 +2,4 @@
   ansible.builtin.set_fact:
     is_linux: "{{ ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' or ansible_os_family == 'Alpine' }}"
     is_macos: "{{ ansible_os_family == 'Darwin' }}"
+    is_wsl2: "{{ ansible_kernel.find('WSL2') != -1 }}"

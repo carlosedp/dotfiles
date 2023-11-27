@@ -6,17 +6,11 @@
     - name: Include Detect OS task
       ansible.builtin.include_tasks: detect_os.yml
 
-    - name: Check if Developer Tools are installed (MacOS)
-      ansible.builtin.command: xcode-select -p
-      register: xcode_output
-      changed_when: xcode_output.rc != 0
-      when: is_macos
-
     - name: Install Developer Tools (MacOS)
       ansible.builtin.command: xcode-select --install
-      when: xcode_output.rc != 0 and is_macos
+      when: is_macos
       register: xcode_output_install
-      changed_when: xcode_output_install.rc == 0
+      changed_when: xcode_output_install.stdout.find("command line tools are already installed") != -1
 
 - name: Setup Shell
   ansible.builtin.import_playbook: setup_shell.yml
