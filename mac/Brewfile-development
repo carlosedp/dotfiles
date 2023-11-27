@@ -1,3 +1,4 @@
+# Add taps
 tap "homebrew/cask-fonts"
 tap "coursier/formulas"
 
