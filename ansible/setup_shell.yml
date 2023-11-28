@@ -15,7 +15,6 @@
           - curl
           - wget
         state: present
-        # Only run on Linux
       when: is_linux
       become: true
 
@@ -44,11 +43,25 @@
         shell: /usr/local/bin/zsh
       when: is_macos
 
-    - name: Pull the dotfiles repository or update it
-      ansible.builtin.git: # noqa: latest[git]
-        repo: https://github.com/carlosedp/dotfiles.git
-        dest: $HOME/.dotfiles
-        update: true
+    # - name: Pull the dotfiles repository or update it
+    #   ansible.builtin.git: # noqa: latest[git]
+    #     repo: https://github.com/carlosedp/dotfiles.git
+    #     dest: $HOME/.dotfiles
+    #     update: true
+
+    - name: Check if vimrc exists
+      ansible.builtin.stat:
+        path: $HOME/.dotfiles/rc/vimrc
+      register: vimrc
+
+    - name: Link user vimrc to root so sudo has same configs
+      ansible.builtin.file:
+        src: $HOME/.dotfiles/rc/vimrc
+        dest: /root/.vimrc
+        state: file
+        force: true
+      become: true
+      when: vimrc.stat.exists and is_linux
 
     - name: Check if oh-my-zsh is installed
       ansible.builtin.stat:

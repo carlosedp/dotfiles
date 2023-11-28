@@ -21,7 +21,7 @@
     - name: Check if sync folder exists (WSL2)
       ansible.builtin.stat:
         path: "{{ wsl2_sync_folder }}"
-      register: sync_folder_exists
+      register: sync_folder_wsl2_exists
       when: is_wsl2
 
     - name: Build a list of all rc files
@@ -38,12 +38,19 @@
         state: link
       with_items: "{{ rc_files.files }}"
 
-    - name: Setup symlinks for private .config folder
+    - name: Setup symlinks for private .config folder (MacOS)
       ansible.builtin.file:
         src: "{{ sync_folder }}/Configs/rc/config"
         dest: "$HOME/.config"
         state: link
-      when: sync_folder_exists is defined and sync_folder_exists.stat.exists
+      when: is_macos and sync_folder_exists is defined and sync_folder_exists.stat.exists
+
+    - name: Setup symlinks for private .config folder (WSL2)
+      ansible.builtin.file:
+        src: "{{ sync_folder }}/Configs/rc/config"
+        dest: "$HOME/.config"
+        state: link
+      when: is_wsl2 and sync_folder_wsl2_exists is defined and sync_folder_wsl2_exists.stat.exists
 
     # Fix WSL2 permission issues someday
     - name: Setup symlinks for ssh config

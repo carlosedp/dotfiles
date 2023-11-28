@@ -1,6 +1,62 @@
 - name: Workstation Setup
   hosts: localhost
   connection: local
+  gather_facts: false
+
+  pre_tasks:
+    - name: Install python3 for Ansible (Debian/Ubuntu)
+      ansible.builtin.raw: |
+        if [ "$(grep 'debian\|ubuntu' /etc/os-release)" != "" -a ! "test -e /usr/bin/python3" ]; then
+          echo "Installing Python3"
+          apt -qqy update
+          apt install -qqy python3 python3-setuptools
+        else
+          echo "No change"
+        fi
+      become: true
+      register: output
+      changed_when: output.rc != 0
+
+    - name: Install python3 for Ansible (Fedora/RHEL/CentOS)
+      ansible.builtin.raw: |
+        if [ "$(grep 'fedora\|centos' /etc/os-release)" != "" -a ! "test -e /usr/bin/python3" ]; then
+          echo "Installing Python3"
+          dnf install -y python3
+        else
+          echo "Not Fedora"
+        fi
+      become: true
+      register: output
+      changed_when: output.rc != 0
+
+    - name: Install python3 for Ansible (Alpine)
+      ansible.builtin.raw: |
+        if [ "$(grep alpine /etc/os-release)" != "" -a ! "test -e /usr/bin/python3" ]; then
+          echo "Installing Python3"
+          apk update
+          apk upgrade
+          apk add python3 py3-setuptools
+        else
+          echo "Not Alpine"
+        fi
+      become: true
+      register: output
+      changed_when: output.rc != 0
+
+    - name: Install python3 for Ansible (MacOS)
+      ansible.builtin.raw: |
+        if [ "$(uname)" == "Darwin" -a ! "test -e /usr/bin/python3" ]; then
+          echo "Installing Homebrew and Python3"
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          brew install python3
+        else
+          echo "Not MacOS or Python already installed"
+        fi
+      register: output
+      changed_when: output.rc != 0
+
+    - name: Gathering Facts
+      ansible.builtin.setup:
 
   tasks:
     - name: Include Detect OS task
@@ -10,7 +66,43 @@
       ansible.builtin.command: xcode-select --install
       when: is_macos
       register: xcode_output_install
-      changed_when: xcode_output_install.stdout.find("command line tools are already installed") != -1
+      failed_when: xcode_output_install.rc != 0 and xcode_output_install.rc != 1
+      changed_when: "'command line tools are already installed' not in xcode_output_install.stderr"
+
+    - name: Create a "wheel" and "ssh" group for sudoers
+      ansible.builtin.group:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - wheel
+        - ssh
+      when: is_linux
+      tags:
+        - user
+
+    - name: Allow "wheel" group to have passwordless sudo
+      ansible.builtin.lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: "^%wheel"
+        line: "%wheel ALL=(ALL) NOPASSWD: ALL"
+        validate: "visudo -cf %s"
+      when: is_linux
+      tags:
+        - user
+
+    - name: Create user and add to sudoers
+      ansible.builtin.user:
+        name: "{{ new_user }}"
+        groups: "wheel, ssh"
+        shell: /bin/bash
+        append: true
+        state: present
+        createhome: true
+      when: is_linux
+      tags:
+        - user
+
 
 - name: Setup Shell
   ansible.builtin.import_playbook: setup_shell.yml

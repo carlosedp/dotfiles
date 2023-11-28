@@ -2,6 +2,9 @@
   hosts: localhost
   connection: local
 
+  vars_files:
+    - packages_apps.yml
+
   tasks:
     - name: Include Detect OS task
       ansible.builtin.include_tasks: detect_os.yml
@@ -63,90 +66,47 @@
       changed_when: brew_development_bundle.rc != 0
       # tags: skip
 
+    - name: Upgrade packages (Debian/Ubuntu)
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+      when: ansible_os_family == 'Debian'
+
+    - name: Upgrade packages (Fedora)
+      ansible.builtin.yum:
+        update_cache: true
+        name: "*"
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+    - name: Upgrade packages (Alpine)
+      community.general.apk:
+        update_cache: true
+        upgrade: true
+      when: ansible_distribution == 'Alpine'
+
     - name: Install Linux Packages (Base)
       ansible.builtin.package:
-        name: "{{ item }}"
+        name: "{{ base_packages }}"
         state: present
-      loop:
-        - sudo
-        - curl
-        - wget
-        - git
-        - unzip
-        - file
-        - dbus
-        - bc
-        - bash-completion
-        - hdparm
-        - sysstat
-        - less
-        - vim
-        - iptables
-        - ipset
-        - pciutils
-        - iperf3
-        - net-tools
-        - jq
-        - haveged
-        - htop
-        - zsh
-        - tmux
-        - neofetch
-        - lshw
-        - iotop
-        - rsync
-        - tree
-        - autojump
-        - lm-sensors
-        - nodejs
-        - npm
       when: is_linux
 
     - name: Install Linux Packages (Debian)
       ansible.builtin.package:
-        name: "{{ item }}"
+        name: "{{ debian_packages }}"
         state: present
-      loop:
-        - openssh-client
-        - openssh-server
-        - locales
-        - ack-grep
-        - nfs-common
-        - apt-utils
-        - build-essential
-        - lsb-release
-        - telnet
-        - xz-utils
-        - apt-rdepends
       when: is_linux and ansible_os_family == 'Debian'
 
     - name: Install Linux Packages (RedHat)
       ansible.builtin.package:
-        name: "{{ item }}"
+        name: "{{ fedora_packages }}"
         state: present
-      loop:
-        - openssh-client
-        - openssh-server
-        - ack
-        - nfs-utils
-        - "@development-tools"
-        - which
-        - lsb-release
-        - telnet
-        - xz
       when: is_linux and ansible_os_family == 'RedHat'
 
     - name: Install Linux Packages (Alpine)
       ansible.builtin.package:
-        name: "{{ item }}"
+        name: "{{ alpine_packages }}"
         state: present
-      loop:
-        - openssh-client
-        - openssh-server
-        - ack
-        - nfs-utils
-        - build-base
-        - xz
       when: is_linux and ansible_os_family == 'Alpine'
 
     - name: Check if Golang is installed (Linux)
@@ -184,19 +144,9 @@
     - name: Install Golang Apps
       ansible.builtin.command:
         cmd: go install "{{ item }}"
-      loop:
-        - "github.com/github/hub/v2@master"
-        - "rsc.io/2fa@latest"
-        - "golang.org/x/tools/cmd/benchcmp@latest"
-        - "github.com/traefik/yaegi/cmd/yaegi@latest"
-        - "github.com/rakyll/hey@latest"
-        - "github.com/junegunn/fzf@latest"
-        - "github.com/brancz/gojsontoyaml@master"
-        - "mvdan.cc/sh/v3/cmd/shfmt@latest"
-        - "github.com/hhatto/gocloc/cmd/gocloc@latest"
-        - "github.com/charmbracelet/glow@latest"
-      register: go_apps
-      changed_when: go_apps.rc != 0
+      loop: "{{ go_apps }}"
+      register: go_apps_installed
+      changed_when: go_apps_installed.rc != 0
 
     - name: Install Rust (Linux)
       ansible.builtin.command: # noqa: command-instead-of-module
@@ -208,24 +158,17 @@
     - name: Install Rust Apps via Cargo
       ansible.builtin.command:
         cmd: cargo install "{{ item }}"
-      loop:
-        - "eza"
-        - "bat"
-        - "git-delta"
-        - "hyperfine"
-        - "ripgrep"
-        - "fd-find"
-      register: rust_apps
+      loop: "{{ rust_apps }}"
+      register: rust_apps_installed
       when: is_linux
-      changed_when: rust_apps.rc != 0
+      changed_when: rust_apps_installed.rc != 0
 
     - name: Install Python Apps
       ansible.builtin.command:
         cmd: pip3 install "{{ item }}"
-      loop:
-        - "ansible-lint"
-      register: python_apps
-      changed_when: python_apps.rc != 0
+      loop: "{{ python_apps }}"
+      register: python_apps_installed
+      changed_when: python_apps_installed.rc != 0
 
     - name: Install Kubernetes CLI (kubectl)
       ansible.builtin.shell: |
@@ -253,14 +196,9 @@
     - name: Install Kubectl plugins
       ansible.builtin.command:
         cmd: /usr/local/bin/kubectl krew install "{{ item }}"
-      loop:
-        - "ctx"
-        - "ns"
-        - "restart"
-        - "access-matrix"
-      when: is_linux
-      register: kubectl_plugins
-      changed_when: kubectl_plugins.rc != 0
+      loop: "{{ kubectl_plugins }}"
+      register: kubectl_plugins_installed
+      changed_when: kubectl_plugins_installed.rc != 0
 
     - name: Install cpanminus to manage Perl modules
       ansible.builtin.shell: | # noqa: command-instead-of-module
@@ -343,7 +281,7 @@
     - name: Get JDK version from scala.sh
       ansible.builtin.shell: |
         set -o pipefail
-        cat $HOME/.dotfiles/shellconfig/scala.sh|grep "export JVM_VERSION" | head -1 | cut -d"=" -f2
+        cat $HOME/.dotfiles/shellconfig/scala.sh | grep "export JVM_VERSION" | head -1 | cut -d"=" -f2
       register: jdk_version
       changed_when: jdk_version.rc != 0
 
@@ -364,16 +302,6 @@
     - name: Install Scala Coursier apps
       ansible.builtin.command:
         cmd: cs install "{{ item }}"
-      loop:
-        - cs
-        - giter8
-        - bloop-jvm
-        - sbt
-        - scala
-        - scalac
-        - scalafmt
-        - scalafix
-        - scala-cli
-        - bleep
-      register: coursier_apps
-      changed_when: coursier_apps.rc != 0
+      loop: "{{ coursier_apps }}"
+      register: coursier_apps_installed
+      changed_when: coursier_apps_installed.rc != 0

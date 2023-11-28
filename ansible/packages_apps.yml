@@ -1,0 +1,102 @@
+go_apps:
+  - "github.com/github/hub/v2@master"
+  - "rsc.io/2fa@latest"
+  - "golang.org/x/tools/cmd/benchcmp@latest"
+  - "github.com/traefik/yaegi/cmd/yaegi@latest"
+  - "github.com/rakyll/hey@latest"
+  - "github.com/junegunn/fzf@latest"
+  - "github.com/brancz/gojsontoyaml@master"
+  - "mvdan.cc/sh/v3/cmd/shfmt@latest"
+  - "github.com/hhatto/gocloc/cmd/gocloc@latest"
+  - "github.com/charmbracelet/glow@latest"
+
+rust_apps:
+  - "eza"
+  - "bat"
+  - "git-delta"
+  - "hyperfine"
+  - "ripgrep"
+  - "fd-find"
+
+python_apps:
+  - "ansible-lint"
+
+coursier_apps:
+  - cs
+  - giter8
+  - bloop-jvm
+  - sbt
+  - scala
+  - scalac
+  - scalafmt
+  - scalafix
+  - scala-cli
+  - bleep
+
+kubectl_plugins:
+  - "ctx"
+  - "ns"
+  - "restart"
+  - "access-matrix"
+  - "stern"
+
+base_packages:
+  - sudo
+  - openssh-server
+  - curl
+  - wget
+  - tar
+  - gzip
+  - git
+  - file
+  - dbus
+  - bc
+  - bash-completion
+  - hdparm
+  - sysstat
+  - less
+  - vim
+  - iptables
+  - ipset
+  - pciutils
+  - iperf3
+  - net-tools
+  - jq
+  - haveged
+  - htop
+  - zsh
+  - tmux
+  - neofetch
+  - lshw
+  - iotop
+  - rsync
+  - tree
+  - autojump
+  - smartmontools
+
+debian_packages:
+  - locales
+  - ack-grep
+  - nfs-common
+  - apt-utils
+  - openssh-client
+  - build-essential
+  - lm-sensors
+  - ripgrep
+
+fedora_packages:
+  - ack
+  - nfs-utils
+  - "@Development tools"
+  - openssh-clients
+  - lm_sensors
+
+alpine_packages:
+  - ack
+  - nfs-utils
+  - build-base
+  - openssh-client
+
+extra_packages:
+  - autojump
+  - telnet
