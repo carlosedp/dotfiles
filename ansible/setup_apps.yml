@@ -1,6 +1,5 @@
 - name: Setup Apps and Development Tools
-  hosts: localhost
-  connection: local
+  hosts: all
 
   vars_files:
     - packages_apps.yml

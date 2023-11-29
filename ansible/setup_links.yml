@@ -1,6 +1,5 @@
 - name: Setup Links
-  hosts: localhost
-  connection: local
+  hosts: all
 
   # Define config variables
   vars:
@@ -36,6 +35,7 @@
         src: "{{ item.path }}"
         dest: "$HOME/.{{ item.path | basename }}"
         state: link
+        force: true
       with_items: "{{ rc_files.files }}"
 
     - name: Setup symlinks for private .config folder (MacOS)

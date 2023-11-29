@@ -1,6 +1,5 @@
 - name: ZSH setup
-  hosts: localhost
-  connection: local
+  hosts: all
 
   tasks:
     - name: Include Detect OS task
@@ -43,11 +42,11 @@
         shell: /usr/local/bin/zsh
       when: is_macos
 
-    # - name: Pull the dotfiles repository or update it
-    #   ansible.builtin.git: # noqa: latest[git]
-    #     repo: https://github.com/carlosedp/dotfiles.git
-    #     dest: $HOME/.dotfiles
-    #     update: true
+    - name: Pull the dotfiles repository or update it
+      ansible.builtin.git: # noqa: latest[git]
+        repo: https://github.com/carlosedp/dotfiles.git
+        dest: $HOME/.dotfiles
+        update: true
 
     - name: Check if vimrc exists
       ansible.builtin.stat:
@@ -58,7 +57,7 @@
       ansible.builtin.file:
         src: $HOME/.dotfiles/rc/vimrc
         dest: /root/.vimrc
-        state: file
+        state: link
         force: true
       become: true
       when: vimrc.stat.exists and is_linux

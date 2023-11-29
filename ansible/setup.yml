@@ -1,17 +1,16 @@
 - name: Workstation Setup
-  hosts: localhost
-  connection: local
+  hosts: all
   gather_facts: false
+
+  vars:
+    new_user: "carlosedp"
 
   pre_tasks:
     - name: Install python3 for Ansible (Debian/Ubuntu)
       ansible.builtin.raw: |
         if [ "$(grep 'debian\|ubuntu' /etc/os-release)" != "" -a ! "test -e /usr/bin/python3" ]; then
-          echo "Installing Python3"
-          apt -qqy update
-          apt install -qqy python3 python3-setuptools
-        else
-          echo "No change"
+          apt -qqy update;
+          apt install -qqy python3 python3-setuptools;
         fi
       become: true
       register: output
@@ -20,10 +19,7 @@
     - name: Install python3 for Ansible (Fedora/RHEL/CentOS)
       ansible.builtin.raw: |
         if [ "$(grep 'fedora\|centos' /etc/os-release)" != "" -a ! "test -e /usr/bin/python3" ]; then
-          echo "Installing Python3"
-          dnf install -y python3
-        else
-          echo "Not Fedora"
+          dnf install -y python3;
         fi
       become: true
       register: output
@@ -32,12 +28,9 @@
     - name: Install python3 for Ansible (Alpine)
       ansible.builtin.raw: |
         if [ "$(grep alpine /etc/os-release)" != "" -a ! "test -e /usr/bin/python3" ]; then
-          echo "Installing Python3"
-          apk update
-          apk upgrade
-          apk add python3 py3-setuptools
-        else
-          echo "Not Alpine"
+          apk update;
+          apk upgrade;
+          apk add python3 py3-setuptools;
         fi
       become: true
       register: output
@@ -46,11 +39,8 @@
     - name: Install python3 for Ansible (MacOS)
       ansible.builtin.raw: |
         if [ "$(uname)" == "Darwin" -a ! "test -e /usr/bin/python3" ]; then
-          echo "Installing Homebrew and Python3"
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          brew install python3
-        else
-          echo "Not MacOS or Python already installed"
+          brew install python3;
         fi
       register: output
       changed_when: output.rc != 0
@@ -77,6 +67,7 @@
         - wheel
         - ssh
       when: is_linux
+      become: true
       tags:
         - user
 
@@ -88,6 +79,7 @@
         line: "%wheel ALL=(ALL) NOPASSWD: ALL"
         validate: "visudo -cf %s"
       when: is_linux
+      become: true
       tags:
         - user
 
@@ -100,6 +92,7 @@
         state: present
         createhome: true
       when: is_linux
+      become: true
       tags:
         - user
 
