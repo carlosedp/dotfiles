@@ -83,6 +83,7 @@ debian_packages:
   - build-essential
   - lm-sensors
   - ripgrep
+  - python3-pip
 
 fedora_packages:
   - ack
@@ -90,12 +91,14 @@ fedora_packages:
   - "@Development tools"
   - openssh-clients
   - lm_sensors
+  - python3-pip
 
 alpine_packages:
   - ack
   - nfs-utils
   - build-base
   - openssh-client
+  - py3-pip
 
 extra_packages:
   - autojump

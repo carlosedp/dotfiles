@@ -25,11 +25,20 @@
       when: is_macos
       become: true
 
+    - name: Create fonts dir (Linux)
+      ansible.builtin.file:
+        path: "/usr/share/fonts"
+        state: directory
+        mode: "0755"
+      when: is_linux
+      become: true
+
     - name: Unpack font tarballs (Linux)
       ansible.builtin.unarchive:
-        src: "{{ font_files.files }}"
+        src: "{{ item.path }}"
         dest: "/usr/share/fonts"
         remote_src: true
+      with_items: "{{ font_files.files }}"
       when: is_linux
       become: true
 
@@ -70,6 +79,7 @@
         update_cache: true
         upgrade: dist
       when: ansible_os_family == 'Debian'
+      become: true
 
     - name: Upgrade packages (Fedora)
       ansible.builtin.yum:
@@ -77,36 +87,42 @@
         name: "*"
         state: present
       when: ansible_os_family == 'RedHat'
+      become: true
 
     - name: Upgrade packages (Alpine)
       community.general.apk:
         update_cache: true
         upgrade: true
       when: ansible_distribution == 'Alpine'
+      become: true
 
     - name: Install Linux Packages (Base)
       ansible.builtin.package:
         name: "{{ base_packages }}"
         state: present
       when: is_linux
+      become: true
 
     - name: Install Linux Packages (Debian)
       ansible.builtin.package:
         name: "{{ debian_packages }}"
         state: present
       when: is_linux and ansible_os_family == 'Debian'
+      become: true
 
     - name: Install Linux Packages (RedHat)
       ansible.builtin.package:
         name: "{{ fedora_packages }}"
         state: present
       when: is_linux and ansible_os_family == 'RedHat'
+      become: true
 
     - name: Install Linux Packages (Alpine)
       ansible.builtin.package:
         name: "{{ alpine_packages }}"
         state: present
       when: is_linux and ansible_os_family == 'Alpine'
+      become: true
 
     - name: Check if Golang is installed (Linux)
       ansible.builtin.stat:
@@ -135,28 +151,34 @@
         declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
         GOVERSION=$(curl -sSLf https://golang.org/VERSION\?m\=text | head -1)
         rm -rf /usr/local/go
-        curl -sSLf https://golang.org/dl/$GOVERSION.${ARCH[$(uname -m)]}.tar.gz | tar -C /usr/local -xzf -
+        curl -sSLf https://golang.org/dl/$GOVERSION.$(uname -s | tr '[:upper:]' '[:lower:]' )-${ARCH[$(uname -m)]}.tar.gz | tar -C /usr/local -xzf -
       when: is_linux and (go_version != go_latest or not go_installed.stat.exists)
       register: go_install
       changed_when: go_install.rc != 0
+      become: true
 
     - name: Install Golang Apps
-      ansible.builtin.command:
-        cmd: go install "{{ item }}"
+      ansible.builtin.shell: |
+        set -o pipefail
+        export PATH=$PATH:/usr/local/go/bin
+        go install "{{ item }}"
       loop: "{{ go_apps }}"
       register: go_apps_installed
       changed_when: go_apps_installed.rc != 0
 
     - name: Install Rust (Linux)
-      ansible.builtin.command: # noqa: command-instead-of-module
-        cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
+      ansible.builtin.shell: | # noqa: command-instead-of-module
+        set -o pipefail
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
       when: is_linux
       register: rust_installed
       changed_when: rust_installed.rc != 0
 
     - name: Install Rust Apps via Cargo
-      ansible.builtin.command:
-        cmd: cargo install "{{ item }}"
+      ansible.builtin.shell: |
+        set -o pipefail
+        export PATH=$PATH:$HOME/.cargo/bin
+        cargo install "{{ item }}"
       loop: "{{ rust_apps }}"
       register: rust_apps_installed
       when: is_linux
@@ -179,15 +201,16 @@
       when: is_linux
       register: kubectl_install
       changed_when: kubectl_install.rc != 0
+      become: true
 
     - name: Install Kubectl plugin manager (krew)
       ansible.builtin.shell: |
         set -o pipefail
         declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
         OS="$(uname | tr '[:upper:]' '[:lower:]')"
-        curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH[$(uname -m)]}.tar.gz" | tar xvz - -C /tmp
-        chmod +x /tmp/krew
-        /tmp/krew install krew
+        curl -fsSL "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH[$(uname -m)]}.tar.gz" | tar xvzf - -C /tmp
+        chmod +x /tmp/krew-${OS}_${ARCH[$(uname -m)]}
+        /tmp/krew-${OS}_${ARCH[$(uname -m)]} install krew
       when: is_linux
       register: krew_install
       changed_when: krew_install.rc != 0
@@ -245,17 +268,17 @@
       ansible.builtin.shell: |
         set -o pipefail
         curl -sSLf https://api.github.com/repos/coursier/coursier/releases/latest |grep tag_name | cut -d '"' -f 4
-      when: is_linux
+      when: is_linux and ansible_architecture == 'x86_64'
       register: coursier_amd64
       changed_when: coursier_amd64.rc != 0
 
     - name: Install Java/Scala Coursier (Linux - AMD64)
       ansible.builtin.shell: |
         set -o pipefail
-        curl -sSLf https://github.com/coursier/coursier/releases/download/{{ coursier_amd64 }}/cs-x86_64-pc-linux.gz | gunzip -c > /tmp/cs
+        curl -sSLf https://github.com/coursier/coursier/releases/download/{{ coursier_amd64.stdout }}/cs-x86_64-pc-linux.gz | gunzip -c > /tmp/cs
         chmod +x /tmp/cs
         /tmp/cs install cs
-      when: is_linux
+      when: is_linux and ansible_architecture == 'x86_64'
       register: coursier_install_amd64
       changed_when: coursier_install_amd64.rc != 0
 
@@ -263,7 +286,7 @@
       ansible.builtin.shell: |
         set -o pipefail
         curl -sSLf https://api.github.com/repos/VirtusLab/coursier-m1/releases/latest |grep tag_name | cut -d '"' -f 4
-      when: is_linux
+      when: is_linux and ansible_architecture == 'aarch64'
       register: coursier_aaarch64
       changed_when: coursier_aaarch64.rc != 0
 
@@ -273,7 +296,7 @@
         curl -sSLf https://github.com/VirtusLab/coursier-m1/releases/download/{{ coursier_aaarch64.stdout }}/cs-aarch64-pc-linux.gz | gunzip -c > /tmp/cs
         chmod +x /tmp/cs
         /tmp/cs install cs
-      when: is_linux
+      when: is_linux and ansible_architecture == 'aarch64'
       register: coursier_install_aaarch64
       changed_when: coursier_install_aaarch64.rc != 0
 

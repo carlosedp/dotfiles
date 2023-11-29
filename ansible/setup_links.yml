@@ -58,21 +58,21 @@
         src: "{{ sync_folder }}/Configs/SSH_Keys"
         dest: "$HOME/.ssh"
         state: link
-      when: sync_folder_exists.stat.exists
+      when: is_macos and sync_folder_exists.stat.exists
 
     - name: Setup symlinks for PGP config
       ansible.builtin.file:
         src: "{{ sync_folder }}/Configs/pgp-keys"
         dest: "$HOME/.gnupg"
         state: link
-      when: sync_folder_exists.stat.exists
+      when: is_macos and sync_folder_exists.stat.exists
 
     - name: Setup symlinks for 2fa config
       ansible.builtin.file:
         src: "{{ sync_folder }}/Configs/2fa/keychain"
         dest: "$HOME/.2fa"
         state: link
-      when: sync_folder_exists.stat.exists
+      when: is_macos and sync_folder_exists.stat.exists
 
     # - name: Build a list of all MacOS Application Support dirs
     #   ansible.builtin.find:
