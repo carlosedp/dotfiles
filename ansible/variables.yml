@@ -1,0 +1,8 @@
+# Define some variables
+
+# User to create on the remote host
+new_user: "carlosedp"
+
+# Folder to sync with in MacOS and WSL2
+sync_folder_mac: "$HOME/Google Drive/My Drive"
+wsl2_sync_folder: "/mnt/g/My Drive"

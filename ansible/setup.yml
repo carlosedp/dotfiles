@@ -1,18 +1,19 @@
 - name: Workstation Setup
   hosts: all
   gather_facts: false
+  become: true
+  become_user: root
 
-  vars:
-    new_user: "carlosedp"
+  vars_files:
+    - variables.yml
 
-  pre_tasks:
+  tasks:
     - name: Install python3 for Ansible (Debian/Ubuntu)
       ansible.builtin.raw: |
         if [ "$(grep 'debian\|ubuntu' /etc/os-release)" != "" -a ! "test -e /usr/bin/python3" ]; then
           apt -qqy update;
-          apt install -qqy python3 python3-setuptools;
+          apt install -qqy python3 python3-setuptools python3-pip;
         fi
-      become: true
       register: output
       changed_when: output.rc != 0
 
@@ -21,7 +22,6 @@
         if [ "$(grep 'fedora\|centos' /etc/os-release)" != "" -a ! "test -e /usr/bin/python3" ]; then
           dnf install -y python3;
         fi
-      become: true
       register: output
       changed_when: output.rc != 0
 
@@ -32,14 +32,20 @@
           apk upgrade;
           apk add python3 py3-setuptools;
         fi
-      become: true
+      register: output
+      changed_when: output.rc != 0
+
+    - name: Install Homebrew (MacOS)
+      ansible.builtin.raw: |
+        if [ "$(uname)" == "Darwin" -a ! "test -e /usr/local/bin/brew" ]; then
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        fi
       register: output
       changed_when: output.rc != 0
 
     - name: Install python3 for Ansible (MacOS)
       ansible.builtin.raw: |
-        if [ "$(uname)" == "Darwin" -a ! "test -e /usr/bin/python3" ]; then
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        if [ "$(uname)" == "Darwin" -a ! "test -e $(which python3)" ]; then
           brew install python3;
         fi
       register: output
@@ -48,9 +54,8 @@
     - name: Gathering Facts
       ansible.builtin.setup:
 
-  tasks:
-    - name: Include Detect OS task
-      ansible.builtin.include_tasks: detect_os.yml
+    - name: Include Detect OS and User tasks
+      ansible.builtin.include_tasks: detect_os_user.yml
 
     - name: Install Developer Tools (MacOS)
       ansible.builtin.command: xcode-select --install
@@ -58,6 +63,8 @@
       register: xcode_output_install
       failed_when: xcode_output_install.rc != 0 and xcode_output_install.rc != 1
       changed_when: "'command line tools are already installed' not in xcode_output_install.stderr"
+      become: true
+      become_user: "{{ ansible_user_id }}"
 
     - name: Create a "wheel" and "ssh" group for sudoers
       ansible.builtin.group:
@@ -67,9 +74,6 @@
         - wheel
         - ssh
       when: is_linux
-      become: true
-      tags:
-        - user
 
     - name: Allow "wheel" group to have passwordless sudo
       ansible.builtin.lineinfile:
@@ -79,9 +83,6 @@
         line: "%wheel ALL=(ALL) NOPASSWD: ALL"
         validate: "visudo -cf %s"
       when: is_linux
-      become: true
-      tags:
-        - user
 
     - name: Create user and add to sudoers
       ansible.builtin.user:
@@ -92,10 +93,6 @@
         state: present
         createhome: true
       when: is_linux
-      become: true
-      tags:
-        - user
-
 
 - name: Setup Shell
   ansible.builtin.import_playbook: setup_shell.yml

@@ -18,13 +18,13 @@ if ! command -v ansible &>/dev/null; then
     echo "Installing Ansible via package manager..."
     if [ "$ID" == "debian" ] || [ "$ID" == "ubuntu" ]; then
       sudo apt update
-      sudo apt install --no-install-recommends -y git ansible
+      sudo apt install --no-install-recommends -y git ansible python3-pip python3
     elif [ "$ID" == "fedora" ] || [ "$ID" == "centos" ] || [ "$ID" == "rhel" ]; then
-      sudo dnf install -y git ansible
+      sudo dnf install -y git ansible python3-pip python3
     elif [ "$ID" == "alpine" ]; then
-      sudo apk add git ansible
+      sudo apk add git ansible py3-pip python3
     elif [ "$ID" == "void" ]; then
-      sudo xbps-install -Su -y git ansible
+      sudo xbps-install -Su -y git ansible python3-pip python3
     else
       echo "Your distro is not supported, install git manually."
       exit 1
@@ -35,7 +35,7 @@ if ! command -v ansible &>/dev/null; then
     echo "Install homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     echo "Installing Ansible via Homebrew..."
-    brew install ansible
+    brew install ansible git python
   else
     echo "Unsupported OS"
     exit 1

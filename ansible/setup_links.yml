@@ -1,107 +1,108 @@
 - name: Setup Links
   hosts: all
 
-  # Define config variables
-  vars:
-    # Define the default shell
-    sync_folder: "$HOME/Google Drive/My Drive"
-    wsl2_sync_folder: "/mnt/g/My Drive"
+  vars_files:
+    - variables.yml
 
   tasks:
-    - name: Include Detect OS task
-      ansible.builtin.include_tasks: detect_os.yml
+    - name: Include Detect OS and User tasks
+      ansible.builtin.include_tasks: detect_os_user.yml
 
-    - name: Check if sync folder exists (MacOS)
-      ansible.builtin.stat:
-        path: "{{ sync_folder }}"
-      register: sync_folder_exists
-      when: is_macos
+    - name: Block of tasks to be run for the user
+      become: true
+      become_user: "{{ ansible_user_id }}"
+      block:
+        - name: Check if sync folder exists (MacOS)
+          ansible.builtin.stat:
+            path: "{{ sync_folder_mac }}"
+          register: sync_folder_exists
+          when: is_macos
 
-    - name: Check if sync folder exists (WSL2)
-      ansible.builtin.stat:
-        path: "{{ wsl2_sync_folder }}"
-      register: sync_folder_wsl2_exists
-      when: is_wsl2
+        - name: Check if sync folder exists (WSL2)
+          ansible.builtin.stat:
+            path: "{{ sync_folder_wsl2 }}"
+          register: sync_folder_wsl2_exists
+          when: is_wsl2
 
-    - name: Build a list of all rc files
-      ansible.builtin.find:
-        paths: "$HOME/.dotfiles/rc"
-        patterns: "*"
-        file_type: file
-      register: rc_files
+        - name: Build a list of all rc files
+          ansible.builtin.find:
+            paths: "$HOME/.dotfiles/rc"
+            patterns: "*"
+            file_type: file
+          register: rc_files
 
-    - name: Setup symlinks for rc files
-      ansible.builtin.file:
-        src: "{{ item.path }}"
-        dest: "$HOME/.{{ item.path | basename }}"
-        state: link
-        force: true
-      with_items: "{{ rc_files.files }}"
+        - name: Setup symlinks for rc files
+          ansible.builtin.file:
+            src: "{{ item.path }}"
+            dest: "$HOME/.{{ item.path | basename }}"
+            state: link
+            force: true
+          with_items: "{{ rc_files.files }}"
 
-    - name: Setup symlinks for private .config folder (MacOS)
-      ansible.builtin.file:
-        src: "{{ sync_folder }}/Configs/rc/config"
-        dest: "$HOME/.config"
-        state: link
-      when: is_macos and sync_folder_exists is defined and sync_folder_exists.stat.exists
+        - name: Setup symlinks for private .config folder (MacOS)
+          ansible.builtin.file:
+            src: "{{ sync_folder_mac }}/Configs/rc/config"
+            dest: "$HOME/.config"
+            state: link
+          when: is_macos and sync_folder_exists is defined and sync_folder_exists.stat.exists
 
-    - name: Setup symlinks for private .config folder (WSL2)
-      ansible.builtin.file:
-        src: "{{ sync_folder }}/Configs/rc/config"
-        dest: "$HOME/.config"
-        state: link
-      when: is_wsl2 and sync_folder_wsl2_exists is defined and sync_folder_wsl2_exists.stat.exists
+        - name: Setup symlinks for private .config folder (WSL2)
+          ansible.builtin.file:
+            src: "{{ sync_folder_wsl2 }}/Configs/rc/config"
+            dest: "$HOME/.config"
+            state: link
+          when: is_wsl2 and sync_folder_wsl2_exists is defined and sync_folder_wsl2_exists.stat.exists
 
-    # Fix WSL2 permission issues someday
-    - name: Setup symlinks for ssh config
-      ansible.builtin.file:
-        src: "{{ sync_folder }}/Configs/SSH_Keys"
-        dest: "$HOME/.ssh"
-        state: link
-      when: is_macos and sync_folder_exists.stat.exists
+        # Fix WSL2 permission issues someday
+        - name: Setup symlinks for ssh config
+          ansible.builtin.file:
+            src: "{{ sync_folder_mac }}/Configs/SSH_Keys"
+            dest: "$HOME/.ssh"
+            state: link
+          when: is_macos and sync_folder_exists.stat.exists
 
-    - name: Setup symlinks for PGP config
-      ansible.builtin.file:
-        src: "{{ sync_folder }}/Configs/pgp-keys"
-        dest: "$HOME/.gnupg"
-        state: link
-      when: is_macos and sync_folder_exists.stat.exists
+        - name: Setup symlinks for PGP config
+          ansible.builtin.file:
+            src: "{{ sync_folder_mac }}/Configs/pgp-keys"
+            dest: "$HOME/.gnupg"
+            state: link
+          when: is_macos and sync_folder_exists.stat.exists
 
-    - name: Setup symlinks for 2fa config
-      ansible.builtin.file:
-        src: "{{ sync_folder }}/Configs/2fa/keychain"
-        dest: "$HOME/.2fa"
-        state: link
-      when: is_macos and sync_folder_exists.stat.exists
+        - name: Setup symlinks for 2fa config
+          ansible.builtin.file:
+            src: "{{ sync_folder_mac }}/Configs/2fa/keychain"
+            dest: "$HOME/.2fa"
+            state: link
+          when: is_macos and sync_folder_exists.stat.exists
 
-    # - name: Build a list of all MacOS Application Support dirs
-    #   ansible.builtin.find:
-    #     paths: "{{ sync_folder }}/Configs/AppSupport"
-    #     patterns: "*"
-    #     file_type: any
-    #   register: appsupport_files
-    #   when: is_macos
+        # - name: Build a list of all MacOS Application Support dirs
+        #   ansible.builtin.find:
+        #     paths: "{{ sync_folder }}/Configs/AppSupport"
+        #     patterns: "*"
+        #     file_type: any
+        #   register: appsupport_files
+        #   when: is_macos
 
-    # - name: Setup symlinks for MacOS Application Support files
-    #   ansible.builtin.file:
-    #     src: "{{ item.path }}"
-    #     dest: "$HOME/Library/Application Support/{{ item.path | basename }}"
-    #     state: link
-    #   with_items: "{{ appsupport_files.files }}"
-    #   when: is_macos and sync_folder_exists.stat.exists
+        # - name: Setup symlinks for MacOS Application Support files
+        #   ansible.builtin.file:
+        #     src: "{{ item.path }}"
+        #     dest: "$HOME/Library/Application Support/{{ item.path | basename }}"
+        #     state: link
+        #   with_items: "{{ appsupport_files.files }}"
+        #   when: is_macos and sync_folder_exists.stat.exists
 
-    - name: Build a list of all MacOS Automator dirs
-      ansible.builtin.find:
-        paths: "{{ sync_folder }}/Configs/automator"
-        patterns: "*"
-        file_type: any
-      register: automator_files
-      when: is_macos
+        - name: Build a list of all MacOS Automator dirs
+          ansible.builtin.find:
+            paths: "{{ sync_folder_mac }}/Configs/automator"
+            patterns: "*"
+            file_type: any
+          register: automator_files
+          when: is_macos
 
-    - name: Setup symlinks for MacOS Automator dirs
-      ansible.builtin.file:
-        src: "{{ item.path }}"
-        dest: "$HOME/Library/Services/{{ item.path | basename }}"
-        state: link
-      with_items: "{{ automator_files.files }}"
-      when: is_macos and sync_folder_exists.stat.exists
+        - name: Setup symlinks for MacOS Automator dirs
+          ansible.builtin.file:
+            src: "{{ item.path }}"
+            dest: "$HOME/Library/Services/{{ item.path | basename }}"
+            state: link
+          with_items: "{{ automator_files.files }}"
+          when: is_macos and sync_folder_exists.stat.exists

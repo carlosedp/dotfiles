@@ -1,0 +1,19 @@
+- name: Detect OS
+  ansible.builtin.set_fact:
+    is_linux: "{{ ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' or ansible_os_family == 'Alpine' }}"
+    is_macos: "{{ ansible_os_family == 'Darwin' }}"
+    is_wsl2: "{{ ansible_kernel.find('WSL2') != -1 }}"
+
+- name: If running with local connection, use current user
+  ansible.builtin.set_fact:
+    ansible_user_id: "{{ lookup('env', 'USER') }}"
+  when: ansible_connection == 'local'
+
+- name: If conecting to remote host, use remote user
+  ansible.builtin.set_fact:
+    ansible_user_id: "{{ new_user }}"
+  when: ansible_connection != 'local'
+
+- name: Running setup for user {{ ansible_user_id }}
+  ansible.builtin.debug:
+    msg: "Running setup for user {{ ansible_user_id }}"

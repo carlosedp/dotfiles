@@ -5,325 +5,321 @@
     - packages_apps.yml
 
   tasks:
-    - name: Include Detect OS task
-      ansible.builtin.include_tasks: detect_os.yml
+    - name: Include Detect OS and User tasks
+      ansible.builtin.include_tasks: detect_os_user.yml
 
-    - name: Get all packed fonts
-      ansible.builtin.find:
-        paths: "$HOME/.dotfiles/fonts"
-        file_type: file
-        recurse: true
-        patterns: "*.tar.gz"
-      register: font_files
-
-    - name: Unpack font tarballs (MacOS)
-      ansible.builtin.unarchive:
-        src: "{{ item.path }}"
-        dest: "/Library/Fonts"
-        remote_src: true
-      with_items: "{{ font_files.files }}"
-      when: is_macos
+    - name: Block of tasks to be run for the user
       become: true
+      become_user: "{{ ansible_user_id }}"
+      block:
+        - name: Get all packed fonts
+          ansible.builtin.find:
+            paths: "$HOME/.dotfiles/fonts"
+            file_type: file
+            recurse: true
+            patterns: "*.tar.gz"
+          register: font_files
 
-    - name: Create fonts dir (Linux)
-      ansible.builtin.file:
-        path: "/usr/share/fonts"
-        state: directory
-        mode: "0755"
-      when: is_linux
+        - name: Update Homebrew (MacOS)
+          community.general.homebrew:
+            update_homebrew: true
+            upgrade_all: true
+            state: latest
+          when: is_macos
+
+        - name: Install Homebrew App Bundle (MacOS)
+          ansible.builtin.command:
+            cmd: brew bundle install --file="$HOME/.dotfiles/mac/Brewfile"
+          when: is_macos
+          register: brew_bundle
+          changed_when: brew_bundle.rc != 0
+
+        - name: Install Homebrew Cask Bundle (MacOS)
+          ansible.builtin.command:
+            cmd: brew bundle install --file="$HOME/.dotfiles/mac/Brewfile-casks-store"
+          when: is_macos
+          register: brew_cask_bundle
+          changed_when: brew_cask_bundle.rc != 0
+
+        - name: Install Homebrew Development Bundle (MacOS)
+          ansible.builtin.command:
+            cmd: brew bundle install --file="$HOME/.dotfiles/mac/Brewfile-development"
+          when: is_macos
+          register: brew_development_bundle
+          changed_when: brew_development_bundle.rc != 0
+          # tags: skip
+
+    - name: Block of tasks to be run as root
       become: true
+      become_user: root
+      block:
+        - name: Unpack font tarballs (MacOS)
+          ansible.builtin.unarchive:
+            src: "{{ item.path }}"
+            dest: "/Library/Fonts"
+            remote_src: true
+          with_items: "{{ font_files.files }}"
+          when: is_macos
 
-    - name: Unpack font tarballs (Linux)
-      ansible.builtin.unarchive:
-        src: "{{ item.path }}"
-        dest: "/usr/share/fonts"
-        remote_src: true
-      with_items: "{{ font_files.files }}"
-      when: is_linux
+        - name: Create fonts dir (Linux)
+          ansible.builtin.file:
+            path: "/usr/share/fonts"
+            state: directory
+            mode: "0755"
+          when: is_linux
+
+        - name: Unpack font tarballs (Linux)
+          ansible.builtin.unarchive:
+            src: "{{ item.path }}"
+            dest: "/usr/share/fonts"
+            remote_src: true
+          with_items: "{{ font_files.files }}"
+          when: is_linux
+
+        - name: Upgrade packages (Debian/Ubuntu)
+          ansible.builtin.apt:
+            update_cache: true
+            upgrade: dist
+          when: ansible_os_family == 'Debian'
+
+        - name: Upgrade packages (Fedora)
+          ansible.builtin.yum:
+            update_cache: true
+            name: "*"
+            state: present
+          when: ansible_os_family == 'RedHat'
+
+        - name: Upgrade packages (Alpine)
+          community.general.apk:
+            update_cache: true
+            upgrade: true
+          when: ansible_distribution == 'Alpine'
+
+        - name: Install Linux Packages (Base)
+          ansible.builtin.package:
+            name: "{{ base_packages }}"
+            state: present
+          when: is_linux
+
+        - name: Install Linux Packages (Debian)
+          ansible.builtin.package:
+            name: "{{ debian_packages }}"
+            state: present
+          when: is_linux and ansible_os_family == 'Debian'
+
+        - name: Install Linux Packages (RedHat)
+          ansible.builtin.package:
+            name: "{{ fedora_packages }}"
+            state: present
+          when: is_linux and ansible_os_family == 'RedHat'
+
+        - name: Install Linux Packages (Alpine)
+          ansible.builtin.package:
+            name: "{{ alpine_packages }}"
+            state: present
+          when: is_linux and ansible_os_family == 'Alpine'
+
+        - name: Check if Golang is installed (Linux)
+          ansible.builtin.stat:
+            path: /usr/local/go/bin/go
+          register: go_installed
+          when: is_linux
+
+        - name: Check current Go version (Linux)
+          ansible.builtin.command:
+            cmd: /usr/local/go/bin/go version
+          register: go_version
+          when: is_linux and go_installed.stat.exists
+          changed_when: go_version.rc != 0
+
+        - name: Get latest Golang version (Linux)
+          ansible.builtin.shell: | # noqa: command-instead-of-module
+            set -o pipefail
+            curl -sSLf https://golang.org/VERSION\?m\=text | head -1
+          register: go_latest
+          when: is_linux
+          changed_when: go_latest.rc != 0
+
+        - name: Install latest Golang if outdated (Linux)
+          ansible.builtin.shell: |
+            set -o pipefail
+            declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
+            GOVERSION=$(curl -sSLf https://golang.org/VERSION\?m\=text | head -1)
+            rm -rf /usr/local/go
+            curl -sSLf https://golang.org/dl/$GOVERSION.$(uname -s | tr '[:upper:]' '[:lower:]' )-${ARCH[$(uname -m)]}.tar.gz | tar -C /usr/local -xzf -
+          when: is_linux and (go_version != go_latest or not go_installed.stat.exists)
+          register: go_install
+          changed_when: go_install.rc != 0
+
+        - name: Install Kubernetes CLI (kubectl)
+          ansible.builtin.shell: |
+            set -o pipefail
+            declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
+            KUBECTLVERSION=$(curl -sSLf https://dl.k8s.io/release/stable.txt)
+            curl -sSLf https://dl.k8s.io/release/$KUBECTLVERSION/bin/linux/${ARCH[$(uname -m)]}/kubectl -o /usr/local/bin/kubectl
+            chmod +x /usr/local/bin/kubectl
+          when: is_linux
+          register: kubectl_install
+          changed_when: kubectl_install.rc != 0
+
+        - name: Install cpanminus to manage Perl modules
+          ansible.builtin.shell: | # noqa: command-instead-of-module
+            set -o pipefail
+            curl -fsSL https://cpanmin.us | perl - --sudo App::cpanminus
+          when: is_macos
+          register: cpanminus_install
+          changed_when: cpanminus_install.rc != 0
+
+        - name: Install CPAN Switch module for GTKWave (MacOS)
+          community.general.cpanm:
+            name: Switch
+          when: is_macos
+
+    - name: Block of tasks to be run for the user
       become: true
+      become_user: "{{ ansible_user_id }}"
+      block:
+        - name: Install Golang Apps
+          ansible.builtin.shell: |
+            set -o pipefail
+            export PATH=$PATH:/usr/local/go/bin
+            go install "{{ item }}"
+          loop: "{{ go_apps }}"
+          register: go_apps_installed
+          changed_when: go_apps_installed.rc != 0
 
-    - name: Update Homebrew (MacOS)
-      community.general.homebrew:
-        update_homebrew: true
-        upgrade_all: true
-        state: latest
-      when: is_macos
-      # tags: skip
+        - name: Install Rust (Linux)
+          ansible.builtin.shell: | # noqa: command-instead-of-module
+            set -o pipefail
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
+          when: is_linux
+          register: rust_installed
+          changed_when: rust_installed.rc != 0
 
-    - name: Install Homebrew App Bundle (MacOS)
-      ansible.builtin.command:
-        cmd: brew bundle install --file="$HOME/.dotfiles/mac/Brewfile"
-      when: is_macos
-      register: brew_bundle
-      changed_when: brew_bundle.rc != 0
-      # tags: skip
+        - name: Install Rust Apps via Cargo
+          ansible.builtin.shell: |
+            set -o pipefail
+            export PATH=$PATH:$HOME/.cargo/bin
+            cargo install "{{ item }}"
+          loop: "{{ rust_apps }}"
+          register: rust_apps_installed
+          when: is_linux
+          changed_when: rust_apps_installed.rc != 0
 
-    - name: Install Homebrew Cask Bundle (MacOS)
-      ansible.builtin.command:
-        cmd: brew bundle install --file="$HOME/.dotfiles/mac/Brewfile-casks-store"
-      when: is_macos
-      register: brew_cask_bundle
-      changed_when: brew_cask_bundle.rc != 0
-      # tags: skip
+        - name: Install Python Apps
+          ansible.builtin.command:
+            cmd: pip3 install "{{ item }}"
+          loop: "{{ python_apps }}"
+          register: python_apps_installed
+          changed_when: python_apps_installed.rc != 0
 
-    - name: Install Homebrew Development Bundle (MacOS)
-      ansible.builtin.command:
-        cmd: brew bundle install --file="$HOME/.dotfiles/mac/Brewfile-development"
-      when: is_macos
-      register: brew_development_bundle
-      changed_when: brew_development_bundle.rc != 0
-      # tags: skip
+        - name: Install Kubectl plugin manager (krew)
+          ansible.builtin.shell: |
+            set -o pipefail
+            declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
+            OS="$(uname | tr '[:upper:]' '[:lower:]')"
+            curl -fsSL "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH[$(uname -m)]}.tar.gz" | tar xvzf - -C /tmp
+            chmod +x /tmp/krew-${OS}_${ARCH[$(uname -m)]}
+            /tmp/krew-${OS}_${ARCH[$(uname -m)]} install krew
+          when: is_linux
+          register: krew_install
+          changed_when: krew_install.rc != 0
 
-    - name: Upgrade packages (Debian/Ubuntu)
-      ansible.builtin.apt:
-        update_cache: true
-        upgrade: dist
-      when: ansible_os_family == 'Debian'
-      become: true
+        - name: Install Kubectl plugins
+          ansible.builtin.command:
+            cmd: /usr/local/bin/kubectl krew install "{{ item }}"
+          loop: "{{ kubectl_plugins }}"
+          register: kubectl_plugins_installed
+          changed_when: kubectl_plugins_installed.rc != 0
 
-    - name: Upgrade packages (Fedora)
-      ansible.builtin.yum:
-        update_cache: true
-        name: "*"
-        state: present
-      when: ansible_os_family == 'RedHat'
-      become: true
+        - name: Erlang LS diretory (MacOS)
+          ansible.builtin.file:
+            path: "$HOME/Library/Application Support/erlang_ls"
+            state: directory
+            mode: "0755"
+          when: is_macos
 
-    - name: Upgrade packages (Alpine)
-      community.general.apk:
-        update_cache: true
-        upgrade: true
-      when: ansible_distribution == 'Alpine'
-      become: true
+        - name: Erlang LS directory (Linux)
+          ansible.builtin.file:
+            path: "$HOME/.config"
+            state: directory
+            mode: "0755"
+          when: is_linux
 
-    - name: Install Linux Packages (Base)
-      ansible.builtin.package:
-        name: "{{ base_packages }}"
-        state: present
-      when: is_linux
-      become: true
+        - name: Link Erlang LS Config (MacOS)
+          ansible.builtin.file:
+            src: "$HOME/.dotfiles/rc/config/erlang_ls/erlang_ls.config"
+            dest: "$HOME/Library/Application Support/erlang_ls/erlang-ls.config"
+            state: link
+          when: is_macos
 
-    - name: Install Linux Packages (Debian)
-      ansible.builtin.package:
-        name: "{{ debian_packages }}"
-        state: present
-      when: is_linux and ansible_os_family == 'Debian'
-      become: true
+        - name: Link Erlang LS Config (Linux)
+          ansible.builtin.file:
+            src: "$HOME/.dotfiles/rc/config/erlang_ls/erlang_ls.config"
+            dest: "$HOME/.config/erlang-ls.config"
+            state: link
+          when: is_linux
 
-    - name: Install Linux Packages (RedHat)
-      ansible.builtin.package:
-        name: "{{ fedora_packages }}"
-        state: present
-      when: is_linux and ansible_os_family == 'RedHat'
-      become: true
+        - name: Get latest Coursier AMD64 version
+          ansible.builtin.shell: |
+            set -o pipefail
+            curl -sSLf https://api.github.com/repos/coursier/coursier/releases/latest |grep tag_name | cut -d '"' -f 4
+          when: is_linux and ansible_architecture == 'x86_64'
+          register: coursier_amd64
+          changed_when: coursier_amd64.rc != 0
 
-    - name: Install Linux Packages (Alpine)
-      ansible.builtin.package:
-        name: "{{ alpine_packages }}"
-        state: present
-      when: is_linux and ansible_os_family == 'Alpine'
-      become: true
+        - name: Install Java/Scala Coursier (Linux - AMD64)
+          ansible.builtin.shell: |
+            set -o pipefail
+            curl -sSLf https://github.com/coursier/coursier/releases/download/{{ coursier_amd64.stdout }}/cs-x86_64-pc-linux.gz | gunzip -c > /tmp/cs
+            chmod +x /tmp/cs
+            /tmp/cs install cs
+          when: is_linux and ansible_architecture == 'x86_64'
+          register: coursier_install_amd64
+          changed_when: coursier_install_amd64.rc != 0
 
-    - name: Check if Golang is installed (Linux)
-      ansible.builtin.stat:
-        path: /usr/local/go/bin/go
-      register: go_installed
-      when: is_linux
+        - name: Get latest Coursier AARCH64 version
+          ansible.builtin.shell: |
+            set -o pipefail
+            curl -sSLf https://api.github.com/repos/VirtusLab/coursier-m1/releases/latest |grep tag_name | cut -d '"' -f 4
+          when: is_linux and ansible_architecture == 'aarch64'
+          register: coursier_aaarch64
+          changed_when: coursier_aaarch64.rc != 0
 
-    - name: Check current Go version (Linux)
-      ansible.builtin.command:
-        cmd: /usr/local/go/bin/go version
-      register: go_version
-      when: is_linux and go_installed.stat.exists
-      changed_when: go_version.rc != 0
+        - name: Install Java/Scala Coursier (Linux - AARCH64)
+          ansible.builtin.shell: |
+            set -o pipefail
+            curl -sSLf https://github.com/VirtusLab/coursier-m1/releases/download/{{ coursier_aaarch64.stdout }}/cs-aarch64-pc-linux.gz | gunzip -c > /tmp/cs
+            chmod +x /tmp/cs
+            /tmp/cs install cs
+          when: is_linux and ansible_architecture == 'aarch64'
+          register: coursier_install_aaarch64
+          changed_when: coursier_install_aaarch64.rc != 0
 
-    - name: Get latest Golang version (Linux)
-      ansible.builtin.shell: | # noqa: command-instead-of-module
-        set -o pipefail
-        curl -sSLf https://golang.org/VERSION\?m\=text | head -1
-      register: go_latest
-      when: is_linux
-      changed_when: go_latest.rc != 0
+        - name: Get JDK version from scala.sh
+          ansible.builtin.shell: |
+            set -o pipefail
+            cat $HOME/.dotfiles/shellconfig/scala.sh | grep "export JVM_VERSION" | head -1 | cut -d"=" -f2
+          register: jdk_version
+          changed_when: jdk_version.rc != 0
 
-    - name: Install latest Golang if outdated (Linux)
-      ansible.builtin.shell: |
-        set -o pipefail
-        declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
-        GOVERSION=$(curl -sSLf https://golang.org/VERSION\?m\=text | head -1)
-        rm -rf /usr/local/go
-        curl -sSLf https://golang.org/dl/$GOVERSION.$(uname -s | tr '[:upper:]' '[:lower:]' )-${ARCH[$(uname -m)]}.tar.gz | tar -C /usr/local -xzf -
-      when: is_linux and (go_version != go_latest or not go_installed.stat.exists)
-      register: go_install
-      changed_when: go_install.rc != 0
-      become: true
+        - name: Install JDK using Coursier
+          ansible.builtin.command:
+            cmd: cs install --jvm "{{ jdk_version.stdout }}"
+          register: coursier_jdk
+          changed_when: coursier_jdk.rc != 0
 
-    - name: Install Golang Apps
-      ansible.builtin.shell: |
-        set -o pipefail
-        export PATH=$PATH:/usr/local/go/bin
-        go install "{{ item }}"
-      loop: "{{ go_apps }}"
-      register: go_apps_installed
-      changed_when: go_apps_installed.rc != 0
+        - name: Add Coursier channels
+          ansible.builtin.command:
+            cmd: cs channel -a "{{ item }}"
+          loop:
+            - https://raw.githubusercontent.com/oyvindberg/bleep/master/coursier-channel.json
+          register: coursier_channels
+          changed_when: coursier_channels.rc != 0
 
-    - name: Install Rust (Linux)
-      ansible.builtin.shell: | # noqa: command-instead-of-module
-        set -o pipefail
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
-      when: is_linux
-      register: rust_installed
-      changed_when: rust_installed.rc != 0
-
-    - name: Install Rust Apps via Cargo
-      ansible.builtin.shell: |
-        set -o pipefail
-        export PATH=$PATH:$HOME/.cargo/bin
-        cargo install "{{ item }}"
-      loop: "{{ rust_apps }}"
-      register: rust_apps_installed
-      when: is_linux
-      changed_when: rust_apps_installed.rc != 0
-
-    - name: Install Python Apps
-      ansible.builtin.command:
-        cmd: pip3 install "{{ item }}"
-      loop: "{{ python_apps }}"
-      register: python_apps_installed
-      changed_when: python_apps_installed.rc != 0
-
-    - name: Install Kubernetes CLI (kubectl)
-      ansible.builtin.shell: |
-        set -o pipefail
-        declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
-        KUBECTLVERSION=$(curl -sSLf https://dl.k8s.io/release/stable.txt)
-        curl -sSLf https://dl.k8s.io/release/$KUBECTLVERSION/bin/linux/${ARCH[$(uname -m)]}/kubectl -o /usr/local/bin/kubectl
-        chmod +x /usr/local/bin/kubectl
-      when: is_linux
-      register: kubectl_install
-      changed_when: kubectl_install.rc != 0
-      become: true
-
-    - name: Install Kubectl plugin manager (krew)
-      ansible.builtin.shell: |
-        set -o pipefail
-        declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
-        OS="$(uname | tr '[:upper:]' '[:lower:]')"
-        curl -fsSL "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH[$(uname -m)]}.tar.gz" | tar xvzf - -C /tmp
-        chmod +x /tmp/krew-${OS}_${ARCH[$(uname -m)]}
-        /tmp/krew-${OS}_${ARCH[$(uname -m)]} install krew
-      when: is_linux
-      register: krew_install
-      changed_when: krew_install.rc != 0
-
-    - name: Install Kubectl plugins
-      ansible.builtin.command:
-        cmd: /usr/local/bin/kubectl krew install "{{ item }}"
-      loop: "{{ kubectl_plugins }}"
-      register: kubectl_plugins_installed
-      changed_when: kubectl_plugins_installed.rc != 0
-
-    - name: Install cpanminus to manage Perl modules
-      ansible.builtin.shell: | # noqa: command-instead-of-module
-        set -o pipefail
-        curl -fsSL https://cpanmin.us | perl - --sudo App::cpanminus
-      when: is_macos
-      register: cpanminus_install
-      changed_when: cpanminus_install.rc != 0
-      become: true
-
-    - name: Install CPAN Switch module for GTKWave (MacOS)
-      community.general.cpanm:
-        name: Switch
-      when: is_macos
-
-    - name: Erlang LS diretory (MacOS)
-      ansible.builtin.file:
-        path: "$HOME/Library/Application Support/erlang_ls"
-        state: directory
-        mode: "0755"
-      when: is_macos
-
-    - name: Erlang LS directory (Linux)
-      ansible.builtin.file:
-        path: "$HOME/.config"
-        state: directory
-        mode: "0755"
-      when: is_linux
-
-    - name: Link Erlang LS Config (MacOS)
-      ansible.builtin.file:
-        src: "$HOME/.dotfiles/rc/config/erlang_ls/erlang_ls.config"
-        dest: "$HOME/Library/Application Support/erlang_ls/erlang-ls.config"
-        state: link
-      when: is_macos
-
-    - name: Link Erlang LS Config (Linux)
-      ansible.builtin.file:
-        src: "$HOME/.dotfiles/rc/config/erlang_ls/erlang_ls.config"
-        dest: "$HOME/.config/erlang-ls.config"
-        state: link
-      when: is_linux
-
-    - name: Get latest Coursier AMD64 version
-      ansible.builtin.shell: |
-        set -o pipefail
-        curl -sSLf https://api.github.com/repos/coursier/coursier/releases/latest |grep tag_name | cut -d '"' -f 4
-      when: is_linux and ansible_architecture == 'x86_64'
-      register: coursier_amd64
-      changed_when: coursier_amd64.rc != 0
-
-    - name: Install Java/Scala Coursier (Linux - AMD64)
-      ansible.builtin.shell: |
-        set -o pipefail
-        curl -sSLf https://github.com/coursier/coursier/releases/download/{{ coursier_amd64.stdout }}/cs-x86_64-pc-linux.gz | gunzip -c > /tmp/cs
-        chmod +x /tmp/cs
-        /tmp/cs install cs
-      when: is_linux and ansible_architecture == 'x86_64'
-      register: coursier_install_amd64
-      changed_when: coursier_install_amd64.rc != 0
-
-    - name: Get latest Coursier AARCH64 version
-      ansible.builtin.shell: |
-        set -o pipefail
-        curl -sSLf https://api.github.com/repos/VirtusLab/coursier-m1/releases/latest |grep tag_name | cut -d '"' -f 4
-      when: is_linux and ansible_architecture == 'aarch64'
-      register: coursier_aaarch64
-      changed_when: coursier_aaarch64.rc != 0
-
-    - name: Install Java/Scala Coursier (Linux - AARCH64)
-      ansible.builtin.shell: |
-        set -o pipefail
-        curl -sSLf https://github.com/VirtusLab/coursier-m1/releases/download/{{ coursier_aaarch64.stdout }}/cs-aarch64-pc-linux.gz | gunzip -c > /tmp/cs
-        chmod +x /tmp/cs
-        /tmp/cs install cs
-      when: is_linux and ansible_architecture == 'aarch64'
-      register: coursier_install_aaarch64
-      changed_when: coursier_install_aaarch64.rc != 0
-
-    - name: Get JDK version from scala.sh
-      ansible.builtin.shell: |
-        set -o pipefail
-        cat $HOME/.dotfiles/shellconfig/scala.sh | grep "export JVM_VERSION" | head -1 | cut -d"=" -f2
-      register: jdk_version
-      changed_when: jdk_version.rc != 0
-
-    - name: Install JDK using Coursier
-      ansible.builtin.command:
-        cmd: cs install --jvm "{{ jdk_version.stdout }}"
-      register: coursier_jdk
-      changed_when: coursier_jdk.rc != 0
-
-    - name: Add Coursier channels
-      ansible.builtin.command:
-        cmd: cs channel -a "{{ item }}"
-      loop:
-        - https://raw.githubusercontent.com/oyvindberg/bleep/master/coursier-channel.json
-      register: coursier_channels
-      changed_when: coursier_channels.rc != 0
-
-    - name: Install Scala Coursier apps
-      ansible.builtin.command:
-        cmd: cs install "{{ item }}"
-      loop: "{{ coursier_apps }}"
-      register: coursier_apps_installed
-      changed_when: coursier_apps_installed.rc != 0
+        - name: Install Scala Coursier apps
+          ansible.builtin.command:
+            cmd: cs install "{{ item }}"
+          loop: "{{ coursier_apps }}"
+          register: coursier_apps_installed
+          changed_when: coursier_apps_installed.rc != 0
