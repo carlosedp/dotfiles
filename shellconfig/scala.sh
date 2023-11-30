@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 
 # These are Scala development environment functions/aliases
 # Most functions require Coursier and FZF to be installed
@@ -17,8 +18,8 @@ export PATH="$HOME/.local/share/coursier/bin:$PATH"
 
 # Add Java to path (if coursier is installed)
 JAVA_HOME=/usr/local/java
-if [ -x "$(command -v cs)" ] ; then
-    if [[ "$(cs java-home --jvm ${JVM_VERSION} > /dev/null 2>&1)" -eq 0 ]]; then
+if [ -x "$(command -v cs)" ]; then
+    if [[ "$(cs java-home --jvm ${JVM_VERSION} >/dev/null 2>&1)" -eq 0 ]]; then
         JAVA_HOME=$(cs java-home --jvm ${JVM_VERSION})
     fi
     export JAVA_HOME
@@ -35,7 +36,7 @@ alias javalist='cs java --available | fzf --preview-window=,hidden --reverse'
 
 # Set default JVM to use (graalvm-java17, zulu, etc.) on scala.sh file
 javasetdefault() {
-    USE=$(cs java --available |cut -d":" -f1| sort -u | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
+    USE=$(cs java --available | cut -d":" -f1 | sort -u | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
     sed -i "s/^export JVM_VERSION=.*/export JVM_VERSION=${USE}/" "$HOME/.dotfiles/shellconfig/scala.sh"
     echo "Loading the new config and installing $USE if needed..."
     source "$HOME/.dotfiles/shellconfig/scala.sh"
@@ -50,7 +51,7 @@ javainstall() {
 
 # Switch Java version using Coursier
 javause() {
-    USE=$(cs java --installed  | cut -d" " -f1 | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
+    USE=$(cs java --installed | cut -d" " -f1 | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
     eval "$(cs java --jvm "$USE" --env)"
     export PATH=$JAVA_HOME/bin:$PATH
 }
@@ -204,25 +205,25 @@ alias bloopgen='mill --import ivy:com.lihaoyi::mill-contrib-bloop:  mill.contrib
 #       ...
 #       )
 function prompt_bleep_version() {
-    if [ -f "bleep.yaml" ] ; then
+    if [ -f "bleep.yaml" ]; then
         local bleepver
-        bleepver=$(cat bleep.yaml |grep "\$version" | cut -d: -f2 |tr -d " ")
+        bleepver=$(grep "\$version" bleep.yaml | cut -d: -f2 | tr -d " ")
     else
         return
     fi
-    local cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/p10k-${(%):-%n}
+    local cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/p10k-${USER}
     mkdir -p "$cache_dir" # just ensuring that it exists
     local cache_file="$cache_dir/latest_bleep_version"
 
     local timeout_in_hours=24
-    local timeout_in_seconds=$(($timeout_in_hours*60*60))
+    local timeout_in_seconds=$((timeout_in_hours * 60 * 60))
 
-    if [[ ! (-f "$cache_file" && $(($(date +%s) - $(stat -c '%Y' "$cache_file") < $timeout_in_seconds)) -gt 0) ]]; then
+    if [[ ! (-f "$cache_file" && $(($(date +%s) - $(stat -c '%Y' "$cache_file") < timeout_in_seconds)) -gt 0) ]]; then
         local latest_bleep_version
-        latest_bleep_version=$(curl -sSf https://api.github.com/repos/oyvindberg/bleep/releases |grep tag_name | head -1 | cut -d: -f2 |tr -d "\",v\ ")
+        latest_bleep_version=$(curl -sSf https://api.github.com/repos/oyvindberg/bleep/releases | grep tag_name | head -1 | cut -d: -f2 | tr -d "\",v\ ")
 
         if [[ -n "$latest_bleep_version" ]]; then
-            echo "$latest_bleep_version" > "$cache_file"
+            echo "$latest_bleep_version" >"$cache_file"
         else
             touch "$cache_file"
         fi
@@ -231,8 +232,7 @@ function prompt_bleep_version() {
     local latest_bleep_version
     latest_bleep_version=$(cat "$cache_file")
 
-    if [[ -n "$latest_bleep_version" && "$bleepver" != $(echo "$latest_bleep_version" | cut -d- -f1)  && "$bleepver" != "$latest_bleep_version" ]];
-    then
+    if [[ -n "$latest_bleep_version" && "$bleepver" != $(echo "$latest_bleep_version" | cut -d- -f1) && "$bleepver" != "$latest_bleep_version" ]]; then
         p10k segment -s "UP_TO_DATE" -f yellow -i '' -t "⇡ Bleep $bleepver"
     elif [[ -n "$latest_bleep_version" && "$bleepver" != "$latest_bleep_version" ]]; then
         p10k segment -s "NOT_UP_TO_DATE" -f red -i '' -t "⇣ Bleep $bleepver  [$latest_bleep_version]"

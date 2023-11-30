@@ -101,7 +101,7 @@ fi
 # These are at the end to print on user login
 #####
 
-wait $NEOFETCH_PID
+wait "$NEOFETCH_PID"
 \cat /tmp/neofetch_output.txt
 
 if tmux list-sessions >/dev/null 2>&1; then

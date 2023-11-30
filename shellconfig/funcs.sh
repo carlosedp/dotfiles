@@ -27,7 +27,7 @@ updall() {
 
 timezsh() {
     shell=${1-$SHELL}
-    for i in $(seq 1 4); do /usr/bin/time $shell -i -c exit; done
+    for _ in $(seq 1 4); do /usr/bin/time "$shell" -i -c exit; done
 }
 
 function update() {
@@ -187,7 +187,7 @@ dlgr() {
     fi
 
     URL=$(curl -s "${repo}" | grep "$(uname | tr LD ld)" | grep "$(uname -m)" | grep "browser_download_url" | cut -d '"' -f 4 | grep "${FILTER}" | grep -v "\(sha256\|md5\|sha1\)")
-    FILENAME="$(echo ${URL} | rev | cut -d/ -f1 | rev)"
+    FILENAME="$(echo "${URL}" | rev | cut -d/ -f1 | rev)"
     OUT="${FILENAME}"
     if [ "${URL}" ]; then
         if [ -n "${2+set}" ]; then

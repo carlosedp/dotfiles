@@ -1,6 +1,7 @@
 ###
 # Do not add configuration for things that are common to both bash and zsh
 ###
+# shellcheck disable=SC1091
 
 # Debug zsh startup. Uncomment to enable
 # ZSHDEBUG=on
