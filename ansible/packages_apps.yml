@@ -11,7 +11,6 @@ zsh_plugins:
   - https://github.com/MichaelAquilina/zsh-you-should-use
   - https://github.com/Aloxaf/fzf-tab
   - https://github.com/wfxr/forgit
-  - https://github.com/zpm-zsh/clipboard
   - https://github.com/ptavares/zsh-exa
   - https://github.com/carlosedp/mill-zsh-completions
 
@@ -90,6 +89,7 @@ base_packages:
   - tree
   - autojump
   - smartmontools
+  - unzip
 
 debian_packages:
   - locales

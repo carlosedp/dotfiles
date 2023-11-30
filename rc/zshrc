@@ -60,7 +60,6 @@ plugins=(
     aliases
     autojump
     brew
-    clipboard
     command-not-found
     common-aliases
     copypath
