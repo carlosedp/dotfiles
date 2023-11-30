@@ -1,6 +1,9 @@
 - name: ZSH setup
   hosts: all
 
+  vars_files:
+    - packages_apps.yml
+
   tasks:
     - name: Include Detect OS task
       ansible.builtin.include_tasks: detect_os.yml
@@ -81,6 +84,51 @@
       args:
         creates: $HOME/.oh-my-zsh
       when: not ohmyzsh_installed.stat.exists
+
+    - name: Install Zsh Themes
+      ansible.builtin.git: # noqa: latest[git]
+        repo: "{{ item }}"
+        dest: $HOME/.oh-my-zsh/custom/themes/{{ item | basename | regex_replace('\\.git$', '') }}
+        update: true
+        force: true
+      loop: "{{ zsh_themes }}"
+      when: ohmyzsh_installed.stat.exists
+
+    - name: Install Zsh Plugins
+      ansible.builtin.git: # noqa: latest[git]
+        repo: "{{ item }}"
+        dest: $HOME/.oh-my-zsh/custom/plugins/{{ item | basename | regex_replace('\\.git$', '') }}
+        update: true
+        force: true
+      loop: "{{ zsh_plugins }}"
+      when: ohmyzsh_installed.stat.exists
+
+    - name: Get all installed oh-my-zsh plugins
+      ansible.builtin.find:
+        paths: $HOME/.oh-my-zsh/custom/plugins
+        patterns: '*'
+        file_type: directory
+      register: zsh_plugins_found
+      when: ohmyzsh_installed.stat.exists
+
+    - name: Remove oh-my-zsh plugins not on the list
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ zsh_plugins_found.files }}"
+      when: ohmyzsh_installed.stat.exists and (item.path | basename not in zsh_plugins | map('basename') | list and item.path | basename not in ['example'])
+
+    - name: Fix completion permissions
+      ansible.builtin.file:
+        path: /usr/local/share
+        mode: "0755"
+        recurse: true
+      become: true
+
+    - name: Clean Zsh completion cache
+      ansible.builtin.file:
+        path: $HOME/.zcompdump*
+        state: absent
 
     - name: Install fzf repository
       ansible.builtin.git: # noqa: latest[git]

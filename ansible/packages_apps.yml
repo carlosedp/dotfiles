@@ -1,3 +1,20 @@
+zsh_themes:
+  - https://github.com/romkatv/powerlevel10k
+
+zsh_plugins:
+  - https://github.com/carlosedp/zsh-iterm-touchbar
+  - https://github.com/TamCore/autoupdate-oh-my-zsh-plugins
+  - https://github.com/zsh-users/zsh-autosuggestions
+  - https://github.com/zdharma-continuum/fast-syntax-highlighting
+  - https://github.com/zsh-users/zsh-completions
+  - https://github.com/zsh-users/zsh-history-substring-search
+  - https://github.com/MichaelAquilina/zsh-you-should-use
+  - https://github.com/Aloxaf/fzf-tab
+  - https://github.com/wfxr/forgit
+  - https://github.com/zpm-zsh/clipboard
+  - https://github.com/ptavares/zsh-exa
+  - https://github.com/carlosedp/mill-zsh-completions
+
 go_apps:
   - "github.com/github/hub/v2@master"
   - "rsc.io/2fa@latest"
@@ -11,15 +28,15 @@ go_apps:
   - "github.com/charmbracelet/glow@latest"
 
 rust_apps:
-  - "eza"
-  - "bat"
-  - "git-delta"
-  - "hyperfine"
-  - "ripgrep"
-  - "fd-find"
+  - eza
+  - bat
+  - git-delta
+  - hyperfine
+  - ripgrep
+  - fd-find
 
 python_apps:
-  - "ansible-lint"
+  - ansible-lint
 
 coursier_apps:
   - cs
