@@ -14,6 +14,6 @@ if [ -z "$IP_ADDRESS" ] || [ -z "$USERNAME" ]; then
   exit 1
 fi
 
-REMAINING_ARGS="${@:3}"
+REMAINING_ARGS=("${@:3}")
 
-ansible-playbook setup.yml --ask-pass --ask-become-pass -u "$USERNAME" -i "$IP_ADDRESS," $REMAINING_ARGS
+ansible-playbook setup.yml --ask-pass --ask-become-pass -u "$USERNAME" -i "$IP_ADDRESS," "${REMAINING_ARGS[@]}"

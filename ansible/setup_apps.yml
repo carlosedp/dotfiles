@@ -3,6 +3,7 @@
 
   vars_files:
     - packages_apps.yml
+    - variables.yml
 
   tasks:
     - name: Include Detect OS and User tasks
@@ -119,6 +120,35 @@
             state: present
           when: is_linux and ansible_os_family == 'Alpine'
 
+        - name: Start and enable new services
+          ansible.builtin.service:
+            name: "{{ item }}"
+            state: started
+            enabled: true
+          with_items:
+            - haveged
+          retries: 3
+          when: ansible_distribution != 'Alpine'
+          delay: 2
+
+        - name: Update locale (Debian/Ubuntu)
+          ansible.builtin.lineinfile:
+            path: /etc/locale.gen
+            line: 'en_US.UTF-8 UTF-8'
+          when: ansible_os_family == 'Debian'
+
+        - name: Generate locale (Debian/Ubuntu)
+          ansible.builtin.command: locale-gen
+          when: ansible_os_family == 'Debian'
+          register: locale_gen
+          changed_when: locale_gen.rc != 0
+
+        - name: Update locale (Fedora)
+          ansible.builtin.command: localectl set-locale LANG=en_US.UTF-8
+          when: ansible_os_family == 'RedHat'
+          register: locale_gen
+          changed_when: locale_gen.rc != 0
+
         - name: Check if Golang is installed (Linux)
           ansible.builtin.stat:
             path: /usr/local/go/bin/go
@@ -161,6 +191,18 @@
           when: is_linux
           register: kubectl_install
           changed_when: kubectl_install.rc != 0
+
+        - name: Install Kubectl plugin manager (krew)
+          ansible.builtin.shell: |
+            set -o pipefail
+            declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
+            OS="$(uname | tr '[:upper:]' '[:lower:]')"
+            curl -fsSL "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH[$(uname -m)]}.tar.gz" | tar xvzf - -C /tmp
+            chmod +x /tmp/krew-${OS}_${ARCH[$(uname -m)]}
+            /tmp/krew-${OS}_${ARCH[$(uname -m)]} install krew
+          when: is_linux
+          register: krew_install
+          changed_when: krew_install.rc != 0
 
         - name: Install cpanminus to manage Perl modules
           ansible.builtin.shell: | # noqa: command-instead-of-module
@@ -213,21 +255,10 @@
           register: python_apps_installed
           changed_when: python_apps_installed.rc != 0
 
-        - name: Install Kubectl plugin manager (krew)
-          ansible.builtin.shell: |
-            set -o pipefail
-            declare -A ARCH=([x86_64]=amd64 [aarch64]=arm64 [armv7l]=arm [ppc64le]=ppc64le [s390x]=s390x)
-            OS="$(uname | tr '[:upper:]' '[:lower:]')"
-            curl -fsSL "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH[$(uname -m)]}.tar.gz" | tar xvzf - -C /tmp
-            chmod +x /tmp/krew-${OS}_${ARCH[$(uname -m)]}
-            /tmp/krew-${OS}_${ARCH[$(uname -m)]} install krew
-          when: is_linux
-          register: krew_install
-          changed_when: krew_install.rc != 0
-
         - name: Install Kubectl plugins
-          ansible.builtin.command:
-            cmd: /usr/local/bin/kubectl krew install "{{ item }}"
+          ansible.builtin.shell: |
+            export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+            kubectl krew install "{{ item }}"
           loop: "{{ kubectl_plugins }}"
           register: kubectl_plugins_installed
           changed_when: kubectl_plugins_installed.rc != 0
@@ -304,22 +335,25 @@
           changed_when: jdk_version.rc != 0
 
         - name: Install JDK using Coursier
-          ansible.builtin.command:
-            cmd: cs install --jvm "{{ jdk_version.stdout }}"
+          ansible.builtin.shell: |
+            export PATH=$PATH:$HOME/.local/share/coursier/bin:$HOME/Library/Application Support/Coursier/bin/cs
+            cs install --jvm "{{ jdk_version.stdout }}"
           register: coursier_jdk
           changed_when: coursier_jdk.rc != 0
 
         - name: Add Coursier channels
-          ansible.builtin.command:
-            cmd: cs channel -a "{{ item }}"
+          ansible.builtin.shell: |
+            export PATH=$PATH:$HOME/.local/share/coursier/bin:$HOME/Library/Application Support/Coursier/bin/cs
+            cs channel -a "{{ item }}"
           loop:
             - https://raw.githubusercontent.com/oyvindberg/bleep/master/coursier-channel.json
           register: coursier_channels
           changed_when: coursier_channels.rc != 0
 
         - name: Install Scala Coursier apps
-          ansible.builtin.command:
-            cmd: cs install "{{ item }}"
+          ansible.builtin.shell: |
+            export PATH=$PATH:$HOME/.local/share/coursier/bin:$HOME/Library/Application Support/Coursier/bin/cs
+            cs install "{{ item }}"
           loop: "{{ coursier_apps }}"
           register: coursier_apps_installed
           changed_when: coursier_apps_installed.rc != 0

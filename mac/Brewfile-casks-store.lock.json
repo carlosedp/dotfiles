@@ -58,7 +58,7 @@
     },
     "cask": {
       "raycast": {
-        "version": "1.62.2",
+        "version": "1.63.0",
         "options": {
           "full_name": "raycast",
           "args": {
@@ -103,7 +103,7 @@
         }
       },
       "firefox": {
-        "version": "120.0",
+        "version": "120.0.1",
         "options": {
           "full_name": "firefox",
           "args": {
@@ -130,7 +130,7 @@
         }
       },
       "google-chrome": {
-        "version": "119.0.6045.159",
+        "version": "119.0.6045.199",
         "options": {
           "full_name": "google-chrome",
           "args": {
@@ -427,7 +427,7 @@
         }
       },
       "tunnelblick": {
-        "version": "3.8.8e,5779.1",
+        "version": "3.8.8f,5779.2",
         "options": {
           "full_name": "tunnelblick",
           "args": {

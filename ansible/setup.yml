@@ -94,6 +94,14 @@
         createhome: true
       when: is_linux
 
+    - name: Setup autorized SSH keys for user
+      ansible.posix.authorized_key:
+        user: "{{ new_user }}"
+        key: "{{ item }}"
+      with_file:
+        - "{{ lookup('env', 'HOME') + '/.ssh/id_rsa.pub' }}"
+      when: ansible_connection != 'local'
+
 - name: Setup Shell
   ansible.builtin.import_playbook: setup_shell.yml
 

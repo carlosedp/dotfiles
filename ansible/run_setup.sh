@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC1091
 
 # Install Ansible Galaxy requirements
 ansible-galaxy install -r requirements.yml

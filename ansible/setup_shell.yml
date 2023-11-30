@@ -60,24 +60,12 @@
             path: $HOME/.dotfiles/rc/vimrc
           register: vimrc
 
-        - name: Check if oh-my-zsh is installed
-          ansible.builtin.stat:
-            path: $HOME/.oh-my-zsh
-          register: ohmyzsh_installed
-
-        - name: Update oh-my-zsh as it is already installed
-          ansible.builtin.command: # noqa: latest[git]
-            cmd: $HOME/.oh-my-zsh/tools/upgrade.sh -v minimal
-            chdir: $HOME/.oh-my-zsh
-          register: omz_updated
-          changed_when: omz_updated.stdout.find('already at the latest version.') == -1
-          when: ohmyzsh_installed.stat.exists
-
-        - name: Install oh-my-zsh
-          ansible.builtin.shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && exit 0
-          args:
-            creates: $HOME/.oh-my-zsh
-          when: not ohmyzsh_installed.stat.exists
+        - name: Install oh-my-zsh via Git
+          ansible.builtin.git: # noqa: latest[git]
+            repo: https://github.com/ohmyzsh/ohmyzsh
+            dest: $HOME/.oh-my-zsh
+            update: true
+            force: true
 
         - name: Install Zsh Themes
           ansible.builtin.git: # noqa: latest[git]
@@ -86,7 +74,6 @@
             update: true
             force: true
           loop: "{{ zsh_themes }}"
-          when: ohmyzsh_installed.stat.exists
 
         - name: Install Zsh Plugins
           ansible.builtin.git: # noqa: latest[git]
@@ -95,7 +82,6 @@
             update: true
             force: true
           loop: "{{ zsh_plugins }}"
-          when: ohmyzsh_installed.stat.exists
 
         - name: Get all installed oh-my-zsh plugins
           ansible.builtin.find:
@@ -103,14 +89,13 @@
             patterns: '*'
             file_type: directory
           register: zsh_plugins_found
-          when: ohmyzsh_installed.stat.exists
 
         - name: Remove oh-my-zsh plugins not on the list
           ansible.builtin.file:
             path: "{{ item.path }}"
             state: absent
           loop: "{{ zsh_plugins_found.files }}"
-          when: ohmyzsh_installed.stat.exists and (item.path | basename not in zsh_plugins | map('basename') | list and item.path | basename not in ['example'])
+          when: item.path | basename not in zsh_plugins | map('basename') | list and item.path | basename not in ['example']
 
         - name: Clean Zsh completion cache
           ansible.builtin.file:

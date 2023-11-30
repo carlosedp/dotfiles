@@ -8,7 +8,8 @@
 # Neofetch
 if [ -x "$(command -v neofetch)" ] >/dev/null 2>&1; then
     set +m
-    neofetch >/tmp/neofetch_output.txt &
+    mkdir -p "$HOME/.tmp"
+    neofetch >"$HOME"/.tmp/neofetch_output.txt &
     NEOFETCH_PID=$!
 fi
 
@@ -102,7 +103,7 @@ fi
 #####
 
 wait "$NEOFETCH_PID"
-\cat /tmp/neofetch_output.txt
+\cat "$HOME"/.tmp/neofetch_output.txt
 
 if tmux list-sessions >/dev/null 2>&1; then
     echo ""
