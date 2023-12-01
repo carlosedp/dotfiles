@@ -5,7 +5,7 @@
 
   vars_files:
     - variables.yml
-    - packages_apps.yml
+    - variables_packages_apps.yml
 
   tasks:
     - name: Include Detect OS and User tasks

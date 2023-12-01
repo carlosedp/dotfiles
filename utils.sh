@@ -18,57 +18,63 @@ RESET="\e[0m"
 
 # Log message to console
 # Usage: log <message> <color>
-log () {
-    if [ "${2:-}" ]; then
-        printf "%b%b%b\n" "$2" "$1" "$RESET"
-    else
-        printf "%b%b%b\n" "$RESET" "$1" "$RESET"
-    fi
+log() {
+  if [ "${2:-}" ]; then
+    printf "%b%b%b\n" "$2" "$1" "$RESET"
+  else
+    printf "%b%b%b\n" "$RESET" "$1" "$RESET"
+  fi
 }
 
 # Test all log colors
-logTest () {
-    log "Test Black" "$BLACK"
-    log "Test Red" "$RED"
-    log "Test Red Bold" "$REDBOLD"
-    log "Test Red Underline" "$REDUNDER"
-    log "Test Green" "$GREEN"
-    log "Test Green Bold" "$GREENBOLD"
-    log "Test Green Underline" "$GREENUNDER"
-    log "Test Yellow" "$YELLOW"
-    log "Test Yellow Underline" "$YELLOWUNDER"
-    log "Test Blue" "$BLUE"
-    log "Test Magenta" "$MAGENTA"
-    log "Test Cyan" "$CYAN"
-    log "Test White" "$WHITE"
+logTest() {
+  log "Test Black" "$BLACK"
+  log "Test Red" "$RED"
+  log "Test Red Bold" "$REDBOLD"
+  log "Test Red Underline" "$REDUNDER"
+  log "Test Green" "$GREEN"
+  log "Test Green Bold" "$GREENBOLD"
+  log "Test Green Underline" "$GREENUNDER"
+  log "Test Yellow" "$YELLOW"
+  log "Test Yellow Underline" "$YELLOWUNDER"
+  log "Test Blue" "$BLUE"
+  log "Test Magenta" "$MAGENTA"
+  log "Test Cyan" "$CYAN"
+  log "Test White" "$WHITE"
 }
 
 # Clone or pull git repository
 # Usage: cloneorpull <user/repo> <destination_dir>
-cloneorpull () {
-    # $1 is the repository
-    # $2 is the destination dir
-    repo=$1
-    dest=$2
-    shift;shift;
+cloneorpull() {
+  # $1 is the repository
+  # $2 is the destination dir
+  repo=$1
+  dest=$2
+  shift
+  shift
 
-    if [[ ! -d "$dest" ]]; then
-        log "> Cloning $repo... into $dest" "$GREEN"
-        git clone --quiet "$repo" "$dest" "$@"
-    else
-        log "> You already have $repo, updating..." "$GREEN"
-        pushd "$dest" >/dev/null || return
-        if [[ -n $(git status --porcelain) ]]; then
-            log "> Your dir $dest has changes" "$MAGENTA"
-        fi
-        git pull --rebase --autostash --quiet "$@"
-        popd >/dev/null || return
+  if [[ ! -d "$dest" ]]; then
+    log "> Cloning $repo... into $dest" "$GREEN"
+    git clone --quiet "$repo" "$dest" "$@"
+  else
+    # Check if the repo is the same as the one we want to clone
+    if [[ $(git -C "$dest" config --get remote.origin.url) != *"$repo"* ]]; then
+      log "> $dest is not the same repo as $repo, skipping..." "$RED"
+      return
     fi
+    log "> You already have $repo, updating..." "$GREEN"
+    pushd "$dest" >/dev/null || return
+    if [[ -n $(git status --porcelain) ]]; then
+      log "> Your dir $dest has changes" "$MAGENTA"
+    fi
+    git pull --rebase --autostash --quiet "$@"
+    popd >/dev/null || return
+  fi
 }
 
 # Check if array contains element
 # Usage: containsElement <array> <element>
-containsElement () {
+containsElement() {
   local e match="$1"
   shift
   for e; do [[ "$e" == "$match" ]] && return 0; done
@@ -90,8 +96,8 @@ createLink() {
     mkdir -p "$(dirname "$dest")"
   fi
   if [[ -f "$dest" || -d "$dest" ]] && [ ! -L "$dest" ]; then
-      log " > Destination ($dest) already exists. Renaming to $dest-old" "$YELLOW"
-      mv "$dest" "$dest-old"
+    log " > Destination ($dest) already exists. Renaming to $dest-old" "$YELLOW"
+    mv "$dest" "$dest-old"
   fi
   ln -sfn "$origin" "$dest"
 }
@@ -101,9 +107,8 @@ createLink() {
 linkAll() {
   log " > Linking all files from origin \"$1\" to destination \"$2\""
   if [[ -e $1 ]]; then
-    for FILE in "$1"/*
-    do
-      if ! [ -e "$FILE" ];then break; fi
+    for FILE in "$1"/*; do
+      if ! [ -e "$FILE" ]; then break; fi
       createLink "$FILE" "${2}/$(basename "$FILE")"
     done
   fi

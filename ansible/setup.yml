@@ -6,6 +6,7 @@
 
   vars_files:
     - variables.yml
+    - variables_mac_defaults.yml
 
   tasks:
     - name: Install python3 for Ansible (Debian/Ubuntu)
@@ -102,11 +103,21 @@
         - "{{ lookup('env', 'HOME') + '/.ssh/id_rsa.pub' }}"
       when: ansible_connection != 'local'
 
-- name: Setup Shell
-  ansible.builtin.import_playbook: setup_shell.yml
+    - name: Set MacOS defaults
+      community.general.osx_defaults:
+        domain: "{{ item.domain }}"
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+        state: "{{ item.state | default('present') }}"
+      with_items: "{{ macos_defaults }}"
+      when: is_macos
 
-- name: Setup Shell Links
-  ansible.builtin.import_playbook: setup_links.yml
+# - name: Setup Shell
+#   ansible.builtin.import_playbook: setup_shell.yml
 
-- name: Setup Apps and Development Tools
-  ansible.builtin.import_playbook: setup_apps.yml
+# - name: Setup Shell Links
+#   ansible.builtin.import_playbook: setup_links.yml
+
+# - name: Setup Apps and Development Tools
+#   ansible.builtin.import_playbook: setup_apps.yml

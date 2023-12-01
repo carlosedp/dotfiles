@@ -1,0 +1,197 @@
+macos_defaults:
+  # Disable the sound effects on boot
+  - domain: com.apple.sound.beep
+    key: FeedbackMode
+    type: int
+    value: 0
+    # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
+  - domain: NSGlobalDomain
+    key: AppleKeyboardUIMode
+    type: int
+    value: 3
+    # Enable subpixel font rendering on non-Apple LCDs
+  - domain: NSGlobalDomain
+    key: AppleFontSmoothing
+    type: int
+    value: 2
+    # Automatically hide and show the Dock
+  - domain: com.apple.dock
+    key: autohide
+    type: bool
+    value: true
+    #Make Dock icons of hidden applications translucent
+  - domain: com.apple.dock
+    key: showhidden
+    type: bool
+    value: true
+    #Enable iTunes track notifications in the Dock
+  - domain: com.apple.dock
+    key: itunes-notifications
+    type: bool
+    value: true
+    # Expand save panel by default
+  - domain: NSGlobalDomain
+    key: NSNavPanelExpandedStateForSaveMode
+    type: bool
+    value: true
+    # Expand print panel by default
+  - domain: NSGlobalDomain
+    key: PMPrintingExpandedStateForPrint
+    type: bool
+    value: true
+    # Save to disk (not to iCloud) by default
+  - domain: NSGlobalDomain
+    key: NSDocumentSaveNewDocumentsToCloud
+    type: bool
+    value: false
+    #Show all filename extensions in Finder"
+  - domain: NSGlobalDomain
+    key: AppleShowAllExtensions
+    type: bool
+    value: false
+    # Disable press-and-hold for keys in favor of key repeat
+  - domain: NSGlobalDomain
+    key: ApplePressAndHoldEnabled
+    type: bool
+    value: false
+    # Disable auto-correct
+  - domain: NSGlobalDomain
+    key: NSAutomaticSpellingCorrectionEnabled
+    type: bool
+    value: false
+    # Set a blazingly fast keyboard repeat rate
+  - domain: NSGlobalDomain
+    key: KeyRepeat
+    type: int
+    value: 1
+    # Set a shorter Delay until key repeat
+  - domain: NSGlobalDomain
+    key: InitialKeyRepeat
+    type: int
+    value: 5
+    # Increase window resize speed for Cocoa applications
+  - domain: NSGlobalDomain
+    key: NSWindowResizeTime
+    type: float
+    value: 0.001
+    #Enable spring loading for all Dock items"
+  - domain: com.apple.dock
+    key: enable-spring-load-actions-on-all-items
+    type: bool
+    value: true
+    #Show indicator lights for open applications in the Dock
+  - domain: com.apple.dock
+    key: show-process-indicators
+    type: bool
+    value: true
+    # Enable highlight hover effect for the grid view of a stack (Dock)
+  - domain: com.apple.dock
+    key: mouse-over-hilte-stack
+    type: bool
+    value: true
+    # Disable shadow in screenshots
+  - domain: com.apple.screencapture
+    key: disable-shadow
+    type: bool
+    value: true
+    # Automatically illuminate built-in MacBook keyboard in low light
+  - domain: com.apple.BezelServices
+    key: kDim
+    type: bool
+    value: true
+    # Turn off keyboard illumination when computer is not used for 5 minutes
+  - domain: com.apple.BezelServices
+    key: kDimTime
+    type: int
+    value: 300
+    #Display full POSIX path as Finder window title"
+  - domain: com.apple.finder
+    key: _FXShowPosixPathInTitle
+    type: bool
+    value: true
+    #Enable AirDrop over Ethernet and on unsupported Macs
+  - domain: com.apple.NetworkBrowser
+    key: BrowseAllInterfaces
+    type: bool
+    value: true
+    # Disable disk image verification
+  - domain: com.apple.frameworks.diskimages
+    key: skip-verify
+    type: bool
+    value: true
+  - domain: com.apple.frameworks.diskimages
+    key: skip-verify-locked
+    type: bool
+    value: true
+  - domain: com.apple.frameworks.diskimages
+    key: skip-verify-remote
+    type: bool
+    value: true
+    # Avoid creating .DS_Store files on network volumes
+  - domain: com.apple.desktopservices
+    key: DSDontWriteNetworkStores
+    type: bool
+    value: true
+    # Disable the warning when changing a file extension
+  - domain: com.apple.finder
+    key: FXEnableExtensionChangeWarning
+    type: bool
+    value: false
+    # Show the ~/Library folder
+  - domain: com.apple.finder
+    key: ShowHomeFolder
+    type: bool
+    value: true
+    # Avoid creating .DS_Store files on network volumes
+  - domain: com.apple.desktopservices
+    key: DSDontWriteNetworkStores
+    type: bool
+    value: true
+    # Enable Time Machine backup on network volumes
+  - domain: com.apple.systempreferences
+    key: TMShowUnsupportedNetworkVolumes
+    type: bool
+    value: true
+    # Change backup frequency from 1 hour to 2 hours
+  - domain: com.apple.TimeMachine
+    key: BackupInterval
+    type: int
+    value: 7200
+    # Disable local Time Machine backups
+  - domain: com.apple.TimeMachine
+    key: DoNotOfferNewDisksForBackup
+    type: bool
+    value: true
+    # Trackpad: enable tap to click for all users and login screen
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: Clicking
+    type: int
+    value: 1
+  - domain: NSGlobalDomain
+    key: com.apple.mouse.tapBehavior
+    type: int
+    value: 1
+  - domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: TrackpadThreeFingerDrag
+    type: bool
+    value: true
+  - domain: com.apple.AppleMultitouchTrackpad
+    key: TrackpadThreeFingerDrag
+    type: bool
+    value: true
+  - domain: com.apple.finder
+    key: ShowStatusBar
+    type: bool
+    value: true
+  - domain: com.apple.finder
+    key: ShowPathbar
+    type: bool
+    value: true
+  - domain: com.apple.finder
+    key: QLEnableTextSelection
+    type: bool
+    value: true
+  - domain: com.apple.finder
+    key: FXDefaultSearchScope
+    type: string
+    value: SCcf

@@ -2,7 +2,7 @@
   hosts: all
 
   vars_files:
-    - packages_apps.yml
+    - variables_packages_apps.yml
     - variables.yml
 
   tasks:
