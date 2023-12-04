@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1091
-set -euo pipefail
-
-# Bootstrap script to setup any Linux or Mac with Ansible
 
 # Check if Ansible is installed and install it if not
 if ! command -v ansible &>/dev/null; then
@@ -30,46 +27,25 @@ if ! command -v ansible &>/dev/null; then
       exit 1
     fi
 
+  # Mac OSX
   elif [[ "$OSTYPE" == "darwin"* ]]; then
-    # Mac OSX
-    echo "Install homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    echo "Installing Ansible via Homebrew..."
-    brew install ansible git python
+    # Check if Homebrew is installed
+    if ! command -v brew &>/dev/null; then
+      echo "Homebrew could not be found. Installing Homebrew..."
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+    if ! command -v ansible &>/dev/null; then
+      echo "Installing Ansible via Homebrew..."
+      brew install ansible git python
+    fi
   else
     echo "Unsupported OS"
     exit 1
   fi
 fi
 
-# Clone dotfiles into $HOME
-echo "Cloning dotfiles..."
-repo=https://github.com/carlosedp/dotfiles.git
-dest="$HOME/.dotfiles"
-
-if [[ ! -d "$dest" ]]; then
-  log "> Cloning $repo... into $dest" "$GREEN"
-  git clone --quiet "$repo" "$dest" "$@"
-else
-  # Check if the repo is the same as the one we want to clone
-  if [[ $(git -C "$dest" config --get remote.origin.url) != *"$repo"* ]]; then
-    log "> $dest is not the same repo as $repo, skipping..." "$RED"
-    return
-  fi
-  log "> You already have $repo, updating..." "$GREEN"
-  pushd "$dest" >/dev/null || return
-  if [[ -n $(git status --porcelain) ]]; then
-    log "> Your dir $dest has changes" "$MAGENTA"
-  fi
-  git pull --rebase --autostash --quiet "$@"
-  popd >/dev/null || return
-fi
-
-# Run setup playbook
-echo "Running setup playbook..."
-
 # Install Ansible Galaxy requirements
-ansible-galaxy install -r "$HOME/.dotfiles/ansible/requirements.yml"
+ansible-galaxy install -r requirements.yml
 
 # Call the Ansible playbook to setup the machine
-ansible-playbook "$HOME/.dotfiles/ansible/setup.yml" --ask-become-pass
+ansible-playbook setup.yml --ask-become-pass

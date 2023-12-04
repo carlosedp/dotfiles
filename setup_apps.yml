@@ -262,6 +262,7 @@
           loop: "{{ kubectl_plugins }}"
           register: kubectl_plugins_installed
           changed_when: kubectl_plugins_installed.rc != 0
+          ignore_errors: true # We ignore errors since some plugins might not be available for the current architecture
 
         - name: Erlang LS diretory (MacOS)
           ansible.builtin.file:

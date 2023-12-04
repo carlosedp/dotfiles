@@ -95,13 +95,11 @@
         createhome: true
       when: is_linux
 
-    - name: Setup autorized SSH keys for user
-      ansible.posix.authorized_key:
+    - name: Setup authorized SSH keys for user
+      ansible.posix.authorized_key: # noqa: ansible-lintjinja[spacing]
         user: "{{ new_user }}"
-        key: "{{ item }}"
-      with_file:
-        - "{{ lookup('env', 'HOME') + '/.ssh/id_rsa.pub' }}"
-      when: ansible_connection != 'local'
+        key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub', errors='ignore') }}"
+      when: ansible_host != "localhost"
 
     - name: Set MacOS defaults
       community.general.osx_defaults:
@@ -113,11 +111,11 @@
       with_items: "{{ macos_defaults }}"
       when: is_macos
 
-# - name: Setup Shell
-#   ansible.builtin.import_playbook: setup_shell.yml
+- name: Setup Shell
+  ansible.builtin.import_playbook: setup_shell.yml
 
-# - name: Setup Shell Links
-#   ansible.builtin.import_playbook: setup_links.yml
+- name: Setup Shell Links
+  ansible.builtin.import_playbook: setup_links.yml
 
-# - name: Setup Apps and Development Tools
-#   ansible.builtin.import_playbook: setup_apps.yml
+- name: Setup Apps and Development Tools
+  ansible.builtin.import_playbook: setup_apps.yml
