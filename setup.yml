@@ -111,6 +111,22 @@
       with_items: "{{ macos_defaults }}"
       when: is_macos
 
+    - name: Does NX GZip accelerator exists (POWER)
+      ansible.builtin.stat:
+        path: /dev/crypto/nx-gzip
+      register: nx_gzip_exists
+      when: architecture == "ppc64le"
+
+    - name: Create udev rule for NX permission (POWER)
+      ansible.builtin.copy:
+        dest: "/etc/udev/rules.d/99-nx-gzip.rules"
+        content: |
+          # /etc/udev/rules.d/99-nx-gzip.rules
+          # Allow access to NX accelerator to any user
+          KERNEL=="nx-gzip", MODE="0666"
+        mode: "0644"
+      when: nx_gzip_exists.stat.exists and architecture == "ppc64le"
+
 - name: Setup Shell
   ansible.builtin.import_playbook: setup_shell.yml
 
