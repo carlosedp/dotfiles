@@ -115,7 +115,7 @@
       ansible.builtin.stat:
         path: /dev/crypto/nx-gzip
       register: nx_gzip_exists
-      when: architecture == "ppc64le"
+      when: ansible_architecture == "ppc64le"
 
     - name: Create udev rule for NX permission (POWER)
       ansible.builtin.copy:
@@ -125,7 +125,7 @@
           # Allow access to NX accelerator to any user
           KERNEL=="nx-gzip", MODE="0666"
         mode: "0644"
-      when: nx_gzip_exists.stat.exists and architecture == "ppc64le"
+      when: ansible_architecture == "ppc64le" and  nx_gzip_exists.stat.exists
 
 - name: Setup Shell
   ansible.builtin.import_playbook: setup_shell.yml
