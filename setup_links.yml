@@ -39,19 +39,59 @@
             force: true
           with_items: "{{ rc_files.files }}"
 
-        - name: Setup symlinks for private .config folder (MacOS)
-          ansible.builtin.file:
-            src: "{{ sync_folder_mac }}/Configs/rc/config"
-            dest: "$HOME/.config"
-            state: link
-          when: is_macos and sync_folder_exists is defined and sync_folder_exists.stat.exists
+        - name: Check if .config folder exists
+          ansible.builtin.stat:
+            path: "$HOME/.config"
+          register: config_folder_exists
 
-        - name: Setup symlinks for private .config folder (WSL2)
+        - name: Rename existing .config folder if it exists
+          command: mv "$HOME/.config" "$HOME/.config.old"
+          when: config_folder_exists.stat.exists and config_folder_exists.stat.islnk == false
+
+        - name: Remove old .config folder
           ansible.builtin.file:
-            src: "{{ sync_folder_wsl2 }}/Configs/rc/config"
+            path: "$HOME/.config.old"
+            state: absent
+          when: config_folder_exists.stat.exists and config_folder_exists.stat.islnk == false
+
+        - name: Setup link for .config folder
+          ansible.builtin.file:
+            src: "$HOME/.dotfiles/rc/config"
             dest: "$HOME/.config"
             state: link
-          when: is_wsl2 and sync_folder_wsl2_exists is defined and sync_folder_wsl2_exists.stat.exists
+            force: true
+
+        - name: Gather all private config files (MacOS)
+          ansible.builtin.find:
+            paths: "{{ sync_folder_mac }}/Configs/rc/config"
+            patterns: "*"
+            file_type: directory
+          register: private_config_files
+          when: is_macos and sync_folder_exists.stat.exists
+
+        - name: Setup symlinks for private config files (MacOS)
+          ansible.builtin.file:
+            src: "{{ item.path }}"
+            dest: "$HOME/.config/{{ item.path | basename }}"
+            state: link
+          with_items: "{{ private_config_files.files }}"
+          when: is_macos and sync_folder_exists.stat.exists
+
+        - name: Gather all private config files (WSL2)
+          ansible.builtin.find:
+            paths: "{{ sync_folder_wsl2 }}/Configs/rc/config"
+            patterns: "*"
+            file_type: directory
+          register: private_config_files
+          when: is_wsl2 and sync_folder_wsl2_exists.stat.exists
+
+        - name: Setup symlinks for private config files (WSL2)
+          ansible.builtin.file:
+            src: "{{ item.path }}"
+            dest: "$HOME/.config/{{ item.path | basename }}"
+            state: link
+          with_items: "{{ private_config_files.files }}"
+          when: is_wsl2 and sync_folder_wsl2_exists.stat.exists
 
         # Fix WSL2 permission issues someday
         - name: Setup symlinks for ssh config

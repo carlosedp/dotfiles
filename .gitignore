@@ -30,6 +30,7 @@ rc/config/hub
 rc/config/qobuz-dl
 rc/config/op
 rc/config/nicotine
+rc/config/fontforge
 rc/config/simple-update-notifier
 
 bin/scala_scripts/.ammonite
