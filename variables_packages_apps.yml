@@ -16,7 +16,6 @@ zsh_plugins:
 
 go_apps:
   - "github.com/github/hub/v2@master"
-  - "rsc.io/2fa@latest"
   - "golang.org/x/tools/cmd/benchcmp@latest"
   - "github.com/traefik/yaegi/cmd/yaegi@latest"
   - "github.com/rakyll/hey@latest"

@@ -69,6 +69,8 @@ alias gtl='git log --tags -10 --simplify-by-decoration  --reverse --date=format:
 alias gcns='git commit -v --no-edit -s --amend'                                                                                                                                                                               # Commit no edit, sign and amend
 alias gstu='git stash --include-untracked'                                                                                                                                                                                    # Stash all files including untracked
 alias gdm='git diff $(git rev-parse --abbrev-ref --symbolic-full-name @{u})...'                                                                                                                                               # Diff current branch with it's upstream
+alias gbr='git browse'
+alias gdpatch='git --no-pager diff' # Generate a patch formatted output without configured pager (delta)
 
 alias ansible-syntax='ansible-playbook --syntax-check -i "127.0.0.1,"'
 alias elasticindex='watch -n 5 "curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/nodes?v&s=name\"; echo \"\n\"; curl -s \"http://elasticsearch.internal.carlosedp.com/_cat/indices?v&s=index:desc\"|head -30"'
@@ -91,11 +93,13 @@ alias aptupd='sudo apt update && sudo apt upgrade -y && sudo apt autoclean -y &&
 alias jtop='sudo jtop'
 
 if [[ $(command -v bat) ]]; then
-  alias cat="bat"
+  alias cat='bat'
+  # Clean cat for copying contents
+  alias ccat='bat --plain --pager=never'
 elif [[ $(command -v batcat) ]]; then
-  alias cat="batcat"
-else
-  alias cat="bat"
+  alias cat='batcat'
+  # Clean cat for copying contents
+  alias ccat='batcat --plain --pager=never'
 fi
 
 alias ic='it2copy'

@@ -2,7 +2,7 @@
 // checkdeps.sc
 // Install [scala-cli](https://scala-cli.virtuslab.org/) to use
 
-//> using scala "3.3.0"
+//> using scala "3"
 //> using dep "com.lihaoyi::os-lib:0.9.1"
 //> using dep "com.lihaoyi::requests:0.8.0"
 //> using dep "com.lihaoyi::ujson:3.1.2"

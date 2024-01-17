@@ -68,13 +68,6 @@
             state: link
           when: is_macos and sync_folder_exists.stat.exists
 
-        - name: Setup symlinks for 2fa config
-          ansible.builtin.file:
-            src: "{{ sync_folder_mac }}/Configs/2fa/keychain"
-            dest: "$HOME/.2fa"
-            state: link
-          when: is_macos and sync_folder_exists.stat.exists
-
         # - name: Build a list of all MacOS Application Support dirs
         #   ansible.builtin.find:
         #     paths: "{{ sync_folder }}/Configs/AppSupport"

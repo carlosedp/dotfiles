@@ -25,6 +25,6 @@
 # --map-syntax ".ignore:Git Ignore"
 
 --italic-text=always
---theme=Dracula
+--theme=Coldark-Dark
 --style header,header-filename,header-filesize,grid,snip
 --pager 'less -rX'
