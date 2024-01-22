@@ -58,7 +58,7 @@
     },
     "cask": {
       "raycast": {
-        "version": "1.63.0",
+        "version": "1.65.1",
         "options": {
           "full_name": "raycast",
           "args": {
@@ -85,7 +85,7 @@
         }
       },
       "docker": {
-        "version": "4.25.2,129061",
+        "version": "4.26.1,131620",
         "options": {
           "full_name": "docker",
           "args": {
@@ -103,7 +103,7 @@
         }
       },
       "firefox": {
-        "version": "120.0.1",
+        "version": "121.0.1",
         "options": {
           "full_name": "firefox",
           "args": {
@@ -121,7 +121,7 @@
         }
       },
       "google-drive": {
-        "version": "84.0.4",
+        "version": "85.0.35",
         "options": {
           "full_name": "google-drive",
           "args": {
@@ -130,7 +130,7 @@
         }
       },
       "google-chrome": {
-        "version": "119.0.6045.199",
+        "version": "120.0.6099.234",
         "options": {
           "full_name": "google-chrome",
           "args": {
@@ -157,7 +157,7 @@
         }
       },
       "handbrake": {
-        "version": "1.7.1",
+        "version": "1.7.2",
         "options": {
           "full_name": "handbrake",
           "args": {
@@ -175,7 +175,7 @@
         }
       },
       "iterm2": {
-        "version": "3.4.22",
+        "version": "3.4.23",
         "options": {
           "full_name": "iterm2",
           "args": {
@@ -184,7 +184,7 @@
         }
       },
       "itsycal": {
-        "version": "0.15.1",
+        "version": "0.15.2",
         "options": {
           "full_name": "itsycal",
           "args": {
@@ -193,7 +193,7 @@
         }
       },
       "obsidian": {
-        "version": "1.4.16",
+        "version": "1.5.3",
         "options": {
           "full_name": "obsidian",
           "args": {
@@ -256,7 +256,7 @@
         }
       },
       "rectangle": {
-        "version": "0.74",
+        "version": "0.75",
         "options": {
           "full_name": "rectangle",
           "args": {
@@ -274,7 +274,7 @@
         }
       },
       "spotify": {
-        "version": "1.2.25.1011,0348b2ea,716",
+        "version": "1.2.29.605,66a43ceb,1228",
         "options": {
           "full_name": "spotify",
           "args": {
@@ -301,7 +301,7 @@
         }
       },
       "transmission": {
-        "version": "4.0.4",
+        "version": "4.0.5",
         "options": {
           "full_name": "transmission",
           "args": {
@@ -310,7 +310,7 @@
         }
       },
       "virtualbox": {
-        "version": "7.0.12,159484",
+        "version": "7.0.14,161095",
         "options": {
           "full_name": "virtualbox",
           "args": {
@@ -337,7 +337,7 @@
         }
       },
       "powershell": {
-        "version": "7.4.0",
+        "version": "7.4.1",
         "options": {
           "full_name": "powershell",
           "args": {
@@ -355,7 +355,7 @@
         }
       },
       "1password": {
-        "version": "8.10.20",
+        "version": "8.10.23",
         "options": {
           "full_name": "1password",
           "args": {
@@ -364,7 +364,7 @@
         }
       },
       "1password-cli": {
-        "version": "2.23.0",
+        "version": "2.24.0",
         "options": {
           "full_name": "1password-cli",
           "args": {
@@ -373,7 +373,7 @@
         }
       },
       "maccy": {
-        "version": "0.28.0",
+        "version": "0.29.3",
         "options": {
           "full_name": "maccy",
           "args": {
@@ -427,7 +427,7 @@
         }
       },
       "tunnelblick": {
-        "version": "3.8.8f,5779.2",
+        "version": "3.8.8g,5779.3",
         "options": {
           "full_name": "tunnelblick",
           "args": {
@@ -436,7 +436,7 @@
         }
       },
       "element": {
-        "version": "1.11.50",
+        "version": "1.11.55",
         "options": {
           "full_name": "element",
           "args": {
@@ -491,6 +491,14 @@
         "CLT": "15.0.0.0.1.1694021235",
         "Xcode": "15.0",
         "macOS": "13.5"
+      },
+      "sonoma": {
+        "HOMEBREW_VERSION": "4.2.4",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "api",
+        "CLT": "15.1.0.0.1.1700200546",
+        "Xcode": "15.1",
+        "macOS": "14.2.1"
       }
     }
   }

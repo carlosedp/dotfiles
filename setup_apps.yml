@@ -128,24 +128,24 @@
           with_items:
             - haveged
           retries: 3
-          when: ansible_distribution != 'Alpine'
+          when: is_linux and ansible_distribution != 'Alpine'
           delay: 2
 
         - name: Update locale (Debian/Ubuntu)
           ansible.builtin.lineinfile:
             path: /etc/locale.gen
             line: 'en_US.UTF-8 UTF-8'
-          when: ansible_os_family == 'Debian'
+          when: is_linux and ansible_os_family == 'Debian'
 
         - name: Generate locale (Debian/Ubuntu)
           ansible.builtin.command: locale-gen
-          when: ansible_os_family == 'Debian'
+          when: is_linux and ansible_os_family == 'Debian'
           register: locale_gen
           changed_when: locale_gen.rc != 0
 
         - name: Update locale (Fedora)
           ansible.builtin.command: localectl set-locale LANG=en_US.UTF-8
-          when: ansible_os_family == 'RedHat'
+          when: is_linux and ansible_os_family == 'RedHat'
           register: locale_gen
           changed_when: locale_gen.rc != 0
 
