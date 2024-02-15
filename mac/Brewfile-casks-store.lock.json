@@ -58,7 +58,7 @@
     },
     "cask": {
       "raycast": {
-        "version": "1.65.1",
+        "version": "1.67.1",
         "options": {
           "full_name": "raycast",
           "args": {
@@ -85,7 +85,7 @@
         }
       },
       "docker": {
-        "version": "4.26.1,131620",
+        "version": "4.27.2,137060",
         "options": {
           "full_name": "docker",
           "args": {
@@ -103,7 +103,7 @@
         }
       },
       "firefox": {
-        "version": "121.0.1",
+        "version": "122.0.1",
         "options": {
           "full_name": "firefox",
           "args": {
@@ -121,7 +121,7 @@
         }
       },
       "google-drive": {
-        "version": "85.0.35",
+        "version": "87.0.2",
         "options": {
           "full_name": "google-drive",
           "args": {
@@ -130,7 +130,7 @@
         }
       },
       "google-chrome": {
-        "version": "120.0.6099.234",
+        "version": "121.0.6167.184",
         "options": {
           "full_name": "google-chrome",
           "args": {
@@ -157,7 +157,7 @@
         }
       },
       "handbrake": {
-        "version": "1.7.2",
+        "version": "1.7.3",
         "options": {
           "full_name": "handbrake",
           "args": {
@@ -274,7 +274,7 @@
         }
       },
       "spotify": {
-        "version": "1.2.29.605,66a43ceb,1228",
+        "version": "1.2.31.1205,4d59ad7c,345",
         "options": {
           "full_name": "spotify",
           "args": {
@@ -355,7 +355,7 @@
         }
       },
       "1password": {
-        "version": "8.10.23",
+        "version": "8.10.24",
         "options": {
           "full_name": "1password",
           "args": {
@@ -373,7 +373,7 @@
         }
       },
       "maccy": {
-        "version": "0.29.3",
+        "version": "0.29.4",
         "options": {
           "full_name": "maccy",
           "args": {
@@ -436,7 +436,7 @@
         }
       },
       "element": {
-        "version": "1.11.55",
+        "version": "1.11.58",
         "options": {
           "full_name": "element",
           "args": {
@@ -493,7 +493,7 @@
         "macOS": "13.5"
       },
       "sonoma": {
-        "HOMEBREW_VERSION": "4.2.4",
+        "HOMEBREW_VERSION": "4.2.8",
         "HOMEBREW_PREFIX": "/usr/local",
         "Homebrew/homebrew-core": "api",
         "CLT": "15.1.0.0.1.1700200546",
