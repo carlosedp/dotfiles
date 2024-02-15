@@ -36,6 +36,17 @@
       register: output
       changed_when: output.rc != 0
 
+    - name: Check if local dotfiles repo has changes
+      ansible.builtin.shell: "git -C {{ lookup('env', 'HOME') }}/.dotfiles status --porcelain"
+      register: dotfiles_repo
+      changed_when: false
+      failed_when: false
+
+    - name: If dotfiles has changes, abort the playbook
+      ansible.builtin.fail:
+        msg: "Dotfiles repo has changes. Please commit and push the changes before running the playbook."
+      when: dotfiles_repo.stdout != ""
+
     - name: Install Homebrew (MacOS)
       ansible.builtin.raw: |
         if [ "$(uname)" == "Darwin" -a ! "test -e /usr/local/bin/brew" ]; then
