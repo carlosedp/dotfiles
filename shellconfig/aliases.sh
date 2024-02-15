@@ -113,3 +113,6 @@ alias goupall='go get -u ./...'
 alias nig='npm install -g'
 alias nlg='npm list -g'
 alias nug='npm update -g'
+
+# Count lines of code ignoring files from .gitignore
+alias loc='git ls-files -z | xargs -0 gocloc'

@@ -95,7 +95,7 @@ function csrt() { # fzf coursier resolve tree
     cs resolve -t "$1" | fzf --reverse --ansi
 }
 
-alias cleansproj='rm -rf .bsp .metals .bloop .scala-build .ammonite out target project/target project/project .bleep'
+alias cleansproj='rm -rf .bsp .metals .bloop .scala-build .ammonite out target project/target project/project .bleep target'
 alias bloopgen='mill --import ivy:com.lihaoyi::mill-contrib-bloop:  mill.contrib.bloop.Bloop/install'
 
 # The functions millupd and mill_prompt were moved to the mill-zsh-completions plugin managed by Oh My Zsh
