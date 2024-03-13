@@ -2,7 +2,7 @@
   "entries": {
     "tap": {
       "homebrew/cask-fonts": {
-        "revision": "3c9d137956343e190e0feb319613de9ab50cd8c0"
+        "revision": "2ffb58600554a5984a3d06439418a7c494a482fb"
       },
       "coursier/formulas": {
         "revision": "85d1ea5f48e301c9417b1298fe434ecc9d7b8c56"
@@ -10,45 +10,45 @@
     },
     "brew": {
       "go": {
-        "version": "1.22.0",
+        "version": "1.22.1",
         "bottle": {
           "rebuild": 0,
           "root_url": "https://ghcr.io/v2/homebrew/core",
           "files": {
             "arm64_sonoma": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:5b6a74eb8ceddbefbe2e8fd6741877d7c6bba2bb98e39e0e6c63275a12afc738",
-              "sha256": "5b6a74eb8ceddbefbe2e8fd6741877d7c6bba2bb98e39e0e6c63275a12afc738"
+              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:357ac66ade847efda1d5bf04249a2f913c7eb50f2dc9b3c4849825d62b5758f7",
+              "sha256": "357ac66ade847efda1d5bf04249a2f913c7eb50f2dc9b3c4849825d62b5758f7"
             },
             "arm64_ventura": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:42e3f0211a1c8e9c48b398861414a928f255f430e0b87414419c64be5fc6e087",
-              "sha256": "42e3f0211a1c8e9c48b398861414a928f255f430e0b87414419c64be5fc6e087"
+              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:83454361a3c913a424058659babc5867a0210850d7c8cbc925bd7b426e6e6ead",
+              "sha256": "83454361a3c913a424058659babc5867a0210850d7c8cbc925bd7b426e6e6ead"
             },
             "arm64_monterey": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:9d8e676f95fa10a62b1e9b6163a72dbe367eac42e3331f41ab38350820071722",
-              "sha256": "9d8e676f95fa10a62b1e9b6163a72dbe367eac42e3331f41ab38350820071722"
+              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:3be1788218ac2c51b27321ed215ed8c462f6089f4e3c3a3fb98841083ab74dd4",
+              "sha256": "3be1788218ac2c51b27321ed215ed8c462f6089f4e3c3a3fb98841083ab74dd4"
             },
             "sonoma": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:d88e776e567cea8d05e451376f344ffe08df11bf7b02e4a6e56e46bcf7381213",
-              "sha256": "d88e776e567cea8d05e451376f344ffe08df11bf7b02e4a6e56e46bcf7381213"
+              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:d677915bd8463a26331473b72f287c8d78651efcd08b497fe50753177bfbb6d9",
+              "sha256": "d677915bd8463a26331473b72f287c8d78651efcd08b497fe50753177bfbb6d9"
             },
             "ventura": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:67d4de0223ee32b293e682470c0463adde358a9d43b949c8c43eae30c40347b1",
-              "sha256": "67d4de0223ee32b293e682470c0463adde358a9d43b949c8c43eae30c40347b1"
+              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:69e0d8c40f097d313a702b48d8a59a1d1bbef16c358fea0031fbaead9166b5d7",
+              "sha256": "69e0d8c40f097d313a702b48d8a59a1d1bbef16c358fea0031fbaead9166b5d7"
             },
             "monterey": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:aff3fd24232a87ee629dbcae614889de2f3d4c91bb1017966f28f1aca2b25279",
-              "sha256": "aff3fd24232a87ee629dbcae614889de2f3d4c91bb1017966f28f1aca2b25279"
+              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:3ded8ed8d83478d452807c9afa82bf85f6e958929cdb8a64fc01c79e02e7f218",
+              "sha256": "3ded8ed8d83478d452807c9afa82bf85f6e958929cdb8a64fc01c79e02e7f218"
             },
             "x86_64_linux": {
               "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:2fe839ddca7680dc4a3538e8af906efc8f36f8f461098f6c1e6c780a18407214",
-              "sha256": "2fe839ddca7680dc4a3538e8af906efc8f36f8f461098f6c1e6c780a18407214"
+              "url": "https://ghcr.io/v2/homebrew/core/go/blobs/sha256:80f41e86463fb661b1f22b79338d41e0d0b68248245829ee63b1976d75cd161c",
+              "sha256": "80f41e86463fb661b1f22b79338d41e0d0b68248245829ee63b1976d75cd161c"
             }
           }
         }
@@ -156,45 +156,45 @@
         "bottle": false
       },
       "python": {
-        "version": "3.11.7_1",
+        "version": "3.12.2_1",
         "bottle": {
           "rebuild": 0,
           "root_url": "https://ghcr.io/v2/homebrew/core",
           "files": {
             "arm64_sonoma": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/python/3.11/blobs/sha256:360a3c596e6dc366b14105edd808c402f92963c893060ab08a46e5478da9d9f8",
-              "sha256": "360a3c596e6dc366b14105edd808c402f92963c893060ab08a46e5478da9d9f8"
+              "url": "https://ghcr.io/v2/homebrew/core/python/3.12/blobs/sha256:4603d3f3277f2d25fec8e813543a863ceabd90066578b14d530d2f7f59e345e0",
+              "sha256": "4603d3f3277f2d25fec8e813543a863ceabd90066578b14d530d2f7f59e345e0"
             },
             "arm64_ventura": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/python/3.11/blobs/sha256:43a26af08d37b1c27930e587b498071726ba9810b5b0c3b48772406410fe4a5e",
-              "sha256": "43a26af08d37b1c27930e587b498071726ba9810b5b0c3b48772406410fe4a5e"
+              "url": "https://ghcr.io/v2/homebrew/core/python/3.12/blobs/sha256:312729d7f0c6f95b573cbab483db01aaf2ca577392405d0e0b5ea6717ebb916a",
+              "sha256": "312729d7f0c6f95b573cbab483db01aaf2ca577392405d0e0b5ea6717ebb916a"
             },
             "arm64_monterey": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/python/3.11/blobs/sha256:88abcc63a0b938a76807c067b97cf3f3c5d9138e52255952336125e7cfcf3ac0",
-              "sha256": "88abcc63a0b938a76807c067b97cf3f3c5d9138e52255952336125e7cfcf3ac0"
+              "url": "https://ghcr.io/v2/homebrew/core/python/3.12/blobs/sha256:d5f921fba6c83ddda6cf887ed040106dc7647a9b2aed035a1079d58c7c7c5f62",
+              "sha256": "d5f921fba6c83ddda6cf887ed040106dc7647a9b2aed035a1079d58c7c7c5f62"
             },
             "sonoma": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/python/3.11/blobs/sha256:3ea9e879c186ad5d7ebcb930746c19ba828ebb9cce25e30f984ab569a405a503",
-              "sha256": "3ea9e879c186ad5d7ebcb930746c19ba828ebb9cce25e30f984ab569a405a503"
+              "url": "https://ghcr.io/v2/homebrew/core/python/3.12/blobs/sha256:99fcd3eb3dff129c97ae0e4afb8fb90e39fa8595ea61b19854020cd4561e1e92",
+              "sha256": "99fcd3eb3dff129c97ae0e4afb8fb90e39fa8595ea61b19854020cd4561e1e92"
             },
             "ventura": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/python/3.11/blobs/sha256:0f4b5681ffa3da52e7eb33c75435ebdb58c1af12b2b16dfd0266dab28ef811a6",
-              "sha256": "0f4b5681ffa3da52e7eb33c75435ebdb58c1af12b2b16dfd0266dab28ef811a6"
+              "url": "https://ghcr.io/v2/homebrew/core/python/3.12/blobs/sha256:2b8cefc95067f3232cbf8b8c0c9df11b040923e12e0308f5102f237f82372710",
+              "sha256": "2b8cefc95067f3232cbf8b8c0c9df11b040923e12e0308f5102f237f82372710"
             },
             "monterey": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/python/3.11/blobs/sha256:2f423003d778d46f0a733c565d93a086a5c186af63871ed7a8f545e24ebe62d4",
-              "sha256": "2f423003d778d46f0a733c565d93a086a5c186af63871ed7a8f545e24ebe62d4"
+              "url": "https://ghcr.io/v2/homebrew/core/python/3.12/blobs/sha256:20655faca163d3ca0c567a4acb3ccb22388ca68dc3adff598a63525221eadd23",
+              "sha256": "20655faca163d3ca0c567a4acb3ccb22388ca68dc3adff598a63525221eadd23"
             },
             "x86_64_linux": {
               "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/python/3.11/blobs/sha256:e30cedb29d299760adce6a0d2a390828c80466da49c6da80ea524f039ea64188",
-              "sha256": "e30cedb29d299760adce6a0d2a390828c80466da49c6da80ea524f039ea64188"
+              "url": "https://ghcr.io/v2/homebrew/core/python/3.12/blobs/sha256:08fc9fc751eeb9cae20a3797ff26c7baecf2001129ea590c7cefd437e0a1f1cd",
+              "sha256": "08fc9fc751eeb9cae20a3797ff26c7baecf2001129ea590c7cefd437e0a1f1cd"
             }
           }
         }
@@ -254,45 +254,45 @@
         }
       },
       "verilator": {
-        "version": "5.018",
+        "version": "5.022",
         "bottle": {
           "rebuild": 0,
           "root_url": "https://ghcr.io/v2/homebrew/core",
           "files": {
             "arm64_sonoma": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:b47c7c591fbd98cde34877623e03c4a6c21f0c11b5cba4e05d507ae4856db827",
-              "sha256": "b47c7c591fbd98cde34877623e03c4a6c21f0c11b5cba4e05d507ae4856db827"
+              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:cdbbc21547d6bd630f1084e3de089f806f8cd9a01dc1c21902d3b8a249a01acc",
+              "sha256": "cdbbc21547d6bd630f1084e3de089f806f8cd9a01dc1c21902d3b8a249a01acc"
             },
             "arm64_ventura": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:771dca8bb5f254ade51cc9ff2fbc43d056cbe25af62cedfa20cb61b7354462fb",
-              "sha256": "771dca8bb5f254ade51cc9ff2fbc43d056cbe25af62cedfa20cb61b7354462fb"
+              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:54dbd46906419c612e9c1d9dd834bbc264acaa5bec368eaeca6295c27b164d68",
+              "sha256": "54dbd46906419c612e9c1d9dd834bbc264acaa5bec368eaeca6295c27b164d68"
             },
             "arm64_monterey": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:1aaa10214a83b76a414d75f74d5840881e209553aa0a435af7ef92f3ac2c656d",
-              "sha256": "1aaa10214a83b76a414d75f74d5840881e209553aa0a435af7ef92f3ac2c656d"
+              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:d447146992ddd831dc3939dadf6e0017b964f68a25f8d09bc1cf7672569af004",
+              "sha256": "d447146992ddd831dc3939dadf6e0017b964f68a25f8d09bc1cf7672569af004"
             },
             "sonoma": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:143c245daaa629629da0433db91ee700546e282ad3de6cd221e2d82a2bb4fe9f",
-              "sha256": "143c245daaa629629da0433db91ee700546e282ad3de6cd221e2d82a2bb4fe9f"
+              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:d794010777e190597e399e6027288b42f2982ed1b19fad069cfe9cda0bc6f7e5",
+              "sha256": "d794010777e190597e399e6027288b42f2982ed1b19fad069cfe9cda0bc6f7e5"
             },
             "ventura": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:f0a6048e4a58c7c08b58fc04a3c7c891b4d6b7623b30f3ceda3547c7ca4e2191",
-              "sha256": "f0a6048e4a58c7c08b58fc04a3c7c891b4d6b7623b30f3ceda3547c7ca4e2191"
+              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:8824e57d2d9b8c49a77ee5f4048574ac9b7c8da162061ebf88251990951db6f9",
+              "sha256": "8824e57d2d9b8c49a77ee5f4048574ac9b7c8da162061ebf88251990951db6f9"
             },
             "monterey": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:0cdf4d00c49a7cb5020e8d06bd7ac8e0ab03ef4732998c435b933fdfc89d7da2",
-              "sha256": "0cdf4d00c49a7cb5020e8d06bd7ac8e0ab03ef4732998c435b933fdfc89d7da2"
+              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:1e6d312e7808ffd8c9faedb0a279d0d134a43a8b8b079ab3b8c98cf3f758037a",
+              "sha256": "1e6d312e7808ffd8c9faedb0a279d0d134a43a8b8b079ab3b8c98cf3f758037a"
             },
             "x86_64_linux": {
               "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:fe6638a6b8458630c0b73776fe9e9f949d8dc12992e112f7d6971fbf65b645f1",
-              "sha256": "fe6638a6b8458630c0b73776fe9e9f949d8dc12992e112f7d6971fbf65b645f1"
+              "url": "https://ghcr.io/v2/homebrew/core/verilator/blobs/sha256:0cbb69277bfcdefef780a639e858533d364b7a59597603327b71f4737681a1fa",
+              "sha256": "0cbb69277bfcdefef780a639e858533d364b7a59597603327b71f4737681a1fa"
             }
           }
         }
@@ -342,99 +342,89 @@
         }
       },
       "node": {
-        "version": "21.6.2",
+        "version": "21.7.1",
         "bottle": {
           "rebuild": 0,
           "root_url": "https://ghcr.io/v2/homebrew/core",
           "files": {
             "arm64_sonoma": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:09264777f1f64b4ce1fe0093f122b0a99528c28ad089469b643f1fe3e6011c06",
-              "sha256": "09264777f1f64b4ce1fe0093f122b0a99528c28ad089469b643f1fe3e6011c06"
+              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:1063aef6c3fcc8590343a47891c58834623e0e0a12f4a36c2aa2be699381b877",
+              "sha256": "1063aef6c3fcc8590343a47891c58834623e0e0a12f4a36c2aa2be699381b877"
             },
             "arm64_ventura": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:a8fb7b7984a56d01043d2d5e8c3c2dbbdd9f1f1d245fc2f3dd4bbb0cbc8e7fde",
-              "sha256": "a8fb7b7984a56d01043d2d5e8c3c2dbbdd9f1f1d245fc2f3dd4bbb0cbc8e7fde"
+              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:e53082c75dc7c4e0e0d79c8f91f650cffa6cffdc30fb18fd3bc8dfd1cc4b140f",
+              "sha256": "e53082c75dc7c4e0e0d79c8f91f650cffa6cffdc30fb18fd3bc8dfd1cc4b140f"
             },
             "arm64_monterey": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:970faa32926c39a96e98ba6cd6ceb164fc09bf2e9ccb574fe1bc9f978c35112e",
-              "sha256": "970faa32926c39a96e98ba6cd6ceb164fc09bf2e9ccb574fe1bc9f978c35112e"
+              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:6477d4048ed7f27f11f7d68cc8277f348f2702fe8afccc8b3447e508a0c526a0",
+              "sha256": "6477d4048ed7f27f11f7d68cc8277f348f2702fe8afccc8b3447e508a0c526a0"
             },
             "sonoma": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:92c466f9762892b47c40a4a409a5a4da2d6d44e254b679c3c5291788f4569718",
-              "sha256": "92c466f9762892b47c40a4a409a5a4da2d6d44e254b679c3c5291788f4569718"
+              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:acb56af4bf0e15ff4d6ef56fec98ecf5b4000910f0b7b298b9047b369431b4c2",
+              "sha256": "acb56af4bf0e15ff4d6ef56fec98ecf5b4000910f0b7b298b9047b369431b4c2"
             },
             "ventura": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:bef0767d92fb30cbf98a75aa7d7cd4790d352f3b9a40ec8dc76356000172788f",
-              "sha256": "bef0767d92fb30cbf98a75aa7d7cd4790d352f3b9a40ec8dc76356000172788f"
+              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:a547d63eaf7dd21be8ee1cc0f7faea9e1f38d88412f1d2703d2a1e7da3754d6c",
+              "sha256": "a547d63eaf7dd21be8ee1cc0f7faea9e1f38d88412f1d2703d2a1e7da3754d6c"
             },
             "monterey": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:1fa17cc6f4a1bf965529eacb505cac37d921d779f61eb51c3e48996c91746d41",
-              "sha256": "1fa17cc6f4a1bf965529eacb505cac37d921d779f61eb51c3e48996c91746d41"
+              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:db63e269d54ea08abf7f542d6ad5d3551182e64959bfbb732a4c716f85b4bb62",
+              "sha256": "db63e269d54ea08abf7f542d6ad5d3551182e64959bfbb732a4c716f85b4bb62"
             },
             "x86_64_linux": {
               "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:6cb6a717d4035c8d171d9288115eb0052ae59e5d44522bb84165e4394a09f4c8",
-              "sha256": "6cb6a717d4035c8d171d9288115eb0052ae59e5d44522bb84165e4394a09f4c8"
+              "url": "https://ghcr.io/v2/homebrew/core/node/blobs/sha256:615b632eb04603ce05068644f7875a1e9c7bec4af5e806941e8a158c57ababbb",
+              "sha256": "615b632eb04603ce05068644f7875a1e9c7bec4af5e806941e8a158c57ababbb"
             }
           }
         }
       },
       "openfpgaloader": {
-        "version": "0.11.0",
+        "version": "0.12.0",
         "bottle": {
           "rebuild": 0,
           "root_url": "https://ghcr.io/v2/homebrew/core",
           "files": {
             "arm64_sonoma": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:f23bb8e00a80121901a5f8d121f9e2cd0097c1173847ee0cbfbe1774b4711b76",
-              "sha256": "f23bb8e00a80121901a5f8d121f9e2cd0097c1173847ee0cbfbe1774b4711b76"
+              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:e01a215c16c41140fcbda7940a95cefdcdd7fdc941390238fbaf6f842c8a766a",
+              "sha256": "e01a215c16c41140fcbda7940a95cefdcdd7fdc941390238fbaf6f842c8a766a"
             },
             "arm64_ventura": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:666c9c4f7c003395fda0e142c59edcb600ea189decb7575f5f166b711192c019",
-              "sha256": "666c9c4f7c003395fda0e142c59edcb600ea189decb7575f5f166b711192c019"
+              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:7ea2d9905a30cdb7e3300b33a2e3284cbdc72f4a844a027dac37f20488ca4120",
+              "sha256": "7ea2d9905a30cdb7e3300b33a2e3284cbdc72f4a844a027dac37f20488ca4120"
             },
             "arm64_monterey": {
               "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:4aef28949c50535a09557216b0f5849888cdb24f7774e0b4a0702f410880e6b8",
-              "sha256": "4aef28949c50535a09557216b0f5849888cdb24f7774e0b4a0702f410880e6b8"
-            },
-            "arm64_big_sur": {
-              "cellar": "/opt/homebrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:17e1f7ac035a755119d64b779b53bf54ce6d6035eb2f6c4f405a9d41f3158bcb",
-              "sha256": "17e1f7ac035a755119d64b779b53bf54ce6d6035eb2f6c4f405a9d41f3158bcb"
+              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:83e2cd627e0bec7218c3d02f65c70e72f96deeffd01a651be8fe8dc1c8e0a2e3",
+              "sha256": "83e2cd627e0bec7218c3d02f65c70e72f96deeffd01a651be8fe8dc1c8e0a2e3"
             },
             "sonoma": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:e43c5df321a9a594e858c8c6313733454384d8b8405523df55a00f92f2dff001",
-              "sha256": "e43c5df321a9a594e858c8c6313733454384d8b8405523df55a00f92f2dff001"
+              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:99fea384a000bf86855732b406ff2fdee7cba5ed2a04508b5fb8efa9a66f373c",
+              "sha256": "99fea384a000bf86855732b406ff2fdee7cba5ed2a04508b5fb8efa9a66f373c"
             },
             "ventura": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:835de1449778a19b0673c12e4f1f1375e02b43223228cbfe89e86cef0500d043",
-              "sha256": "835de1449778a19b0673c12e4f1f1375e02b43223228cbfe89e86cef0500d043"
+              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:0603023f401d5d8fefd723f9fc15a4cb5fe28236a418d8ddf6213fb088b60383",
+              "sha256": "0603023f401d5d8fefd723f9fc15a4cb5fe28236a418d8ddf6213fb088b60383"
             },
             "monterey": {
               "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:981717b4fdd06ff7a17b6425c9d03af29ecb003239e25c70646e15f4948843a6",
-              "sha256": "981717b4fdd06ff7a17b6425c9d03af29ecb003239e25c70646e15f4948843a6"
-            },
-            "big_sur": {
-              "cellar": "/usr/local/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:178c65d1afa79644bfbea2effbc3f0d3570ada4b8ceb1aaae5a00605f651cf48",
-              "sha256": "178c65d1afa79644bfbea2effbc3f0d3570ada4b8ceb1aaae5a00605f651cf48"
+              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:4abe25c4379a4c5088456799e742b1d5e07f6701eb2e298361c32dd7934a9947",
+              "sha256": "4abe25c4379a4c5088456799e742b1d5e07f6701eb2e298361c32dd7934a9947"
             },
             "x86_64_linux": {
               "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
-              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:3f010d95399d2a150706ee2176bcc1b651f229e556d1fac89f7f70246aa84944",
-              "sha256": "3f010d95399d2a150706ee2176bcc1b651f229e556d1fac89f7f70246aa84944"
+              "url": "https://ghcr.io/v2/homebrew/core/openfpgaloader/blobs/sha256:dcad59c7d6df1562f7d9d8c183e0dcd74f10d20d24d01ac945b988ae4d02e3f7",
+              "sha256": "dcad59c7d6df1562f7d9d8c183e0dcd74f10d20d24d01ac945b988ae4d02e3f7"
             }
           }
         }
@@ -442,7 +432,7 @@
     },
     "cask": {
       "visual-studio-code": {
-        "version": "1.86.1",
+        "version": "1.87.2",
         "options": {
           "full_name": "visual-studio-code"
         }
@@ -490,7 +480,7 @@
         }
       },
       "arduino-ide": {
-        "version": "2.3.0",
+        "version": "2.3.2",
         "options": {
           "full_name": "arduino-ide"
         }
@@ -538,7 +528,7 @@
         "macOS": "13.5"
       },
       "sonoma": {
-        "HOMEBREW_VERSION": "4.2.8",
+        "HOMEBREW_VERSION": "4.2.12",
         "HOMEBREW_PREFIX": "/usr/local",
         "Homebrew/homebrew-core": "api",
         "CLT": "15.1.0.0.1.1700200546",

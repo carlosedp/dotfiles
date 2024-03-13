@@ -2,13 +2,14 @@
 // checkdeps.sc
 // Install [scala-cli](https://scala-cli.virtuslab.org/) to use
 
-//> using scala "3"
-//> using dep "com.lihaoyi::os-lib:0.9.1"
-//> using dep "com.lihaoyi::requests:0.8.0"
-//> using dep "com.lihaoyi::ujson:3.1.2"
-//> using dep "com.lihaoyi::fansi::0.4.0"
-//> using dep "io.kevinlee::just-semver:0.6.0"
-//> using dep "org.scala-lang.modules::scala-xml:2.2.0"
+//> using scala 3
+//> using nativeVersion 0.5.0-RC1
+//> using dep com.lihaoyi::os-lib::0.9.3
+//> using dep com.lihaoyi::requests::0.8.0
+//> using dep com.lihaoyi::ujson:3.2.0
+//> using dep com.lihaoyi::fansi::0.4.0
+//> using dep io.kevinlee::just-semver::0.9.0
+//> using dep org.scala-lang.modules::scala-xml::2.2.0
 
 import just.semver.SemVer
 import fansi.Color.*

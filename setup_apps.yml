@@ -248,11 +248,12 @@
           when: is_linux
           changed_when: rust_apps_installed.rc != 0
 
-        - name: Install Python Apps
+        - name: Install Python Apps (Linux)
           ansible.builtin.command:
             cmd: pip3 install "{{ item }}"
           loop: "{{ python_apps }}"
           register: python_apps_installed
+          when: is_linux
           changed_when: python_apps_installed.rc != 0
 
         - name: Install Kubectl plugins

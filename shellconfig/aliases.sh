@@ -116,3 +116,6 @@ alias nug='npm update -g'
 
 # Count lines of code ignoring files from .gitignore
 alias loc='git ls-files -z | xargs -0 gocloc'
+
+# Github copilot CLI
+alias ??='unset GITHUB_TOKEN; gh copilot suggest'

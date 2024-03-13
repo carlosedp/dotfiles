@@ -33,6 +33,7 @@ rc/config/nicotine
 rc/config/fontforge
 rc/config/simple-update-notifier
 rc/config/iterm2/AppSupport
+rc/config/gh
 
 bin/scala_scripts/.ammonite
 bin/scala_scripts/.metals

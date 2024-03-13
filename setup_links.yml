@@ -45,14 +45,14 @@
           register: config_folder_exists
 
         - name: Rename existing .config folder if it exists
-          command: mv "$HOME/.config" "$HOME/.config.old"
-          when: config_folder_exists.stat.exists and config_folder_exists.stat.islnk == false
+          ansible.builtin.command: mv "$HOME/.config" "$HOME/.config.old"
+          when: config_folder_exists.stat.exists and not config_folder_exists.stat.islnk
 
         - name: Remove old .config folder
           ansible.builtin.file:
             path: "$HOME/.config.old"
             state: absent
-          when: config_folder_exists.stat.exists and config_folder_exists.stat.islnk == false
+          when: config_folder_exists.stat.exists and not config_folder_exists.stat.islnk
 
         - name: Setup link for .config folder
           ansible.builtin.file:

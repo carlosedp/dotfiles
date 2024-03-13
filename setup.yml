@@ -136,7 +136,7 @@
           # Allow access to NX accelerator to any user
           KERNEL=="nx-gzip", MODE="0666"
         mode: "0644"
-      when: ansible_architecture == "ppc64le" and  nx_gzip_exists.stat.exists
+      when: ansible_architecture == "ppc64le" and nx_gzip_exists.stat.exists
 
 - name: Setup Shell
   ansible.builtin.import_playbook: setup_shell.yml

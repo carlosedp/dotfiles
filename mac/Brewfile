@@ -40,6 +40,7 @@ brew "zsh"
 brew "gpg"
 
 brew "ansible"
+brew "ansible-lint"
 brew "openssl"
 brew "openssh"
 brew "asciinema"

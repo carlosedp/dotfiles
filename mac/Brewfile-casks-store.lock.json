@@ -58,7 +58,7 @@
     },
     "cask": {
       "raycast": {
-        "version": "1.67.1",
+        "version": "1.69.2",
         "options": {
           "full_name": "raycast",
           "args": {
@@ -85,7 +85,7 @@
         }
       },
       "docker": {
-        "version": "4.27.2,137060",
+        "version": "4.28.0,139021",
         "options": {
           "full_name": "docker",
           "args": {
@@ -103,7 +103,7 @@
         }
       },
       "firefox": {
-        "version": "122.0.1",
+        "version": "123.0.1",
         "options": {
           "full_name": "firefox",
           "args": {
@@ -121,7 +121,7 @@
         }
       },
       "google-drive": {
-        "version": "87.0.2",
+        "version": "88.0.0",
         "options": {
           "full_name": "google-drive",
           "args": {
@@ -130,7 +130,7 @@
         }
       },
       "google-chrome": {
-        "version": "121.0.6167.184",
+        "version": "122.0.6261.129",
         "options": {
           "full_name": "google-chrome",
           "args": {
@@ -193,7 +193,7 @@
         }
       },
       "obsidian": {
-        "version": "1.5.3",
+        "version": "1.5.8",
         "options": {
           "full_name": "obsidian",
           "args": {
@@ -256,7 +256,7 @@
         }
       },
       "rectangle": {
-        "version": "0.75",
+        "version": "0.76",
         "options": {
           "full_name": "rectangle",
           "args": {
@@ -274,7 +274,7 @@
         }
       },
       "spotify": {
-        "version": "1.2.31.1205,4d59ad7c,345",
+        "version": "1.2.33.1039,8ddb5918,3051",
         "options": {
           "full_name": "spotify",
           "args": {
@@ -355,7 +355,7 @@
         }
       },
       "1password": {
-        "version": "8.10.24",
+        "version": "8.10.27",
         "options": {
           "full_name": "1password",
           "args": {
@@ -364,7 +364,7 @@
         }
       },
       "1password-cli": {
-        "version": "2.24.0",
+        "version": "2.25.1",
         "options": {
           "full_name": "1password-cli",
           "args": {
@@ -373,7 +373,7 @@
         }
       },
       "maccy": {
-        "version": "0.29.4",
+        "version": "0.30.0",
         "options": {
           "full_name": "maccy",
           "args": {
@@ -427,7 +427,7 @@
         }
       },
       "tunnelblick": {
-        "version": "3.8.8g,5779.3",
+        "version": "4.0.1,5971",
         "options": {
           "full_name": "tunnelblick",
           "args": {
@@ -436,7 +436,7 @@
         }
       },
       "element": {
-        "version": "1.11.58",
+        "version": "1.11.60",
         "options": {
           "full_name": "element",
           "args": {
@@ -493,7 +493,7 @@
         "macOS": "13.5"
       },
       "sonoma": {
-        "HOMEBREW_VERSION": "4.2.8",
+        "HOMEBREW_VERSION": "4.2.12",
         "HOMEBREW_PREFIX": "/usr/local",
         "Homebrew/homebrew-core": "api",
         "CLT": "15.1.0.0.1.1700200546",
