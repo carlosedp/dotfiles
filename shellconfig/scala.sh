@@ -19,8 +19,8 @@ export PATH="$HOME/.local/share/coursier/bin:$PATH"
 # Add Java to path (if coursier is installed)
 JAVA_HOME=/usr/local/java
 if [ -x "$(command -v cs)" ]; then
-    if [[ "$(cs java-home --jvm ${JVM_VERSION} >/dev/null 2>&1)" -eq 0 ]]; then
-        JAVA_HOME=$(cs java-home --jvm ${JVM_VERSION})
+    if [[ "$(cs java-home --jvm "${JVM_VERSION}" >/dev/null 2>&1)" -eq 0 ]]; then
+        JAVA_HOME=$(cs java-home --jvm "${JVM_VERSION}")
     fi
     export JAVA_HOME
     export PATH=$JAVA_HOME/bin:$PATH
@@ -31,12 +31,27 @@ alias amm='scala-cli repl --ammonite -O --thin'
 alias amm2='scala-cli repl --scala 2 --ammonite -O --thin'
 
 # Use Coursier to list, install and use Java
-alias javainstalled='cs java --installed | column -t'
+localjava() {
+    # Get installed JVMs from cache file
+    local cache_file=${XDG_CACHE_HOME:-$HOME/.cache}/javainstalled
+
+    # Keep cache for 96 hours
+    local timeout_in_hours=96
+    local timeout_in_seconds=$((timeout_in_hours * 60 * 60))
+    # If cache file doesn't exist, is empty or is older than 96 hours, update it
+    if [[ ! (-f "$cache_file" && -s "$cache_file" && $(($(date +%s) - $(stat -c '%Y' "$cache_file") < timeout_in_seconds)) -gt 0) ]]; then
+        cs java --installed | grep -v "Checking\|Checked\|Downloading\|Downloaded" >"$cache_file"
+    fi
+    installed_java=$(<"$cache_file")
+    echo "$installed_java"
+}
+
+alias javainstalled='echo "Installed JDKs:" && localjava | column -t | grep --color -P "^(\S+\s+){$((1-1))}\K\S+"'
 alias javalist='cs java --available | fzf --preview-window=,hidden --reverse'
 
 # Set default JVM to use (graalvm-java17, zulu, etc.) on scala.sh file
 javasetdefault() {
-    USE=$(cs java --available | cut -d":" -f1 | sort -u | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
+    USE=$(localjava | cut -d":" -f1 | sort -u | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
     sed -i "s/^export JVM_VERSION=.*/export JVM_VERSION=${USE}/" "$HOME/.dotfiles/shellconfig/scala.sh"
     echo "Loading the new config and installing $USE if needed..."
     source "$HOME/.dotfiles/shellconfig/scala.sh"
@@ -45,13 +60,22 @@ javasetdefault() {
 
 # Install Java using Coursier
 javainstall() {
-    USE=$(cs java --available | fzf --preview-window=,hidden --reverse --prompt="Select JDK to install:")
-    cs java --jvm "$USE"
+    # We use bash because read command doesn't work the same in zsh
+    bash -c '
+        USE=$(cs java --available | fzf --preview-window=,hidden --reverse --prompt="Select JDK to install:")
+        # Edit JVM version before installing
+        read -e -p "Edit version: " -i $USE JAVATOINSTALL \
+        && echo "Installing Java $JAVATOINSTALL..." \
+        && cs java --jvm "$JAVATOINSTALL" -version \
+        && cs java --jvm "$JAVATOINSTALL" --env
+    '
+    # Reset local java installed cache
+    rm -f "${XDG_CACHE_HOME:-$HOME/.cache}/javainstalled"
 }
 
 # Switch Java version using Coursier
 javause() {
-    USE=$(cs java --installed | cut -d" " -f1 | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
+    USE=$(localjava | cut -d" " -f1 | fzf --preview-window=,hidden --reverse --prompt="Select JDK:")
     eval "$(cs java --jvm "$USE" --env)"
     export PATH=$JAVA_HOME/bin:$PATH
 }
@@ -59,7 +83,7 @@ javause() {
 javaupd() {
     # JVM var comes from `shellconfig/exports.sh` defining which JVM to use (adptium, graalvm-java17, zulu, etc.)
     echo "Checking installed Java versions..."
-    INSTALLEDJAVA=$(cs java --installed | grep "$JVM_VERSION")
+    INSTALLEDJAVA=$(localjava | grep "$JVM_VERSION")
     CURRENTJAVA=$(echo "$INSTALLEDJAVA" | cut -d" " -f1)
     CURRENTPATH=$(echo "$INSTALLEDJAVA" | cut -d" " -f4)
     CURRENTVERSION=$(echo "$CURRENTJAVA" | cut -d":" -f2)
@@ -77,7 +101,7 @@ javaupd() {
 }
 
 javaremove() {
-    USE=$(cs java --installed | fzf --preview-window=,hidden --reverse --prompt="Select JDK to remove:" --with-nth=1)
+    USE=$(localjava | fzf --preview-window=,hidden --reverse --prompt="Select JDK to remove:" --with-nth=1)
     echo "$USE"
     rm -rf "$(realpath "$(echo "$USE" | cut -d" " -f4)/../../../..")"
 }

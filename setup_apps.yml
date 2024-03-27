@@ -27,6 +27,7 @@
             upgrade_all: true
             state: latest
           when: is_macos
+          tags: homebrew
 
         - name: Install Homebrew App Bundle (MacOS)
           ansible.builtin.command:
@@ -34,6 +35,7 @@
           when: is_macos
           register: brew_bundle
           changed_when: brew_bundle.rc != 0
+          tags: homebrew
 
         - name: Install Homebrew Cask Bundle (MacOS)
           ansible.builtin.command:
@@ -41,6 +43,7 @@
           when: is_macos
           register: brew_cask_bundle
           changed_when: brew_cask_bundle.rc != 0
+          tags: homebrew
 
         - name: Install Homebrew Development Bundle (MacOS)
           ansible.builtin.command:
@@ -48,7 +51,7 @@
           when: is_macos
           register: brew_development_bundle
           changed_when: brew_development_bundle.rc != 0
-          # tags: skip
+          tags: homebrew
 
     - name: Block of tasks to be run as root
       become: true
